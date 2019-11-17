@@ -25,7 +25,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo usersApiInfo() {
-		return new ApiInfoBuilder().title("Microservice Providers").version("1.0")
+		return new ApiInfoBuilder().title("Microservice Providers Supplies").version("1.0")
 				.license("GNU AFFERO GENERAL PUBLIC LICENSE - Version 3").build();
 	}
 
