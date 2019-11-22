@@ -1,12 +1,12 @@
 spring:
   application:
-    name: st-microservice-ili
+    name: st-microservice-providers
   profiles:
     active: 
       - "develop"
   cloud:
     config:
-      enabled: false
+      enabled: true
       
 ---
 spring:
