@@ -25,4 +25,9 @@ public class RequestStateService implements IRequestStateService {
 		return requestStateRepository.count();
 	}
 
+	@Override
+	public RequestStateEntity getRequestStateById(Long id) {
+		return requestStateRepository.findById(id).orElse(null);
+	}
+
 }

@@ -1,7 +1,10 @@
 package com.ai.st.microservice.providers.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,26 +26,32 @@ public class RequestEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	
+
 	@Column(name = "deadline", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deadline;
-	
+
 	@Column(name = "observations", nullable = true, length = 255)
 	private String observations;
-	
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
 	private ProviderEntity provider;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "request_state_id", referencedColumnName = "id", nullable = false)
 	private RequestStateEntity requestState;
-	
+
+	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+	private List<SupplyRequestedEntity> supplies = new ArrayList<SupplyRequestedEntity>();
+
+	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+	private List<EmitterEntity> emitters = new ArrayList<EmitterEntity>();
+
 	public RequestEntity() {
 
 	}
@@ -93,5 +103,21 @@ public class RequestEntity {
 	public void setRequestState(RequestStateEntity requestState) {
 		this.requestState = requestState;
 	}
-	
+
+	public List<SupplyRequestedEntity> getSupplies() {
+		return supplies;
+	}
+
+	public void setSupplies(List<SupplyRequestedEntity> supplies) {
+		this.supplies = supplies;
+	}
+
+	public List<EmitterEntity> getEmitters() {
+		return emitters;
+	}
+
+	public void setEmitters(List<EmitterEntity> emitters) {
+		this.emitters = emitters;
+	}
+
 }

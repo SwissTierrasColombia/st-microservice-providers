@@ -20,4 +20,9 @@ public class TypeSupplyService implements ITypeSupplyService {
 		return typeSupplyRepository.save(typeSupply);
 	}
 
+	@Override
+	public TypeSupplyEntity getTypeSupplyById(Long id) {
+		return typeSupplyRepository.findById(id).orElse(null);
+	}
+
 }
