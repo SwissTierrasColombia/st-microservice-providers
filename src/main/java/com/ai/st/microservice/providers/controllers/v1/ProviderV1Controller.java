@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
+import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
 
@@ -132,6 +133,38 @@ public class ProviderV1Controller {
 		}
 
 		return new ResponseEntity<>(providerDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/types-supplies", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get types supplies by provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get types supplies by provider", response = ProviderDto.class),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getTypeSuppliesByProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		List<TypeSupplyDto> listTypesSupplies = new ArrayList<TypeSupplyDto>();
+		Object responseDto = null;
+
+		try {
+
+			listTypesSupplies = providerBusiness.getTypesSuppliesByProviderId(providerId);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getTypeSuppliesByProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getTypeSuppliesByProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listTypesSupplies, httpStatus);
 	}
 
 }

@@ -1,7 +1,10 @@
 package com.ai.st.microservice.providers.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +32,7 @@ public class ProviderEntity {
 
 	@Column(name = "tax_identification_number", nullable = false, length = 255)
 	private String taxIdentificationNumber;
-	
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -36,7 +40,10 @@ public class ProviderEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_category_id", referencedColumnName = "id", nullable = false)
 	private ProviderCategoryEntity providerCategory;
-	
+
+	@OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
+	private List<TypeSupplyEntity> typesSupplies = new ArrayList<TypeSupplyEntity>();
+
 	public ProviderEntity() {
 
 	}
@@ -79,6 +86,14 @@ public class ProviderEntity {
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public List<TypeSupplyEntity> getTypesSupplies() {
+		return typesSupplies;
+	}
+
+	public void setTypesSupplies(List<TypeSupplyEntity> typesSupplies) {
+		this.typesSupplies = typesSupplies;
 	}
 
 }

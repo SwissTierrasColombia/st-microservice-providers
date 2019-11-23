@@ -7,7 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
+import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
+import com.ai.st.microservice.providers.dto.RequestStateDto;
+import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
+import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyRequestedDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
@@ -100,6 +106,49 @@ public class RequestBusiness {
 
 		RequestDto requestDto = new RequestDto();
 		requestDto.setId(requestEntity.getId());
+		requestDto.setCreatedAt(requestEntity.getCreatedAt());
+		requestDto.setDeadline(requestEntity.getDeadline());
+		requestDto.setObservations(requestEntity.getObservations());
+
+		ProviderDto providerDto = new ProviderDto();
+		providerDto.setId(providerEntity.getId());
+		providerDto.setName(providerEntity.getName());
+		providerDto.setCreatedAt(providerEntity.getCreatedAt());
+		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+		providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+				providerEntity.getProviderCategory().getName()));
+		requestDto.setProvider(providerDto);
+
+		requestDto.setRequestState(new RequestStateDto(requestEntity.getRequestState().getId(),
+				requestEntity.getRequestState().getName()));
+
+		List<SupplyRequestedDto> suppliesDto = new ArrayList<SupplyRequestedDto>();
+		for (SupplyRequestedEntity supplyRE : requestEntity.getSupplies()) {
+
+			SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
+			supplyRequested.setId(supplyRE.getId());
+			supplyRequested.setDescription(supplyRE.getDescription());
+
+			TypeSupplyEntity tsE = supplyRE.getTypeSupply();
+
+			TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
+			typeSupplyDto.setCreatedAt(tsE.getCreatedAt());
+			typeSupplyDto.setDescription(tsE.getDescription());
+			typeSupplyDto.setId(tsE.getId());
+			typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
+			typeSupplyDto.setName(tsE.getName());
+
+			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+			providerProfileDto.setDescription(tsE.getProviderProfile().getDescription());
+			providerProfileDto.setId(tsE.getProviderProfile().getId());
+			providerProfileDto.setName(tsE.getProviderProfile().getName());
+			typeSupplyDto.setProviderProfile(providerProfileDto);
+
+			supplyRequested.setTypeSupply(typeSupplyDto);
+
+			suppliesDto.add(supplyRequested);
+		}
+		requestDto.setSuppliesRequested(suppliesDto);
 
 		return requestDto;
 	}

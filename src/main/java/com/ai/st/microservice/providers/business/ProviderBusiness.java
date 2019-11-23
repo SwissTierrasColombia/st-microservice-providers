@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.ProviderProfileDto;
+import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderService;
@@ -120,6 +123,38 @@ public class ProviderBusiness {
 		}
 
 		return providerDto;
+	}
+
+	public List<TypeSupplyDto> getTypesSuppliesByProviderId(Long providerId) throws BusinessException {
+
+		List<TypeSupplyDto> listTypeSupplyDtos = new ArrayList<TypeSupplyDto>();
+
+		// verify provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		List<TypeSupplyEntity> listTypeSupplyEntities = providerEntity.getTypesSupplies();
+		for (TypeSupplyEntity typeSupplyEntity : listTypeSupplyEntities) {
+
+			TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
+			typeSupplyDto.setCreatedAt(typeSupplyEntity.getCreatedAt());
+			typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
+			typeSupplyDto.setId(typeSupplyEntity.getId());
+			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
+			typeSupplyDto.setName(typeSupplyEntity.getName());
+
+			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+			providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
+			providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
+			providerProfileDto.setName(typeSupplyEntity.getProviderProfile().getName());
+			typeSupplyDto.setProviderProfile(providerProfileDto);
+
+			listTypeSupplyDtos.add(typeSupplyDto);
+		}
+
+		return listTypeSupplyDtos;
 	}
 
 }
