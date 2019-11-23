@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
@@ -165,6 +167,40 @@ public class ProviderV1Controller {
 
 		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
 				: new ResponseEntity<>(listTypesSupplies, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/requests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get requests by provider", response = ProviderDto.class),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestsByProvider(@PathVariable Long providerId,
+			@RequestParam(required = false, name = "state") Long requestStateId) {
+
+		HttpStatus httpStatus = null;
+		List<RequestDto> listRequests = new ArrayList<RequestDto>();
+		Object responseDto = null;
+
+		try {
+
+			listRequests = providerBusiness.getRequestsByProviderAndState(providerId, requestStateId);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getRequestsByProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getRequestsByProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listRequests, httpStatus);
+
 	}
 
 }

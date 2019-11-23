@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +35,10 @@ public class EmitterEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
 	private RequestEntity request;
+
+	@Column(name = "emitter_type", nullable = false, length = 50)
+	@Enumerated(value = EnumType.STRING)
+	private EmitterTypeEnum emitterType;
 
 	public EmitterEntity() {
 
@@ -68,6 +74,14 @@ public class EmitterEntity {
 
 	public void setRequest(RequestEntity request) {
 		this.request = request;
+	}
+
+	public EmitterTypeEnum getEmitterType() {
+		return emitterType;
+	}
+
+	public void setEmitterType(EmitterTypeEnum emitterType) {
+		this.emitterType = emitterType;
 	}
 
 }

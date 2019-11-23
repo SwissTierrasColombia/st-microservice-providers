@@ -1,5 +1,7 @@
 package com.ai.st.microservice.providers.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,11 @@ public class RequestService implements IRequestService {
 	@Transactional
 	public RequestEntity createRequest(RequestEntity requestEntity) {
 		return requestRepository.save(requestEntity);
+	}
+
+	@Override
+	public List<RequestEntity> getRequestsByProviderIdAndStateId(Long providerId, Long requestStateId) {
+		return requestRepository.getRequestsByProviderIdAndStateId(providerId, requestStateId);
 	}
 
 }

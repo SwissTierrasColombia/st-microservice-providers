@@ -34,8 +34,12 @@ public class RequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "List supplies requested")
 	private List<SupplyRequestedDto> suppliesRequested;
 
+	@ApiModelProperty(required = true, notes = "List emitters")
+	private List<EmitterDto> emitters;
+
 	public RequestDto() {
 		suppliesRequested = new ArrayList<SupplyRequestedDto>();
+		emitters = new ArrayList<EmitterDto>();
 	}
 
 	public Long getId() {
@@ -92,6 +96,14 @@ public class RequestDto implements Serializable {
 
 	public void setSuppliesRequested(List<SupplyRequestedDto> suppliesRequested) {
 		this.suppliesRequested = suppliesRequested;
+	}
+
+	public List<EmitterDto> getEmitters() {
+		return emitters;
+	}
+
+	public void setEmitters(List<EmitterDto> emitters) {
+		this.emitters = emitters;
 	}
 
 }

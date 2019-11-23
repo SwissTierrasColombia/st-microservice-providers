@@ -44,6 +44,9 @@ public class ProviderEntity {
 	@OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
 	private List<TypeSupplyEntity> typesSupplies = new ArrayList<TypeSupplyEntity>();
 
+	@OneToMany(mappedBy = "provider")
+	private List<RequestEntity> requests = new ArrayList<RequestEntity>();
+
 	public ProviderEntity() {
 
 	}
@@ -94,6 +97,14 @@ public class ProviderEntity {
 
 	public void setTypesSupplies(List<TypeSupplyEntity> typesSupplies) {
 		this.typesSupplies = typesSupplies;
+	}
+
+	public List<RequestEntity> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<RequestEntity> requests) {
+		this.requests = requests;
 	}
 
 }

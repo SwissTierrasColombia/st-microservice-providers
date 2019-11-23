@@ -20,6 +20,7 @@ import com.ai.st.microservice.providers.business.RequestBusiness;
 import com.ai.st.microservice.providers.dto.CreateRequestDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
+import com.ai.st.microservice.providers.dto.RequestEmitterDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyRequestedDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
@@ -71,10 +72,19 @@ public class RequestV1Controller {
 				throw new InputValidationException("La fecha límite es requerida.");
 			}
 
-			// validation emmiter
-			Long emmiterCode = createRequestDto.getEmmiterCode();
-			if (emmiterCode == null || emmiterCode <= 0) {
-				throw new InputValidationException("El código del emisor es requerido.");
+			// validation emitters
+			List<RequestEmitterDto> emitters = createRequestDto.getEmitters();
+			if (emitters.size() > 0) {
+				for (RequestEmitterDto emitterDto : emitters) {
+					if (emitterDto.getEmitterCode() == null || emitterDto.getEmitterCode() <= 0) {
+						throw new InputValidationException("El código del emisor es inválido.");
+					}
+					if (emitterDto.getEmitterType() == null || emitterDto.getEmitterType().isEmpty()) {
+						throw new InputValidationException("El tipo del emisor es requerido.");
+					}
+				}
+			} else {
+				throw new InputValidationException("La solicitud debe contener al menos un emisor.");
 			}
 
 			// validation supplies
@@ -90,7 +100,7 @@ public class RequestV1Controller {
 						"La solicitud debe contener al menos un tipo de insumo a solicitar.");
 			}
 
-			responseDto = requestBusiness.createRequest(deadline, providerId, emmiterCode, supplies);
+			responseDto = requestBusiness.createRequest(deadline, providerId, emitters, supplies);
 
 			httpStatus = HttpStatus.CREATED;
 

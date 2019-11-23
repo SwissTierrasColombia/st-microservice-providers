@@ -18,14 +18,15 @@ public class CreateRequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Provider ID")
 	private Long providerId;
 
-	@ApiModelProperty(required = true, notes = "Emmiter code")
-	private Long emmiterCode;
+	@ApiModelProperty(required = true, notes = "Emitters")
+	private List<RequestEmitterDto> emitters;
 
 	@ApiModelProperty(required = true, notes = "Supplies requested")
 	private List<TypeSupplyRequestedDto> supplies;
 
 	public CreateRequestDto() {
 		supplies = new ArrayList<TypeSupplyRequestedDto>();
+		emitters = new ArrayList<RequestEmitterDto>();
 	}
 
 	public String getDeadline() {
@@ -44,20 +45,20 @@ public class CreateRequestDto implements Serializable {
 		this.providerId = providerId;
 	}
 
-	public Long getEmmiterCode() {
-		return emmiterCode;
-	}
-
-	public void setEmmiterCode(Long emmiterCode) {
-		this.emmiterCode = emmiterCode;
-	}
-
 	public List<TypeSupplyRequestedDto> getSupplies() {
 		return supplies;
 	}
 
 	public void setSupplies(List<TypeSupplyRequestedDto> supplies) {
 		this.supplies = supplies;
+	}
+
+	public List<RequestEmitterDto> getEmitters() {
+		return emitters;
+	}
+
+	public void setEmitters(List<RequestEmitterDto> emitters) {
+		this.emitters = emitters;
 	}
 
 }

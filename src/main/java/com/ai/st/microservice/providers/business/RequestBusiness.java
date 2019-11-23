@@ -11,11 +11,13 @@ import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
+import com.ai.st.microservice.providers.dto.RequestEmitterDto;
 import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyRequestedDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
+import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
@@ -42,7 +44,7 @@ public class RequestBusiness {
 	@Autowired
 	private IRequestService requestService;
 
-	public RequestDto createRequest(Date deadline, Long providerId, Long emitterCode,
+	public RequestDto createRequest(Date deadline, Long providerId, List<RequestEmitterDto> requestEmmiters,
 			List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
 		// verify that the sea deadline greater than the current date
@@ -57,6 +59,8 @@ public class RequestBusiness {
 		}
 
 		// verify supplies
+		List<Long> suppliesId = new ArrayList<Long>();
+		List<TypeSupplyRequestedDto> listSupplies = new ArrayList<TypeSupplyRequestedDto>();
 		for (TypeSupplyRequestedDto typeSupplyDto : supplies) {
 
 			// verify the type of input exists
@@ -68,6 +72,23 @@ public class RequestBusiness {
 			// verify if the type of input belongs to the entity
 			if (typeSupplyEntity.getProvider().getId() != providerEntity.getId()) {
 				throw new BusinessException("El tipo de insumo no pertenece al proveedor.");
+			}
+
+			// verify if the type supply is repeated in the request
+			if (!suppliesId.contains(typeSupplyDto.getTypeSupplyId())) {
+				listSupplies.add(typeSupplyDto);
+				suppliesId.add(typeSupplyDto.getTypeSupplyId());
+			}
+
+		}
+
+		// verify emitters
+		for (RequestEmitterDto requestEmitterDto : requestEmmiters) {
+
+			// verify type emitter
+			if (!requestEmitterDto.getEmitterType().equals(EmitterTypeEnum.ENTITY.name())
+					&& !requestEmitterDto.getEmitterType().equals(EmitterTypeEnum.USER.name())) {
+				throw new BusinessException("El el tipo de emisor es inválido.");
 			}
 
 		}
@@ -83,7 +104,7 @@ public class RequestBusiness {
 
 		// supplies
 		List<SupplyRequestedEntity> suppliesEntities = new ArrayList<SupplyRequestedEntity>();
-		for (TypeSupplyRequestedDto typeSupplyDto : supplies) {
+		for (TypeSupplyRequestedDto typeSupplyDto : listSupplies) {
 			TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyDto.getTypeSupplyId());
 			SupplyRequestedEntity supplyEntity = new SupplyRequestedEntity();
 			supplyEntity.setDescription(typeSupplyDto.getObservation());
@@ -95,11 +116,20 @@ public class RequestBusiness {
 
 		// emitters
 		List<EmitterEntity> emitterEntities = new ArrayList<EmitterEntity>();
-		EmitterEntity emitterEntity = new EmitterEntity();
-		emitterEntity.setCreatedAt(new Date());
-		emitterEntity.setEmitterCode(emitterCode);
-		emitterEntity.setRequest(requestEntity);
-		emitterEntities.add(emitterEntity);
+
+		for (RequestEmitterDto requestEmitterDto : requestEmmiters) {
+			EmitterEntity emitterEntity = new EmitterEntity();
+			emitterEntity.setCreatedAt(new Date());
+			emitterEntity.setEmitterCode(requestEmitterDto.getEmitterCode());
+
+			EmitterTypeEnum emmitterTypeEnum = (requestEmitterDto.getEmitterType()
+					.equals(EmitterTypeEnum.ENTITY.name())) ? EmitterTypeEnum.ENTITY : EmitterTypeEnum.USER;
+
+			emitterEntity.setEmitterType(emmitterTypeEnum);
+			emitterEntity.setRequest(requestEntity);
+			emitterEntities.add(emitterEntity);
+		}
+
 		requestEntity.setEmitters(emitterEntities);
 
 		requestEntity = requestService.createRequest(requestEntity);
