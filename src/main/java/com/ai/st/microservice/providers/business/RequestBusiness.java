@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ai.st.microservice.providers.dto.EmitterDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
@@ -179,6 +180,17 @@ public class RequestBusiness {
 			suppliesDto.add(supplyRequested);
 		}
 		requestDto.setSuppliesRequested(suppliesDto);
+
+		List<EmitterDto> emittersDto = new ArrayList<EmitterDto>();
+		for (EmitterEntity emitterEntity : requestEntity.getEmitters()) {
+			EmitterDto emitterDto = new EmitterDto();
+			emitterDto.setCreatedAt(emitterEntity.getCreatedAt());
+			emitterDto.setEmitterCode(emitterEntity.getEmitterCode());
+			emitterDto.setEmitterType(emitterEntity.getEmitterType().name());
+			emitterDto.setId(emitterEntity.getId());
+			emittersDto.add(emitterDto);
+		}
+		requestDto.setEmitters(emittersDto);
 
 		return requestDto;
 	}
