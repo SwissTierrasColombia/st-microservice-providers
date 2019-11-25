@@ -15,12 +15,14 @@ import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
+import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
+import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
@@ -46,6 +48,9 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 	@Autowired
 	private IRequestStateService requestStateService;
+
+	@Autowired
+	private IProviderUserService providerUserService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -122,6 +127,20 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileAgrological.setName("AGROLÓGICO");
 				profileAgrological.setProvider(providerIgac);
 				profileAgrological = providerProfileService.createProviderProfile(profileAgrological);
+
+				ProviderUserEntity user1 = new ProviderUserEntity();
+				user1.setCreatedAt(new Date());
+				user1.setProvider(providerIgac);
+				user1.setProviderProfile(profileCadastral);
+				user1.setUserCode((long) 5);
+				providerUserService.createProviderUser(user1);
+
+				ProviderUserEntity user2 = new ProviderUserEntity();
+				user2.setCreatedAt(new Date());
+				user2.setProvider(providerIgac);
+				user2.setProviderProfile(profileCartographic);
+				user2.setUserCode((long) 5);
+				providerUserService.createProviderUser(user2);
 
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Documentos Prediales");
