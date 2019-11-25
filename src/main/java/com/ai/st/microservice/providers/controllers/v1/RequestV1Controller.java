@@ -58,6 +58,12 @@ public class RequestV1Controller {
 				throw new InputValidationException("El proveedor de insumo es requerido.");
 			}
 
+			// validation municipality code
+			String municipalityCode = createRequestDto.getMunicipalityCode();
+			if (municipalityCode.isEmpty()) {
+				throw new InputValidationException("El código del municipio es requerido.");
+			}
+
 			// validation deadline
 			String deadlineString = createRequestDto.getDeadline();
 			Date deadline = null;
@@ -100,7 +106,7 @@ public class RequestV1Controller {
 						"La solicitud debe contener al menos un tipo de insumo a solicitar.");
 			}
 
-			responseDto = requestBusiness.createRequest(deadline, providerId, emitters, supplies);
+			responseDto = requestBusiness.createRequest(deadline, providerId, municipalityCode, emitters, supplies);
 
 			httpStatus = HttpStatus.CREATED;
 

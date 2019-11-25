@@ -45,8 +45,8 @@ public class RequestBusiness {
 	@Autowired
 	private IRequestService requestService;
 
-	public RequestDto createRequest(Date deadline, Long providerId, List<RequestEmitterDto> requestEmmiters,
-			List<TypeSupplyRequestedDto> supplies) throws BusinessException {
+	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode,
+			List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
 		// verify that the sea deadline greater than the current date
 		if (!deadline.after(new Date())) {
@@ -102,6 +102,7 @@ public class RequestBusiness {
 		requestEntity.setDeadline(deadline);
 		requestEntity.setProvider(providerEntity);
 		requestEntity.setRequestState(requestStateEntity);
+		requestEntity.setMunicipalityCode(municipalityCode);
 
 		// supplies
 		List<SupplyRequestedEntity> suppliesEntities = new ArrayList<SupplyRequestedEntity>();
@@ -140,6 +141,7 @@ public class RequestBusiness {
 		requestDto.setCreatedAt(requestEntity.getCreatedAt());
 		requestDto.setDeadline(requestEntity.getDeadline());
 		requestDto.setObservations(requestEntity.getObservations());
+		requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
 
 		ProviderDto providerDto = new ProviderDto();
 		providerDto.setId(providerEntity.getId());

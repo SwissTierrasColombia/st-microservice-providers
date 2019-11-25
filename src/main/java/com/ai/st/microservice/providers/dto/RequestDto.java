@@ -37,6 +37,9 @@ public class RequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "List emitters")
 	private List<EmitterDto> emitters;
 
+	@ApiModelProperty(required = true, notes = "Municipality code")
+	private String municipalityCode;
+
 	public RequestDto() {
 		suppliesRequested = new ArrayList<SupplyRequestedDto>();
 		emitters = new ArrayList<EmitterDto>();
@@ -104,6 +107,14 @@ public class RequestDto implements Serializable {
 
 	public void setEmitters(List<EmitterDto> emitters) {
 		this.emitters = emitters;
+	}
+
+	public String getMunicipalityCode() {
+		return municipalityCode;
+	}
+
+	public void setMunicipalityCode(String municipalityCode) {
+		this.municipalityCode = municipalityCode;
 	}
 
 }

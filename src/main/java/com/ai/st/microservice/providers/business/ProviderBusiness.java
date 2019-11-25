@@ -194,6 +194,7 @@ public class ProviderBusiness {
 			requestDto.setCreatedAt(requestEntity.getCreatedAt());
 			requestDto.setDeadline(requestEntity.getDeadline());
 			requestDto.setObservations(requestEntity.getObservations());
+			requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
 
 			ProviderDto providerDto = new ProviderDto();
 			providerDto.setId(providerEntity.getId());

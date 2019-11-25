@@ -34,6 +34,9 @@ public class RequestEntity {
 	@Column(name = "observations", nullable = true, length = 255)
 	private String observations;
 
+	@Column(name = "municipality_code", nullable = false, length = 10)
+	private String municipalityCode;
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -120,4 +123,12 @@ public class RequestEntity {
 		this.emitters = emitters;
 	}
 
+	public String getMunicipalityCode() {
+		return municipalityCode;
+	}
+
+	public void setMunicipalityCode(String municipalityCode) {
+		this.municipalityCode = municipalityCode;
+	}	
+	
 }
