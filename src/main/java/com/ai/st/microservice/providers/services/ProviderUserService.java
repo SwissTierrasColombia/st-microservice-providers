@@ -1,5 +1,7 @@
 package com.ai.st.microservice.providers.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,11 @@ public class ProviderUserService implements IProviderUserService {
 	@Transactional
 	public ProviderUserEntity createProviderUser(ProviderUserEntity providerUserEntity) {
 		return providerUserRepository.save(providerUserEntity);
+	}
+
+	@Override
+	public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode) {
+		return providerUserRepository.findByUserCode(userCode);
 	}
 
 }
