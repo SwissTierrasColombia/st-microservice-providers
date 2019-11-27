@@ -21,6 +21,7 @@ import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
@@ -200,6 +201,39 @@ public class ProviderV1Controller {
 
 		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
 				: new ResponseEntity<>(listRequests, httpStatus);
+
+	}
+	
+	@RequestMapping(value = "/{providerId}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get users by provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get users by provider", response = ProviderDto.class),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderUserDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getUsersByProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		List<ProviderUserDto> listUsers = new ArrayList<ProviderUserDto>();
+		Object responseDto = null;
+
+		try {
+
+			listUsers = providerBusiness.getUsersByProvider(providerId);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getUsersByProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getUsersByProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listUsers, httpStatus);
 
 	}
 

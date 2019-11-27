@@ -46,6 +46,9 @@ public class ProviderEntity {
 
 	@OneToMany(mappedBy = "provider")
 	private List<RequestEntity> requests = new ArrayList<RequestEntity>();
+	
+	@OneToMany(mappedBy = "provider")
+	private List<ProviderUserEntity> users = new ArrayList<ProviderUserEntity>();
 
 	public ProviderEntity() {
 
@@ -105,6 +108,14 @@ public class ProviderEntity {
 
 	public void setRequests(List<RequestEntity> requests) {
 		this.requests = requests;
+	}
+
+	public List<ProviderUserEntity> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<ProviderUserEntity> users) {
+		this.users = users;
 	}
 
 }

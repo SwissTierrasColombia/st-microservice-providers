@@ -27,4 +27,9 @@ public class RequestService implements IRequestService {
 		return requestRepository.getRequestsByProviderIdAndStateId(providerId, requestStateId);
 	}
 
+	@Override
+	public RequestEntity getRequestById(Long id) {
+		return requestRepository.findById(id).orElse(null);
+	}
+
 }

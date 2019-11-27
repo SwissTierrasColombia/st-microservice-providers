@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.RequestEmitterDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyRequestedDto;
+import com.ai.st.microservice.providers.dto.UpdateSupplyRequestedDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
 
@@ -120,6 +122,75 @@ public class RequestV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error RequestV1Controller@createRequest#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{requestId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get request by id")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Get request by id", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestById(@PathVariable Long requestId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestById(requestId);
+			httpStatus = (responseDto instanceof RequestDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestById#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestById#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+
+	}
+
+	@RequestMapping(value = "/{requestId}/supplies/{supplyRequestedId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get request by id")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Get request by id", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> updateSupplyRequested(@PathVariable Long requestId,
+			@PathVariable Long supplyRequestedId, @RequestBody UpdateSupplyRequestedDto updateSupply) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			// validation delivered
+			Boolean delivered = updateSupply.getDelivered();
+			if (delivered == null) {
+				throw new InputValidationException("Se debe especificar si el insumo fue entregado.");
+			}
+
+			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, delivered,
+					updateSupply.getJustification());
+			httpStatus = HttpStatus.OK;
+
+		} catch (InputValidationException e) {
+			log.error("Error RequestV1Controller@updateSupplyRequested#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@updateSupplyRequested#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@updateSupplyRequested#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}

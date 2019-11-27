@@ -10,4 +10,6 @@ public interface IRequestService {
 
 	public List<RequestEntity> getRequestsByProviderIdAndStateId(Long providerId, Long requestStateId);
 
+	public RequestEntity getRequestById(Long id);
+
 }

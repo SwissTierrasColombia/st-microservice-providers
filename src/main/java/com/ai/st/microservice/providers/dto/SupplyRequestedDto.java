@@ -1,6 +1,7 @@
 package com.ai.st.microservice.providers.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +22,18 @@ public class SupplyRequestedDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Type supply")
 	private TypeSupplyDto typeSupply;
+
+	@ApiModelProperty(required = true, notes = "Date creation")
+	private Date createdAt;
+
+	@ApiModelProperty(required = true, notes = "Is Delivered?")
+	private Boolean delivered;
+
+	@ApiModelProperty(required = true, notes = "Date delivered")
+	private Date deliveredAt;
+
+	@ApiModelProperty(required = true, notes = "Justification")
+	private String justification;
 
 	public SupplyRequestedDto() {
 
@@ -56,6 +69,38 @@ public class SupplyRequestedDto implements Serializable {
 
 	public void setTypeSupply(TypeSupplyDto typeSupply) {
 		this.typeSupply = typeSupply;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Boolean getDelivered() {
+		return delivered;
+	}
+
+	public void setDelivered(Boolean delivered) {
+		this.delivered = delivered;
+	}
+
+	public Date getDeliveredAt() {
+		return deliveredAt;
+	}
+
+	public void setDeliveredAt(Date deliveredAt) {
+		this.deliveredAt = deliveredAt;
+	}
+
+	public String getJustification() {
+		return justification;
+	}
+
+	public void setJustification(String justification) {
+		this.justification = justification;
 	}
 
 }

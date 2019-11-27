@@ -28,6 +28,7 @@ import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IRequestService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
+import com.ai.st.microservice.providers.services.ISupplyRequestedService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
@@ -44,6 +45,9 @@ public class RequestBusiness {
 
 	@Autowired
 	private IRequestService requestService;
+
+	@Autowired
+	private ISupplyRequestedService supplyRequestedService;
 
 	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode,
 			List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
@@ -112,6 +116,8 @@ public class RequestBusiness {
 			supplyEntity.setDescription(typeSupplyDto.getObservation());
 			supplyEntity.setRequest(requestEntity);
 			supplyEntity.setTypeSupply(typeSupplyEntity);
+			supplyEntity.setCreatedAt(new Date());
+			supplyEntity.setDelivered(false);
 			suppliesEntities.add(supplyEntity);
 		}
 		requestEntity.setSupplies(suppliesEntities);
@@ -161,6 +167,10 @@ public class RequestBusiness {
 			SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
 			supplyRequested.setId(supplyRE.getId());
 			supplyRequested.setDescription(supplyRE.getDescription());
+			supplyRequested.setCreatedAt(supplyRE.getCreatedAt());
+			supplyRequested.setDelivered(supplyRE.getDelivered());
+			supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
+			supplyRequested.setJustification(supplyRE.getJustification());
 
 			TypeSupplyEntity tsE = supplyRE.getTypeSupply();
 
@@ -194,6 +204,114 @@ public class RequestBusiness {
 		}
 		requestDto.setEmitters(emittersDto);
 
+		return requestDto;
+	}
+
+	public RequestDto getRequestById(Long requestId) throws BusinessException {
+
+		RequestDto requestDto = null;
+
+		RequestEntity requestEntity = requestService.getRequestById(requestId);
+		if (requestEntity instanceof RequestEntity) {
+
+			ProviderEntity providerEntity = requestEntity.getProvider();
+
+			requestDto = new RequestDto();
+			requestDto.setId(requestEntity.getId());
+			requestDto.setCreatedAt(requestEntity.getCreatedAt());
+			requestDto.setDeadline(requestEntity.getDeadline());
+			requestDto.setObservations(requestEntity.getObservations());
+			requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
+
+			ProviderDto providerDto = new ProviderDto();
+			providerDto.setId(providerEntity.getId());
+			providerDto.setName(providerEntity.getName());
+			providerDto.setCreatedAt(providerEntity.getCreatedAt());
+			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+			providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+					providerEntity.getProviderCategory().getName()));
+			requestDto.setProvider(providerDto);
+
+			requestDto.setRequestState(new RequestStateDto(requestEntity.getRequestState().getId(),
+					requestEntity.getRequestState().getName()));
+
+			List<SupplyRequestedDto> suppliesDto = new ArrayList<SupplyRequestedDto>();
+			for (SupplyRequestedEntity supplyRE : requestEntity.getSupplies()) {
+
+				SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
+				supplyRequested.setId(supplyRE.getId());
+				supplyRequested.setDescription(supplyRE.getDescription());
+				supplyRequested.setCreatedAt(supplyRE.getCreatedAt());
+				supplyRequested.setDelivered(supplyRE.getDelivered());
+				supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
+				supplyRequested.setJustification(supplyRE.getJustification());
+
+				TypeSupplyEntity tsE = supplyRE.getTypeSupply();
+
+				TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
+				typeSupplyDto.setCreatedAt(tsE.getCreatedAt());
+				typeSupplyDto.setDescription(tsE.getDescription());
+				typeSupplyDto.setId(tsE.getId());
+				typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
+				typeSupplyDto.setName(tsE.getName());
+
+				ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+				providerProfileDto.setDescription(tsE.getProviderProfile().getDescription());
+				providerProfileDto.setId(tsE.getProviderProfile().getId());
+				providerProfileDto.setName(tsE.getProviderProfile().getName());
+				typeSupplyDto.setProviderProfile(providerProfileDto);
+
+				supplyRequested.setTypeSupply(typeSupplyDto);
+
+				suppliesDto.add(supplyRequested);
+			}
+			requestDto.setSuppliesRequested(suppliesDto);
+
+			List<EmitterDto> emittersDto = new ArrayList<EmitterDto>();
+			for (EmitterEntity emitterEntity : requestEntity.getEmitters()) {
+				EmitterDto emitterDto = new EmitterDto();
+				emitterDto.setCreatedAt(emitterEntity.getCreatedAt());
+				emitterDto.setEmitterCode(emitterEntity.getEmitterCode());
+				emitterDto.setEmitterType(emitterEntity.getEmitterType().name());
+				emitterDto.setId(emitterEntity.getId());
+				emittersDto.add(emitterDto);
+			}
+			requestDto.setEmitters(emittersDto);
+		}
+
+		return requestDto;
+	}
+
+	public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Boolean delivered,
+			String justification) throws BusinessException {
+
+		// verify if request exists
+		RequestEntity requestEntity = requestService.getRequestById(requestId);
+		if (!(requestEntity instanceof RequestEntity)) {
+			throw new BusinessException("La solicitud no existe");
+		}
+
+		if (delivered == false && justification.isEmpty()) {
+			throw new BusinessException("Se debe especificar porque no se entregó el insumo.");
+		}
+
+		SupplyRequestedEntity supplyRequested = requestEntity.getSupplies().stream()
+				.filter(supply -> supply.getId() == supplyRequestedId).findAny().orElse(null);
+		if (supplyRequested != null) {
+
+			supplyRequested.setDelivered(delivered);
+			if (delivered) {
+				supplyRequested.setDeliveredAt(new Date());
+				supplyRequested.setJustification("");
+			} else {
+				supplyRequested.setJustification(justification);
+			}
+			supplyRequestedService.updateSupplyRequested(supplyRequested);
+		} else {
+			throw new BusinessException("La tipo de insumo no esta asociado con la solicitud.");
+		}
+
+		RequestDto requestDto = this.getRequestById(requestId);
 		return requestDto;
 	}
 

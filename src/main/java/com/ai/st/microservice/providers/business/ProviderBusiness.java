@@ -11,6 +11,7 @@ import com.ai.st.microservice.providers.dto.EmitterDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
+import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
@@ -18,6 +19,8 @@ import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
+import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
@@ -216,6 +219,10 @@ public class ProviderBusiness {
 				SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
 				supplyRequested.setId(supplyRE.getId());
 				supplyRequested.setDescription(supplyRE.getDescription());
+				supplyRequested.setCreatedAt(supplyRE.getCreatedAt());
+				supplyRequested.setDelivered(supplyRE.getDelivered());
+				supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
+				supplyRequested.setJustification(supplyRE.getJustification());
 
 				TypeSupplyEntity tsE = supplyRE.getTypeSupply();
 
@@ -252,6 +259,50 @@ public class ProviderBusiness {
 		}
 
 		return listRequestsDto;
+	}
+
+	public List<ProviderUserDto> getUsersByProvider(Long providerId) throws BusinessException {
+
+		List<ProviderUserDto> users = new ArrayList<ProviderUserDto>();
+
+		// verify provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		for (ProviderUserEntity providerUserEntity : providerEntity.getUsers()) {
+
+			Long userCode = providerUserEntity.getUserCode();
+
+			ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
+					.orElse(null);
+			if (providerFound == null) {
+
+				ProviderUserDto providerUserDto = new ProviderUserDto();
+				providerUserDto.setUserCode(userCode);
+
+				List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+				for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
+					if (providerUserEntity2.getUserCode() == userCode) {
+
+						ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
+						ProviderProfileDto profile = new ProviderProfileDto();
+
+						profile.setDescription(profileEntity.getDescription());
+						profile.setId(profileEntity.getId());
+						profile.setName(profileEntity.getName());
+
+						profilesDto.add(profile);
+					}
+				}
+				providerUserDto.setProfiles(profilesDto);
+
+				users.add(providerUserDto);
+			}
+		}
+
+		return users;
 	}
 
 }
