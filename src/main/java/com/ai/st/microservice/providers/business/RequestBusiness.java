@@ -315,4 +315,25 @@ public class RequestBusiness {
 		return requestDto;
 	}
 
+	public RequestDto updateRequestState(Long requestId, Long requestStateId) throws BusinessException {
+
+		// verify if request exists
+		RequestEntity requestEntity = requestService.getRequestById(requestId);
+		if (!(requestEntity instanceof RequestEntity)) {
+			throw new BusinessException("La solicitud no existe");
+		}
+
+		// verify if status exists
+		RequestStateEntity requestState = requestStateService.getRequestStateById(requestStateId);
+		if (!(requestState instanceof RequestStateEntity)) {
+			throw new BusinessException("El estado no existe.");
+		}
+
+		requestEntity.setRequestState(requestState);
+		requestEntity = requestService.updateRequest(requestEntity);
+
+		RequestDto requestDto = this.getRequestById(requestId);
+		return requestDto;
+	}
+
 }

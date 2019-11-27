@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ai.st.microservice.providers.business.RequestBusiness;
+import com.ai.st.microservice.providers.business.RequestStateBusiness;
 import com.ai.st.microservice.providers.dto.CreateRequestDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
@@ -159,8 +160,9 @@ public class RequestV1Controller {
 	}
 
 	@RequestMapping(value = "/{requestId}/supplies/{supplyRequestedId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Get request by id")
-	@ApiResponses(value = { @ApiResponse(code = 201, message = "Get request by id", response = RequestDto.class),
+	@ApiOperation(value = "Update supply requested by request")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Update supply requested by request", response = RequestDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
 	public ResponseEntity<Object> updateSupplyRequested(@PathVariable Long requestId,
@@ -191,6 +193,35 @@ public class RequestV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error RequestV1Controller@updateSupplyRequested#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{requestId}/delivered", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update state from request to delivered")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Update state from request to delivered", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> updateRequestStateToDelivered(@PathVariable Long requestId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.updateRequestState(requestId, RequestStateBusiness.REQUEST_STATE_DELIVERED);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@updateRequestStateToDelivered#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@updateRequestStateToDelivered#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}

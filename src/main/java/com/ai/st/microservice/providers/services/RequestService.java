@@ -32,4 +32,10 @@ public class RequestService implements IRequestService {
 		return requestRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	@Transactional
+	public RequestEntity updateRequest(RequestEntity requestEntity) {
+		return requestRepository.save(requestEntity);
+	}
+
 }

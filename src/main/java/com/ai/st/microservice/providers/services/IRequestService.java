@@ -12,4 +12,6 @@ public interface IRequestService {
 
 	public RequestEntity getRequestById(Long id);
 
+	public RequestEntity updateRequest(RequestEntity requestEntity);
+
 }
