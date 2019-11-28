@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.dto.EmitterDto;
+import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
@@ -17,6 +18,7 @@ import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
+import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
@@ -232,6 +234,15 @@ public class ProviderBusiness {
 				typeSupplyDto.setId(tsE.getId());
 				typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
 				typeSupplyDto.setName(tsE.getName());
+
+				List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
+				for (ExtensionEntity extensionEntity : tsE.getExtensions()) {
+					ExtensionDto extensionDto = new ExtensionDto();
+					extensionDto.setId(extensionEntity.getId());
+					extensionDto.setName(extensionEntity.getName());
+					listExtensionsDto.add(extensionDto);
+				}
+				typeSupplyDto.setExtensions(listExtensionsDto);
 
 				ProviderProfileDto providerProfileDto = new ProviderProfileDto();
 				providerProfileDto.setDescription(tsE.getProviderProfile().getDescription());

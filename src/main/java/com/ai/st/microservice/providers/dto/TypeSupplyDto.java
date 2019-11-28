@@ -1,7 +1,9 @@
 package com.ai.st.microservice.providers.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,8 +34,10 @@ public class TypeSupplyDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Provider profile")
 	private ProviderProfileDto providerProfile;
 
-	public TypeSupplyDto() {
+	private List<ExtensionDto> extensions;
 
+	public TypeSupplyDto() {
+		this.extensions = new ArrayList<ExtensionDto>();
 	}
 
 	public Long getId() {
@@ -90,6 +94,14 @@ public class TypeSupplyDto implements Serializable {
 
 	public void setProviderProfile(ProviderProfileDto providerProfile) {
 		this.providerProfile = providerProfile;
+	}
+
+	public List<ExtensionDto> getExtensions() {
+		return extensions;
+	}
+
+	public void setExtensions(List<ExtensionDto> extensions) {
+		this.extensions = extensions;
 	}
 
 }

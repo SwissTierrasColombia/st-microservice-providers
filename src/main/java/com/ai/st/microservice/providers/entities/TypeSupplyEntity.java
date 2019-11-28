@@ -1,6 +1,8 @@
 package com.ai.st.microservice.providers.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,6 +46,9 @@ public class TypeSupplyEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_profile_id", referencedColumnName = "id", nullable = false)
 	private ProviderProfileEntity providerProfile;
+
+	@OneToMany(mappedBy = "typeSupply")
+	private List<ExtensionEntity> extensions = new ArrayList<ExtensionEntity>();
 
 	public TypeSupplyEntity() {
 
@@ -102,6 +108,14 @@ public class TypeSupplyEntity {
 
 	public void setProviderProfile(ProviderProfileEntity providerProfile) {
 		this.providerProfile = providerProfile;
+	}
+
+	public List<ExtensionEntity> getExtensions() {
+		return extensions;
+	}
+
+	public void setExtensions(List<ExtensionEntity> extensions) {
+		this.extensions = extensions;
 	}
 
 }
