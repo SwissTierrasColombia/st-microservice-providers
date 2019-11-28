@@ -143,7 +143,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerUserService.createProviderUser(user2);
 
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
-				typeSupply1.setName("Documentos Prediales");
+				typeSupply1.setName("Fichas Prediales");
 				typeSupply1.setIsMetadataRequired(false);
 				typeSupply1.setCreatedAt(new Date());
 				typeSupply1.setProvider(providerIgac);
@@ -166,7 +166,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extensionService.createExtension(extension3);
 
 				TypeSupplyEntity typeSupply2 = new TypeSupplyEntity();
-				typeSupply2.setName("Información Gráfica y alfanumérica SNC");
+				typeSupply2.setName("Datos catastrales en modelo de insumos");
 				typeSupply2.setIsMetadataRequired(false);
 				typeSupply2.setCreatedAt(new Date());
 				typeSupply2.setProvider(providerIgac);
@@ -177,19 +177,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension4.setName("xtf");
 				extension4.setTypeSupply(typeSupply2);
 				extensionService.createExtension(extension4);
-
-				TypeSupplyEntity typeSupply3 = new TypeSupplyEntity();
-				typeSupply3.setName("Información Gráfica y alfanumérica COBOL");
-				typeSupply3.setIsMetadataRequired(false);
-				typeSupply3.setCreatedAt(new Date());
-				typeSupply3.setProvider(providerIgac);
-				typeSupply3.setProviderProfile(profileCadastral);
-				typeSupply3 = typeSupplyService.createTypeSupply(typeSupply3);
-
-				ExtensionEntity extension5 = new ExtensionEntity();
-				extension5.setName("xtf");
-				extension5.setTypeSupply(typeSupply3);
-				extensionService.createExtension(extension5);
 
 				TypeSupplyEntity typeSupply4 = new TypeSupplyEntity();
 				typeSupply4.setName("Cartografía Básica Vectorial");
@@ -334,6 +321,32 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension21.setName("gpkg");
 				extension21.setTypeSupply(typeSupply11);
 				extensionService.createExtension(extension21);
+				
+				TypeSupplyEntity typeSupply13 = new TypeSupplyEntity();
+				typeSupply13.setName("POT-Documentos Plan de ordenamiento territorial");
+				typeSupply13.setIsMetadataRequired(false);
+				typeSupply13.setCreatedAt(new Date());
+				typeSupply13.setProvider(providerIgac);
+				typeSupply13.setProviderProfile(profileCadastral);
+				typeSupply13 = typeSupplyService.createTypeSupply(typeSupply13);
+				
+				ExtensionEntity extension23 = new ExtensionEntity();
+				extension23.setName("pdf");
+				extension23.setTypeSupply(typeSupply13);
+				extensionService.createExtension(extension23);
+				
+				TypeSupplyEntity typeSupply14 = new TypeSupplyEntity();
+				typeSupply14.setName("POT-Planos Plan de ordenamiento territorial");
+				typeSupply14.setIsMetadataRequired(false);
+				typeSupply14.setCreatedAt(new Date());
+				typeSupply14.setProvider(providerIgac);
+				typeSupply14.setProviderProfile(profileCadastral);
+				typeSupply14 = typeSupplyService.createTypeSupply(typeSupply14);
+				
+				ExtensionEntity extension24 = new ExtensionEntity();
+				extension24.setName("pdf");
+				extension24.setTypeSupply(typeSupply14);
+				extensionService.createExtension(extension24);
 
 				// provider UAECD
 
@@ -392,6 +405,19 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
 				providerProfileService.createProviderProfile(profileRegistry);
+				
+				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
+				typeSupply12.setName("Datos registrales en modelo de insumos");
+				typeSupply12.setIsMetadataRequired(false);
+				typeSupply12.setCreatedAt(new Date());
+				typeSupply12.setProvider(providerSNR);
+				typeSupply12.setProviderProfile(profileRegistry);
+				typeSupply12 = typeSupplyService.createTypeSupply(typeSupply12);
+
+				ExtensionEntity extension22 = new ExtensionEntity();
+				extension22.setName("xtf");
+				extension22.setTypeSupply(typeSupply12);
+				extensionService.createExtension(extension22);
 
 				// provider ANT
 
