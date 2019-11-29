@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.repositories.ProviderUserRepository;
 
@@ -25,6 +27,13 @@ public class ProviderUserService implements IProviderUserService {
 	@Override
 	public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode) {
 		return providerUserRepository.findByUserCode(userCode);
+	}
+
+	@Override
+	public ProviderUserEntity getProviderUserByUserCodeAndProfileAndProvider(Long userCode,
+			ProviderProfileEntity providerProfileEntity, ProviderEntity provider) {
+		return providerUserRepository.findByProviderProfileAndUserCodeAndProvider(providerProfileEntity, userCode,
+				provider);
 	}
 
 }

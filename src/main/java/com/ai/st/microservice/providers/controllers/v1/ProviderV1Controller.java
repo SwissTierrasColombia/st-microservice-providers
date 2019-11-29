@@ -207,7 +207,7 @@ public class ProviderV1Controller {
 	@RequestMapping(value = "/{providerId}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get users by provider")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Get users by provider", response = ProviderDto.class),
+			@ApiResponse(code = 200, message = "Get users by provider", response = ProviderUserDto.class, responseContainer = "List"),
 			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderUserDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody

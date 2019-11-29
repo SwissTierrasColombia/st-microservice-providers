@@ -28,7 +28,9 @@ import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
+import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
+import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestService;
 
 @Component
@@ -42,6 +44,12 @@ public class ProviderBusiness {
 
 	@Autowired
 	private IRequestService requestService;
+
+	@Autowired
+	private IProviderProfileService profileService;
+
+	@Autowired
+	private IProviderUserService providerUserService;
 
 	public List<ProviderDto> getProviders() throws BusinessException {
 
@@ -314,6 +322,43 @@ public class ProviderBusiness {
 		}
 
 		return users;
+	}
+
+	public List<ProviderUserDto> addUserToProvider(Long userCode, Long providerId, Long profileId)
+			throws BusinessException {
+
+		// verify provider does exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		// verify provider profile does exists
+		ProviderProfileEntity profileEntity = profileService.getProviderProfileById(profileId);
+		if (!(profileEntity instanceof ProviderProfileEntity)) {
+			throw new BusinessException("El perfil del proveedor no existe.");
+		}
+
+		// verify than profile belongs to provider
+		if (profileEntity.getProvider().getId() != providerEntity.getId()) {
+			throw new BusinessException("El perfil del proveedor no pertenece al proveedor de insumos.");
+		}
+
+		ProviderUserEntity existsUser = providerUserService.getProviderUserByUserCodeAndProfileAndProvider(userCode,
+				profileEntity, providerEntity);
+		if (existsUser instanceof ProviderUserEntity) {
+			throw new BusinessException("El usuario ya esta registrado en el proveedor con el perfil especificado.");
+		}
+
+		ProviderUserEntity providerUserEntity = new ProviderUserEntity();
+		providerUserEntity.setCreatedAt(new Date());
+		providerUserEntity.setProvider(providerEntity);
+		providerUserEntity.setProviderProfile(profileEntity);
+		providerUserEntity.setUserCode(userCode);
+
+		providerUserEntity = providerUserService.createProviderUser(providerUserEntity);
+
+		return this.getUsersByProvider(providerId);
 	}
 
 }

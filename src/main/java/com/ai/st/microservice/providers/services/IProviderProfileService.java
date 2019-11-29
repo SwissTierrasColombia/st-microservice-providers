@@ -6,4 +6,6 @@ public interface IProviderProfileService {
 
 	public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile);
 
+	public ProviderProfileEntity getProviderProfileById(Long id);
+
 }

@@ -20,4 +20,9 @@ public class ProviderProfileService implements IProviderProfileService {
 		return providerProfileRepository.save(providerProfile);
 	}
 
+	@Override
+	public ProviderProfileEntity getProviderProfileById(Long id) {
+		return providerProfileRepository.findById(id).orElse(null);
+	}
+
 }
