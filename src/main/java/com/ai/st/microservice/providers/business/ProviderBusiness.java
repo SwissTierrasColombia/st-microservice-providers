@@ -361,4 +361,26 @@ public class ProviderBusiness {
 		return this.getUsersByProvider(providerId);
 	}
 
+	public List<ProviderProfileDto> getProfilesByProvider(Long providerId) throws BusinessException {
+
+		List<ProviderProfileDto> listProvidersDto = new ArrayList<ProviderProfileDto>();
+
+		// verify provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		List<ProviderProfileEntity> listProvidersEntity = providerEntity.getProfiles();
+		for (ProviderProfileEntity profileEntity : listProvidersEntity) {
+			ProviderProfileDto profileDto = new ProviderProfileDto();
+			profileDto.setDescription(profileEntity.getDescription());
+			profileDto.setId(profileEntity.getId());
+			profileDto.setName(profileEntity.getName());
+			listProvidersDto.add(profileDto);
+		}
+
+		return listProvidersDto;
+	}
+
 }

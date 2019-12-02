@@ -21,6 +21,7 @@ import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
@@ -203,7 +204,7 @@ public class ProviderV1Controller {
 				: new ResponseEntity<>(listRequests, httpStatus);
 
 	}
-	
+
 	@RequestMapping(value = "/{providerId}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get users by provider")
 	@ApiResponses(value = {
@@ -235,6 +236,38 @@ public class ProviderV1Controller {
 		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
 				: new ResponseEntity<>(listUsers, httpStatus);
 
+	}
+
+	@RequestMapping(value = "/{providerId}/profiles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get profiles by provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get profiles by provider", response = ProviderProfileDto.class, responseContainer = "List"),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ErrorDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = ErrorDto.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getProfilesByProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		List<ProviderProfileDto> listProfiles = new ArrayList<ProviderProfileDto>();
+		Object responseDto = null;
+
+		try {
+
+			listProfiles = providerBusiness.getProfilesByProvider(providerId);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getProfilesByProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getProfilesByProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listProfiles, httpStatus);
 	}
 
 }
