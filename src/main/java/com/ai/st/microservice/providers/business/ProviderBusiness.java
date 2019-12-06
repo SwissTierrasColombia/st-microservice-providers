@@ -32,6 +32,7 @@ import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestService;
+import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
 public class ProviderBusiness {
@@ -47,9 +48,12 @@ public class ProviderBusiness {
 
 	@Autowired
 	private IProviderProfileService profileService;
-
+	
 	@Autowired
 	private IProviderUserService providerUserService;
+	
+	@Autowired
+	private ITypeSupplyService typeSupplyService;
 
 	public List<ProviderDto> getProviders() throws BusinessException {
 
@@ -381,6 +385,112 @@ public class ProviderBusiness {
 		}
 
 		return listProvidersDto;
+	}
+	
+	public ProviderProfileDto createProviderProfile(String name, String description, Long providerId)
+			throws BusinessException {
+
+		name = name.toUpperCase();
+
+		ProviderEntity providerEntity = providerService
+				.getProviderById(providerId);
+
+		// verify if the category exists
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("The provider does not exist.");
+		}
+		
+		// verify that there is no provider with the same name
+		ProviderProfileEntity providerProfileExistsEntity = profileService.getProviderProfileByName(name);
+		if (providerProfileExistsEntity instanceof ProviderProfileEntity) {
+			throw new BusinessException("The name of the provider profile is already registered.");
+		}
+		
+		ProviderProfileEntity providerProfileEntity = new ProviderProfileEntity();
+		providerProfileEntity.setName(name);
+		providerProfileEntity.setDescription(description);
+		providerProfileEntity.setProvider(providerEntity);
+		providerProfileEntity = profileService.createProviderProfile(providerProfileEntity);
+
+		ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+		providerProfileDto.setName(name);
+		providerProfileDto.setDescription(description);
+		providerProfileDto.setProvider(this.providerEntityParseDto(providerEntity));
+		
+		return providerProfileDto;
+	}
+	
+	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId, Long providerProfileId)
+			throws BusinessException {
+
+		name = name.toUpperCase();
+
+		ProviderEntity providerEntity = providerService
+				.getProviderById(providerId);
+		
+		ProviderProfileEntity providerProfileEntity = profileService
+				.getProviderProfileById(providerId);
+
+		// verify if the provider exists
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("The provider does not exist.");
+		}
+		
+		// verify if the provider profile exists
+		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+			throw new BusinessException("The provider profile does not exist.");
+		}
+		
+		// verify that there is no provider with the same name
+		TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
+		if (typeSupplyExistsEntity instanceof TypeSupplyEntity) {
+			throw new BusinessException("The name of the type supply is already registered.");
+		}
+		
+		TypeSupplyEntity typeSupplyEntity = new TypeSupplyEntity();
+		typeSupplyEntity.setName(name);
+		typeSupplyEntity.setDescription(description);
+		typeSupplyEntity.setIsMetadataRequired(metadataRequired);
+		typeSupplyEntity.setProvider(providerEntity);
+		typeSupplyEntity.setProviderProfile(providerProfileEntity);
+		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
+
+		TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
+		typeSupplyDto.setName(name);
+		typeSupplyDto.setDescription(description);
+		typeSupplyDto.setMetadataRequired(metadataRequired);
+		typeSupplyDto.setProvider(this.providerEntityParseDto(providerEntity));
+		typeSupplyDto.setProviderProfile(this.providerProfileEntityParseDto(providerProfileEntity));
+		
+		return typeSupplyDto;
+	}
+	
+	public ProviderDto providerEntityParseDto(ProviderEntity provider) {
+        ProviderDto dto = null;
+		if (provider instanceof ProviderEntity) {
+			dto = new ProviderDto();
+		    dto.setId(provider.getId());
+		    dto.setName(provider.getName());
+		    dto.setCreatedAt(provider.getCreatedAt());
+		    dto.setProviderCategory(new ProviderCategoryDto(provider.getProviderCategory().getId(),
+				    provider.getProviderCategory().getName()));
+		    dto.setTaxIdentificationNumber(provider.getTaxIdentificationNumber());
+		}
+		return dto;
+	}
+	
+	
+	
+	public ProviderProfileDto providerProfileEntityParseDto(ProviderProfileEntity providerProfileEntity) {
+	    ProviderProfileDto dto = null;
+		if (providerProfileEntity instanceof ProviderProfileEntity) {
+			dto = new ProviderProfileDto();
+		    dto.setId(providerProfileEntity.getId());
+		    dto.setName(providerProfileEntity.getName());
+		    dto.setDescription(providerProfileEntity.getDescription());
+		    dto.setProvider(this.providerEntityParseDto(providerProfileEntity.getProvider()));
+		}
+		return dto;
 	}
 
 }

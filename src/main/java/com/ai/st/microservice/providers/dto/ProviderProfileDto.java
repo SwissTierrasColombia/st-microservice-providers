@@ -2,6 +2,8 @@ package com.ai.st.microservice.providers.dto;
 
 import java.io.Serializable;
 
+import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,7 +27,7 @@ public class ProviderProfileDto implements Serializable {
 	public ProviderProfileDto() {
 
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

@@ -25,4 +25,9 @@ public class ProviderProfileService implements IProviderProfileService {
 		return providerProfileRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public ProviderProfileEntity getProviderProfileByName(String name) {
+		return providerProfileRepository.findByName(name);
+ 	}
+
 }

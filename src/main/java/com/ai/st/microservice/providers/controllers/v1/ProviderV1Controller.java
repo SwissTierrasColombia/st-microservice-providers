@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
+import com.ai.st.microservice.providers.dto.CreateProviderProfileDto;
+import com.ai.st.microservice.providers.dto.CreateTypeSupplyDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
@@ -268,6 +270,100 @@ public class ProviderV1Controller {
 
 		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
 				: new ResponseEntity<>(listProfiles, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/profiles", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create provider profile")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Create provider profile", response = ProviderProfileDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<ProviderProfileDto> createProviderProfile(@PathVariable Long providerId,
+			@RequestBody CreateProviderProfileDto createProviderProfileDto) {
+
+		HttpStatus httpStatus = null;
+		ProviderProfileDto responseProviderProfileDto = null;
+
+		try {
+
+			// validation input data
+			if (createProviderProfileDto.getName().isEmpty()) {
+				throw new InputValidationException("The provider profile name is required.");
+			}
+			if (createProviderProfileDto.getDescription().isEmpty()) {
+				throw new InputValidationException("The provider profile description is required.");
+			}
+			if (providerId == null) {
+				throw new InputValidationException("The provider is required.");
+			}
+			createProviderProfileDto.setProviderId(providerId);
+
+			responseProviderProfileDto = providerBusiness.createProviderProfile(createProviderProfileDto.getName(),
+					createProviderProfileDto.getDescription(), createProviderProfileDto.getProviderId());
+
+			httpStatus = HttpStatus.CREATED;
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@createProviderProfile#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@createProviderProfile#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@createProviderProfile#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseProviderProfileDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/profiles/{providerProfileId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create type supply")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<TypeSupplyDto> createTypeSupply(@PathVariable Long providerId,
+			@PathVariable Long providerProfileId, @RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
+
+		HttpStatus httpStatus = null;
+		TypeSupplyDto responseTypeSupplyDto = null;
+
+		try {
+
+			// validation input data
+			if (createTypeSupplyDto.getName().isEmpty()) {
+				throw new InputValidationException("The provider profile name is required.");
+			}
+			if (createTypeSupplyDto.getDescription().isEmpty()) {
+				throw new InputValidationException("The provider profile description is required.");
+			}
+			if (providerId == null) {
+				throw new InputValidationException("The provider is required.");
+			}
+			if (providerProfileId == null) {
+				throw new InputValidationException("The provider profile is required.");
+			}
+
+			createTypeSupplyDto.setProviderId(providerId);
+			createTypeSupplyDto.setProviderProfileId(providerProfileId);
+
+			responseTypeSupplyDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
+					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(),
+					createTypeSupplyDto.getProviderId(), createTypeSupplyDto.getProviderProfileId());
+
+			httpStatus = HttpStatus.CREATED;
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@createTypeSupply#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@createTypeSupply#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@createTypeSupply#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseTypeSupplyDto, httpStatus);
 	}
 
 }

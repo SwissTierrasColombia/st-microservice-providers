@@ -2,6 +2,8 @@ package com.ai.st.microservice.providers.dto;
 
 import java.util.Date;
 
+import com.ai.st.microservice.providers.entities.ProviderEntity;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

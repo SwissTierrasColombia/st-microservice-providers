@@ -25,4 +25,9 @@ public class TypeSupplyService implements ITypeSupplyService {
 		return typeSupplyRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public TypeSupplyEntity getTypeSupplyByName(String name) {
+		return typeSupplyRepository.findByName(name);
+	}
+
 }
