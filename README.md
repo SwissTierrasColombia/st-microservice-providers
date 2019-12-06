@@ -8,9 +8,11 @@ Microservice that allows to characterize the types of inputs.
 $ mvn spring-boot:run
 ```
 
-## Configuration
+## Configuration 
 
-Modify the database connection in the st-microservice-providers/src/main/resources/**application.yml** file
+### Database connection
+
+You must create a database in PostgreSQL with a **scheme** called "**providers**" and then configure the connection data in the st-microservice-providers/src/main/resources/**application.yml** file
 
 ```yml
 spring:
