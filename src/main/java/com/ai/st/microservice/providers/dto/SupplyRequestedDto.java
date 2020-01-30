@@ -29,6 +29,9 @@ public class SupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Is Delivered?")
 	private Boolean delivered;
 
+	@ApiModelProperty(required = true, notes = "Supply Requested State")
+	private SupplyRequestedStateDto state;
+
 	@ApiModelProperty(required = true, notes = "Date delivered")
 	private Date deliveredAt;
 
@@ -101,6 +104,14 @@ public class SupplyRequestedDto implements Serializable {
 
 	public void setJustification(String justification) {
 		this.justification = justification;
+	}
+
+	public SupplyRequestedStateDto getState() {
+		return state;
+	}
+
+	public void setState(SupplyRequestedStateDto state) {
+		this.state = state;
 	}
 
 }

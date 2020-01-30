@@ -16,6 +16,9 @@ public class UpdateSupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = false, notes = "Justification")
 	private String justification;
 
+	@ApiModelProperty(required = false, notes = "Supply Requested State ID")
+	private Long supplyRequestedStateId;
+
 	public UpdateSupplyRequestedDto() {
 
 	}
@@ -34,6 +37,14 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
 	public void setJustification(String justification) {
 		this.justification = justification;
+	}
+
+	public Long getSupplyRequestedStateId() {
+		return supplyRequestedStateId;
+	}
+
+	public void setSupplyRequestedStateId(Long supplyRequestedStateId) {
+		this.supplyRequestedStateId = supplyRequestedStateId;
 	}
 
 }

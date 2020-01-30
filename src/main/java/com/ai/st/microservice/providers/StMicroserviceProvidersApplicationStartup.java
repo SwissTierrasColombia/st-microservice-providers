@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.business.RequestStateBusiness;
+import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
@@ -24,6 +26,7 @@ import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
+import com.ai.st.microservice.providers.services.ISupplyRequestedStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
@@ -52,12 +55,16 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	@Autowired
 	private IProviderUserService providerUserService;
 
+	@Autowired
+	private ISupplyRequestedStateService supplyRequestedStateService;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		log.info("ST - Loading Domains ... ");
 		this.initProvidersCategories();
 		this.initProviders();
 		this.initRequestsStates();
+		this.initSupplyRequestedStates();
 	}
 
 	public void initProvidersCategories() {
@@ -321,7 +328,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension21.setName("gpkg");
 				extension21.setTypeSupply(typeSupply11);
 				extensionService.createExtension(extension21);
-				
+
 				TypeSupplyEntity typeSupply13 = new TypeSupplyEntity();
 				typeSupply13.setName("POT-Documentos Plan de ordenamiento territorial");
 				typeSupply13.setIsMetadataRequired(false);
@@ -329,12 +336,12 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply13.setProvider(providerIgac);
 				typeSupply13.setProviderProfile(profileCadastral);
 				typeSupply13 = typeSupplyService.createTypeSupply(typeSupply13);
-				
+
 				ExtensionEntity extension23 = new ExtensionEntity();
 				extension23.setName("pdf");
 				extension23.setTypeSupply(typeSupply13);
 				extensionService.createExtension(extension23);
-				
+
 				TypeSupplyEntity typeSupply14 = new TypeSupplyEntity();
 				typeSupply14.setName("POT-Planos Plan de ordenamiento territorial");
 				typeSupply14.setIsMetadataRequired(false);
@@ -342,7 +349,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply14.setProvider(providerIgac);
 				typeSupply14.setProviderProfile(profileCadastral);
 				typeSupply14 = typeSupplyService.createTypeSupply(typeSupply14);
-				
+
 				ExtensionEntity extension24 = new ExtensionEntity();
 				extension24.setName("pdf");
 				extension24.setTypeSupply(typeSupply14);
@@ -405,7 +412,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
 				providerProfileService.createProviderProfile(profileRegistry);
-				
+
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
 				typeSupply12.setIsMetadataRequired(false);
@@ -466,6 +473,45 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				log.info("The domains 'requests states' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'requests states' domains");
+			}
+
+		}
+	}
+
+	public void initSupplyRequestedStates() {
+		Long countStates = supplyRequestedStateService.getCount();
+		if (countStates == 0) {
+
+			try {
+
+				SupplyRequestedStateEntity stateAccepted = new SupplyRequestedStateEntity();
+				stateAccepted.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED);
+				stateAccepted.setName("ACEPTADO");
+				supplyRequestedStateService.createState(stateAccepted);
+
+				SupplyRequestedStateEntity stateRejected = new SupplyRequestedStateEntity();
+				stateRejected.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_REJECTED);
+				stateRejected.setName("RECHAZADO");
+				supplyRequestedStateService.createState(stateRejected);
+
+				SupplyRequestedStateEntity stateValidating = new SupplyRequestedStateEntity();
+				stateValidating.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_VALIDATING);
+				stateValidating.setName("VALIDANDO");
+				supplyRequestedStateService.createState(stateValidating);
+
+				SupplyRequestedStateEntity statePending = new SupplyRequestedStateEntity();
+				statePending.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING);
+				statePending.setName("PENDIENTE");
+				supplyRequestedStateService.createState(statePending);
+
+				SupplyRequestedStateEntity stateUndelivered = new SupplyRequestedStateEntity();
+				stateUndelivered.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED);
+				stateUndelivered.setName("NO ENTREGADO");
+				supplyRequestedStateService.createState(stateUndelivered);
+
+				log.info("The domains 'supply requested states' have been loaded!");
+			} catch (Exception e) {
+				log.error("Failed to load 'supply requested states' domains");
 			}
 
 		}

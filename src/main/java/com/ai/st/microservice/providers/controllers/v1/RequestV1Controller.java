@@ -174,12 +174,12 @@ public class RequestV1Controller {
 		try {
 
 			// validation delivered
-			Boolean delivered = updateSupply.getDelivered();
-			if (delivered == null) {
-				throw new InputValidationException("Se debe especificar si el insumo fue entregado.");
+			Long stateId = updateSupply.getSupplyRequestedStateId();
+			if (stateId == null) {
+				throw new InputValidationException("El estado del insumo cargado es requerido.");
 			}
 
-			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, delivered,
+			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, stateId,
 					updateSupply.getJustification());
 			httpStatus = HttpStatus.OK;
 

@@ -37,6 +37,10 @@ public class SupplyRequestedEntity {
 	@Column(name = "delivered", nullable = false)
 	private Boolean delivered;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "supply_requested_state_id", referencedColumnName = "id", nullable = false)
+	private SupplyRequestedStateEntity state;
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -114,6 +118,14 @@ public class SupplyRequestedEntity {
 
 	public void setJustification(String justification) {
 		this.justification = justification;
+	}
+
+	public SupplyRequestedStateEntity getState() {
+		return state;
+	}
+
+	public void setState(SupplyRequestedStateEntity state) {
+		this.state = state;
 	}
 
 }
