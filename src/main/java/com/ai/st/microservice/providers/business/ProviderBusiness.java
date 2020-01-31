@@ -16,6 +16,7 @@ import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
+import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
@@ -25,6 +26,7 @@ import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
+import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
@@ -237,6 +239,10 @@ public class ProviderBusiness {
 				supplyRequested.setDelivered(supplyRE.getDelivered());
 				supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
 				supplyRequested.setJustification(supplyRE.getJustification());
+				
+				SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
+				supplyRequested.setState(
+						new SupplyRequestedStateDto(stateSupplyRequested.getId(), stateSupplyRequested.getName()));
 
 				TypeSupplyEntity tsE = supplyRE.getTypeSupply();
 
@@ -255,6 +261,8 @@ public class ProviderBusiness {
 					listExtensionsDto.add(extensionDto);
 				}
 				typeSupplyDto.setExtensions(listExtensionsDto);
+				
+				
 
 				ProviderProfileDto providerProfileDto = new ProviderProfileDto();
 				providerProfileDto.setDescription(tsE.getProviderProfile().getDescription());
