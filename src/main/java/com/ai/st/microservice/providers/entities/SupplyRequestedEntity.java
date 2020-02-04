@@ -30,6 +30,9 @@ public class SupplyRequestedEntity {
 	@JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
 	private TypeSupplyEntity typeSupply;
 
+	@Column(name = "model_version", nullable = true, length = 20)
+	private String modelVersion;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
 	private RequestEntity request;
@@ -126,6 +129,14 @@ public class SupplyRequestedEntity {
 
 	public void setState(SupplyRequestedStateEntity state) {
 		this.state = state;
+	}
+
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
 	}
 
 }

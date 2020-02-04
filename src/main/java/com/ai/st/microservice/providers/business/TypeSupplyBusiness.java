@@ -35,6 +35,7 @@ public class TypeSupplyBusiness {
 			typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
 			typeSupplyDto.setId(typeSupplyEntity.getId());
 			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
+			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
 			typeSupplyDto.setName(typeSupplyEntity.getName());
 
 			ProviderEntity providerEntity = typeSupplyEntity.getProvider();
@@ -54,7 +55,7 @@ public class TypeSupplyBusiness {
 			providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
 			providerProfileDto.setName(typeSupplyEntity.getProviderProfile().getName());
 			typeSupplyDto.setProviderProfile(providerProfileDto);
-			
+
 			List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
 			for (ExtensionEntity extensionEntity : typeSupplyEntity.getExtensions()) {
 				ExtensionDto extensionDto = new ExtensionDto();

@@ -37,6 +37,9 @@ public class SupplyRequestedDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Justification")
 	private String justification;
+	
+	@ApiModelProperty(required = true, notes = "Model version")
+	private String modelVersion;
 
 	public SupplyRequestedDto() {
 
@@ -112,6 +115,14 @@ public class SupplyRequestedDto implements Serializable {
 
 	public void setState(SupplyRequestedStateDto state) {
 		this.state = state;
+	}
+
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
 	}
 
 }

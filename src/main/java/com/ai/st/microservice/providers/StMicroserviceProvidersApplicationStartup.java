@@ -152,6 +152,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Fichas Prediales");
 				typeSupply1.setIsMetadataRequired(false);
+				typeSupply1.setIsModelRequired(false);
 				typeSupply1.setCreatedAt(new Date());
 				typeSupply1.setProvider(providerIgac);
 				typeSupply1.setProviderProfile(profileCadastral);
@@ -175,6 +176,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply2 = new TypeSupplyEntity();
 				typeSupply2.setName("Datos catastrales en modelo de insumos");
 				typeSupply2.setIsMetadataRequired(false);
+				typeSupply2.setIsModelRequired(true);
 				typeSupply2.setCreatedAt(new Date());
 				typeSupply2.setProvider(providerIgac);
 				typeSupply2.setProviderProfile(profileCadastral);
@@ -188,6 +190,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply4 = new TypeSupplyEntity();
 				typeSupply4.setName("Cartografía Básica Vectorial");
 				typeSupply4.setIsMetadataRequired(false);
+				typeSupply4.setIsModelRequired(false);
 				typeSupply4.setCreatedAt(new Date());
 				typeSupply4.setProvider(providerIgac);
 				typeSupply4.setProviderProfile(profileCartographic);
@@ -206,6 +209,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply5 = new TypeSupplyEntity();
 				typeSupply5.setName("Ortoimagen");
 				typeSupply5.setIsMetadataRequired(false);
+				typeSupply5.setIsModelRequired(false);
 				typeSupply5.setCreatedAt(new Date());
 				typeSupply5.setProvider(providerIgac);
 				typeSupply5.setProviderProfile(profileCartographic);
@@ -224,6 +228,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply6 = new TypeSupplyEntity();
 				typeSupply6.setName("Límites y Fronteras");
 				typeSupply6.setIsMetadataRequired(false);
+				typeSupply6.setIsModelRequired(false);
 				typeSupply6.setCreatedAt(new Date());
 				typeSupply6.setProvider(providerIgac);
 				typeSupply6.setProviderProfile(profileCartographic);
@@ -242,6 +247,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply7 = new TypeSupplyEntity();
 				typeSupply7.setName("Modelo Digital de Elevación");
 				typeSupply7.setIsMetadataRequired(false);
+				typeSupply7.setIsModelRequired(false);
 				typeSupply7.setCreatedAt(new Date());
 				typeSupply7.setProvider(providerIgac);
 				typeSupply7.setProviderProfile(profileCartographic);
@@ -260,6 +266,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply8 = new TypeSupplyEntity();
 				typeSupply8.setName("Datos Geodésicos");
 				typeSupply8.setIsMetadataRequired(false);
+				typeSupply8.setIsModelRequired(false);
 				typeSupply8.setCreatedAt(new Date());
 				typeSupply8.setProvider(providerIgac);
 				typeSupply8.setProviderProfile(profileCartographic);
@@ -278,6 +285,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply9 = new TypeSupplyEntity();
 				typeSupply9.setName("Áreas Homogéneas de Tierra");
 				typeSupply9.setIsMetadataRequired(false);
+				typeSupply9.setIsModelRequired(false);
 				typeSupply9.setCreatedAt(new Date());
 				typeSupply9.setProvider(providerIgac);
 				typeSupply9.setProviderProfile(profileAgrological);
@@ -296,6 +304,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply10 = new TypeSupplyEntity();
 				typeSupply10.setName("Uso y Cobertura de la Tierra");
 				typeSupply10.setIsMetadataRequired(false);
+				typeSupply10.setIsModelRequired(false);
 				typeSupply10.setCreatedAt(new Date());
 				typeSupply10.setProvider(providerIgac);
 				typeSupply10.setProviderProfile(profileAgrological);
@@ -314,6 +323,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply11 = new TypeSupplyEntity();
 				typeSupply11.setName("Disponibilidad de Agua");
 				typeSupply11.setIsMetadataRequired(false);
+				typeSupply11.setIsModelRequired(false);
 				typeSupply11.setCreatedAt(new Date());
 				typeSupply11.setProvider(providerIgac);
 				typeSupply11.setProviderProfile(profileAgrological);
@@ -332,6 +342,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply13 = new TypeSupplyEntity();
 				typeSupply13.setName("POT-Documentos Plan de ordenamiento territorial");
 				typeSupply13.setIsMetadataRequired(false);
+				typeSupply13.setIsModelRequired(false);
 				typeSupply13.setCreatedAt(new Date());
 				typeSupply13.setProvider(providerIgac);
 				typeSupply13.setProviderProfile(profileCadastral);
@@ -345,6 +356,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply14 = new TypeSupplyEntity();
 				typeSupply14.setName("POT-Planos Plan de ordenamiento territorial");
 				typeSupply14.setIsMetadataRequired(false);
+				typeSupply14.setIsModelRequired(false);
 				typeSupply14.setCreatedAt(new Date());
 				typeSupply14.setProvider(providerIgac);
 				typeSupply14.setProviderProfile(profileCadastral);
@@ -416,6 +428,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
 				typeSupply12.setIsMetadataRequired(false);
+				typeSupply12.setIsModelRequired(true);
 				typeSupply12.setCreatedAt(new Date());
 				typeSupply12.setProvider(providerSNR);
 				typeSupply12.setProviderProfile(profileRegistry);

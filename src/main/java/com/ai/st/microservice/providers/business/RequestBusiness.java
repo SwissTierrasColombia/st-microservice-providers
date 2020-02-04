@@ -93,6 +93,13 @@ public class RequestBusiness {
 				suppliesId.add(typeSupplyDto.getTypeSupplyId());
 			}
 
+			// verify if the supply required version model
+			if (typeSupplyEntity.getIsModelRequired()) {
+				if (typeSupplyDto.getModelVersion() == null || typeSupplyDto.getModelVersion().isEmpty()) {
+					throw new BusinessException("El tipo de insumo requiere especificar la versión del modelo.");
+				}
+			}
+
 		}
 
 		// verify emitters
@@ -127,6 +134,9 @@ public class RequestBusiness {
 			supplyEntity.setDescription(typeSupplyDto.getObservation());
 			supplyEntity.setRequest(requestEntity);
 			supplyEntity.setTypeSupply(typeSupplyEntity);
+			if (typeSupplyEntity.getIsModelRequired()) {
+				supplyEntity.setModelVersion(typeSupplyDto.getModelVersion());
+			}
 			supplyEntity.setCreatedAt(new Date());
 			supplyEntity.setDelivered(false);
 			supplyEntity.setState(statePending);
@@ -267,6 +277,7 @@ public class RequestBusiness {
 			supplyRequested.setDelivered(supplyRE.getDelivered());
 			supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
 			supplyRequested.setJustification(supplyRE.getJustification());
+			supplyRequested.setModelVersion(supplyRE.getModelVersion());
 
 			SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
 			supplyRequested.setState(
@@ -279,6 +290,7 @@ public class RequestBusiness {
 			typeSupplyDto.setDescription(tsE.getDescription());
 			typeSupplyDto.setId(tsE.getId());
 			typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
+			typeSupplyDto.setModelRequired(tsE.getIsModelRequired());
 			typeSupplyDto.setName(tsE.getName());
 
 			List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
