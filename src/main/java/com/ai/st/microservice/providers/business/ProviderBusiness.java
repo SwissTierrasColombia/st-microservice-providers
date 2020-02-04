@@ -173,6 +173,7 @@ public class ProviderBusiness {
 			typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
 			typeSupplyDto.setId(typeSupplyEntity.getId());
 			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
+			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
 			typeSupplyDto.setName(typeSupplyEntity.getName());
 
 			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
