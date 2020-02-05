@@ -293,7 +293,7 @@ public class ProviderBusiness {
 		return listRequestsDto;
 	}
 
-	public List<ProviderUserDto> getUsersByProvider(Long providerId) throws BusinessException {
+	public List<ProviderUserDto> getUsersByProvider(Long providerId, List<Long> profiles) throws BusinessException {
 
 		List<ProviderUserDto> users = new ArrayList<ProviderUserDto>();
 
@@ -305,33 +305,44 @@ public class ProviderBusiness {
 
 		for (ProviderUserEntity providerUserEntity : providerEntity.getUsers()) {
 
-			Long userCode = providerUserEntity.getUserCode();
+			Long profileValid = (long) 1;
+			if (profiles != null && profiles.size() > 0) {
 
-			ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
-					.orElse(null);
-			if (providerFound == null) {
-
-				ProviderUserDto providerUserDto = new ProviderUserDto();
-				providerUserDto.setUserCode(userCode);
-
-				List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
-				for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
-					if (providerUserEntity2.getUserCode() == userCode) {
-
-						ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
-						ProviderProfileDto profile = new ProviderProfileDto();
-
-						profile.setDescription(profileEntity.getDescription());
-						profile.setId(profileEntity.getId());
-						profile.setName(profileEntity.getName());
-
-						profilesDto.add(profile);
-					}
-				}
-				providerUserDto.setProfiles(profilesDto);
-
-				users.add(providerUserDto);
+				profileValid = profiles.stream()
+						.filter(profileId -> profileId == providerUserEntity.getProviderProfile().getId()).findAny()
+						.orElse(null);
 			}
+
+			if (profileValid != null) {
+				Long userCode = providerUserEntity.getUserCode();
+
+				ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
+						.orElse(null);
+				if (providerFound == null) {
+
+					ProviderUserDto providerUserDto = new ProviderUserDto();
+					providerUserDto.setUserCode(userCode);
+
+					List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+					for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
+						if (providerUserEntity2.getUserCode() == userCode) {
+
+							ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
+							ProviderProfileDto profile = new ProviderProfileDto();
+
+							profile.setDescription(profileEntity.getDescription());
+							profile.setId(profileEntity.getId());
+							profile.setName(profileEntity.getName());
+
+							profilesDto.add(profile);
+						}
+					}
+					providerUserDto.setProfiles(profilesDto);
+
+					users.add(providerUserDto);
+				}
+			}
+
 		}
 
 		return users;
@@ -371,7 +382,7 @@ public class ProviderBusiness {
 
 		providerUserEntity = providerUserService.createProviderUser(providerUserEntity);
 
-		return this.getUsersByProvider(providerId);
+		return this.getUsersByProvider(providerId, null);
 	}
 
 	public List<ProviderProfileDto> getProfilesByProvider(Long providerId) throws BusinessException {

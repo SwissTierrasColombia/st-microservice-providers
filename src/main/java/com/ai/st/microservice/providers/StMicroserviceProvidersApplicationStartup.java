@@ -149,6 +149,13 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				user2.setUserCode((long) 5);
 				providerUserService.createProviderUser(user2);
 
+				ProviderUserEntity user3 = new ProviderUserEntity();
+				user3.setCreatedAt(new Date());
+				user3.setProvider(providerIgac);
+				user3.setProviderProfile(profileCadastral);
+				user3.setUserCode((long) 7);
+				providerUserService.createProviderUser(user3);
+
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Fichas Prediales");
 				typeSupply1.setIsMetadataRequired(false);
@@ -423,7 +430,14 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				ProviderProfileEntity profileRegistry = new ProviderProfileEntity();
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
-				providerProfileService.createProviderProfile(profileRegistry);
+				profileRegistry = providerProfileService.createProviderProfile(profileRegistry);
+
+				ProviderUserEntity user4 = new ProviderUserEntity();
+				user4.setCreatedAt(new Date());
+				user4.setProvider(providerSNR);
+				user4.setProviderProfile(profileRegistry);
+				user4.setUserCode((long) 4);
+				providerUserService.createProviderUser(user4);
 
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
