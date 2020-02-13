@@ -244,6 +244,22 @@ public class RequestBusiness {
 		return requestDto;
 	}
 
+	public List<RequestDto> getRequestByEmmiters(Long emmiterCode, String emmiterType) throws BusinessException {
+
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+
+		List<RequestEntity> listRequestsEntity = requestService.getRequestsByEmmiter(emmiterCode, emmiterType);
+
+		if (listRequestsEntity.size() > 0) {
+			for (RequestEntity requestEntity : listRequestsEntity) {
+				RequestDto requestDto = entityParseDto(requestEntity);
+				listRequestsDto.add(requestDto);
+			}
+		}
+
+		return listRequestsDto;
+	}
+
 	public RequestDto entityParseDto(RequestEntity requestEntity) {
 
 		RequestDto requestDto = new RequestDto();
