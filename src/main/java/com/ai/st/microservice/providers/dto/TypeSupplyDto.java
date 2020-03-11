@@ -25,6 +25,9 @@ public class TypeSupplyDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Metadata is required ?")
 	private Boolean metadataRequired;
 
+	@ApiModelProperty(required = true, notes = "Model is required ?")
+	private Boolean modelRequired;
+
 	@ApiModelProperty(required = true, notes = "Type supply name")
 	private String name;
 
@@ -102,6 +105,14 @@ public class TypeSupplyDto implements Serializable {
 
 	public void setExtensions(List<ExtensionDto> extensions) {
 		this.extensions = extensions;
+	}
+
+	public Boolean getModelRequired() {
+		return modelRequired;
+	}
+
+	public void setModelRequired(Boolean modelRequired) {
+		this.modelRequired = modelRequired;
 	}
 
 }

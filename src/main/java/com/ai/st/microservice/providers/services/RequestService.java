@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.repositories.RequestRepository;
 
@@ -36,6 +37,17 @@ public class RequestService implements IRequestService {
 	@Transactional
 	public RequestEntity updateRequest(RequestEntity requestEntity) {
 		return requestRepository.save(requestEntity);
+	}
+
+	@Override
+	public List<RequestEntity> getRequestsByEmmiter(Long emmiterCode, String emmiterType) {
+		EmitterTypeEnum emmitterTypeEnum = null;
+		if (EmitterTypeEnum.ENTITY.name().equals(emmiterType)) {
+			emmitterTypeEnum = EmitterTypeEnum.ENTITY;
+		} else {
+			emmitterTypeEnum = EmitterTypeEnum.USER;
+		}
+		return requestRepository.getRequestsByEmmiterCodeAndEmmiterType(emmiterCode, emmitterTypeEnum);
 	}
 
 }

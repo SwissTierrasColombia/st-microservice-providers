@@ -14,4 +14,6 @@ public interface IRequestService {
 
 	public RequestEntity updateRequest(RequestEntity requestEntity);
 
+	public List<RequestEntity> getRequestsByEmmiter(Long emmiterCode, String emmiterType);
+
 }

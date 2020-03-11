@@ -35,6 +35,9 @@ public class TypeSupplyEntity {
 	@Column(name = "metadata_required", nullable = false)
 	private Boolean isMetadataRequired;
 
+	@Column(name = "model_required", nullable = false)
+	private Boolean isModelRequired;
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -116,6 +119,14 @@ public class TypeSupplyEntity {
 
 	public void setExtensions(List<ExtensionEntity> extensions) {
 		this.extensions = extensions;
+	}
+
+	public Boolean getIsModelRequired() {
+		return isModelRequired;
+	}
+
+	public void setIsModelRequired(Boolean isModelRequired) {
+		this.isModelRequired = isModelRequired;
 	}
 
 }

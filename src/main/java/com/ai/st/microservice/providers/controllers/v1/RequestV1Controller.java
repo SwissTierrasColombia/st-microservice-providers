@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -174,12 +175,12 @@ public class RequestV1Controller {
 		try {
 
 			// validation delivered
-			Boolean delivered = updateSupply.getDelivered();
-			if (delivered == null) {
-				throw new InputValidationException("Se debe especificar si el insumo fue entregado.");
+			Long stateId = updateSupply.getSupplyRequestedStateId();
+			if (stateId == null) {
+				throw new InputValidationException("El estado del insumo cargado es requerido.");
 			}
 
-			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, delivered,
+			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, stateId,
 					updateSupply.getJustification());
 			httpStatus = HttpStatus.OK;
 
@@ -222,6 +223,36 @@ public class RequestV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error RequestV1Controller@updateRequestStateToDelivered#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/emmiters", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by filters")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get requests", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestByEmmiters(
+			@RequestParam(name = "emmiter_code", required = true) Long emmiterCode,
+			@RequestParam(name = "emmiter_type", required = true) String emmiterType) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestByEmmiters(emmiterCode, emmiterType.toUpperCase());
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestByEmmiters#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestByEmmiters#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}

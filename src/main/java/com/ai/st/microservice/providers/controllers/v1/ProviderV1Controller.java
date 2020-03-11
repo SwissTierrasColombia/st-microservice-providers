@@ -214,7 +214,8 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderUserDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> getUsersByProvider(@PathVariable Long providerId) {
+	public ResponseEntity<Object> getUsersByProvider(@PathVariable Long providerId,
+			@RequestParam(name = "profiles", required = false) List<Long> profiles) {
 
 		HttpStatus httpStatus = null;
 		List<ProviderUserDto> listUsers = new ArrayList<ProviderUserDto>();
@@ -222,7 +223,7 @@ public class ProviderV1Controller {
 
 		try {
 
-			listUsers = providerBusiness.getUsersByProvider(providerId);
+			listUsers = providerBusiness.getUsersByProvider(providerId, profiles);
 			httpStatus = HttpStatus.OK;
 
 		} catch (BusinessException e) {
@@ -318,8 +319,7 @@ public class ProviderV1Controller {
 
 	@RequestMapping(value = "/{providerId}/profiles/{providerProfileId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create type supply")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
 	public ResponseEntity<TypeSupplyDto> createTypeSupply(@PathVariable Long providerId,
@@ -365,5 +365,4 @@ public class ProviderV1Controller {
 
 		return new ResponseEntity<>(responseTypeSupplyDto, httpStatus);
 	}
-
 }

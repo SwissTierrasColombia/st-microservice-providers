@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.business.RequestStateBusiness;
+import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
@@ -24,6 +26,7 @@ import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
+import com.ai.st.microservice.providers.services.ISupplyRequestedStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
@@ -52,12 +55,16 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	@Autowired
 	private IProviderUserService providerUserService;
 
+	@Autowired
+	private ISupplyRequestedStateService supplyRequestedStateService;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		log.info("ST - Loading Domains ... ");
 		this.initProvidersCategories();
 		this.initProviders();
 		this.initRequestsStates();
+		this.initSupplyRequestedStates();
 	}
 
 	public void initProvidersCategories() {
@@ -142,9 +149,17 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				user2.setUserCode((long) 5);
 				providerUserService.createProviderUser(user2);
 
+				ProviderUserEntity user3 = new ProviderUserEntity();
+				user3.setCreatedAt(new Date());
+				user3.setProvider(providerIgac);
+				user3.setProviderProfile(profileCadastral);
+				user3.setUserCode((long) 7);
+				providerUserService.createProviderUser(user3);
+
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Fichas Prediales");
 				typeSupply1.setIsMetadataRequired(false);
+				typeSupply1.setIsModelRequired(false);
 				typeSupply1.setCreatedAt(new Date());
 				typeSupply1.setProvider(providerIgac);
 				typeSupply1.setProviderProfile(profileCadastral);
@@ -168,6 +183,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply2 = new TypeSupplyEntity();
 				typeSupply2.setName("Datos catastrales en modelo de insumos");
 				typeSupply2.setIsMetadataRequired(false);
+				typeSupply2.setIsModelRequired(true);
 				typeSupply2.setCreatedAt(new Date());
 				typeSupply2.setProvider(providerIgac);
 				typeSupply2.setProviderProfile(profileCadastral);
@@ -181,6 +197,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply4 = new TypeSupplyEntity();
 				typeSupply4.setName("Cartografía Básica Vectorial");
 				typeSupply4.setIsMetadataRequired(false);
+				typeSupply4.setIsModelRequired(false);
 				typeSupply4.setCreatedAt(new Date());
 				typeSupply4.setProvider(providerIgac);
 				typeSupply4.setProviderProfile(profileCartographic);
@@ -199,6 +216,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply5 = new TypeSupplyEntity();
 				typeSupply5.setName("Ortoimagen");
 				typeSupply5.setIsMetadataRequired(false);
+				typeSupply5.setIsModelRequired(false);
 				typeSupply5.setCreatedAt(new Date());
 				typeSupply5.setProvider(providerIgac);
 				typeSupply5.setProviderProfile(profileCartographic);
@@ -217,6 +235,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply6 = new TypeSupplyEntity();
 				typeSupply6.setName("Límites y Fronteras");
 				typeSupply6.setIsMetadataRequired(false);
+				typeSupply6.setIsModelRequired(false);
 				typeSupply6.setCreatedAt(new Date());
 				typeSupply6.setProvider(providerIgac);
 				typeSupply6.setProviderProfile(profileCartographic);
@@ -235,6 +254,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply7 = new TypeSupplyEntity();
 				typeSupply7.setName("Modelo Digital de Elevación");
 				typeSupply7.setIsMetadataRequired(false);
+				typeSupply7.setIsModelRequired(false);
 				typeSupply7.setCreatedAt(new Date());
 				typeSupply7.setProvider(providerIgac);
 				typeSupply7.setProviderProfile(profileCartographic);
@@ -253,6 +273,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply8 = new TypeSupplyEntity();
 				typeSupply8.setName("Datos Geodésicos");
 				typeSupply8.setIsMetadataRequired(false);
+				typeSupply8.setIsModelRequired(false);
 				typeSupply8.setCreatedAt(new Date());
 				typeSupply8.setProvider(providerIgac);
 				typeSupply8.setProviderProfile(profileCartographic);
@@ -271,6 +292,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply9 = new TypeSupplyEntity();
 				typeSupply9.setName("Áreas Homogéneas de Tierra");
 				typeSupply9.setIsMetadataRequired(false);
+				typeSupply9.setIsModelRequired(false);
 				typeSupply9.setCreatedAt(new Date());
 				typeSupply9.setProvider(providerIgac);
 				typeSupply9.setProviderProfile(profileAgrological);
@@ -289,6 +311,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply10 = new TypeSupplyEntity();
 				typeSupply10.setName("Uso y Cobertura de la Tierra");
 				typeSupply10.setIsMetadataRequired(false);
+				typeSupply10.setIsModelRequired(false);
 				typeSupply10.setCreatedAt(new Date());
 				typeSupply10.setProvider(providerIgac);
 				typeSupply10.setProviderProfile(profileAgrological);
@@ -307,6 +330,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				TypeSupplyEntity typeSupply11 = new TypeSupplyEntity();
 				typeSupply11.setName("Disponibilidad de Agua");
 				typeSupply11.setIsMetadataRequired(false);
+				typeSupply11.setIsModelRequired(false);
 				typeSupply11.setCreatedAt(new Date());
 				typeSupply11.setProvider(providerIgac);
 				typeSupply11.setProviderProfile(profileAgrological);
@@ -321,28 +345,30 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension21.setName("gpkg");
 				extension21.setTypeSupply(typeSupply11);
 				extensionService.createExtension(extension21);
-				
+
 				TypeSupplyEntity typeSupply13 = new TypeSupplyEntity();
 				typeSupply13.setName("POT-Documentos Plan de ordenamiento territorial");
 				typeSupply13.setIsMetadataRequired(false);
+				typeSupply13.setIsModelRequired(false);
 				typeSupply13.setCreatedAt(new Date());
 				typeSupply13.setProvider(providerIgac);
 				typeSupply13.setProviderProfile(profileCadastral);
 				typeSupply13 = typeSupplyService.createTypeSupply(typeSupply13);
-				
+
 				ExtensionEntity extension23 = new ExtensionEntity();
 				extension23.setName("pdf");
 				extension23.setTypeSupply(typeSupply13);
 				extensionService.createExtension(extension23);
-				
+
 				TypeSupplyEntity typeSupply14 = new TypeSupplyEntity();
 				typeSupply14.setName("POT-Planos Plan de ordenamiento territorial");
 				typeSupply14.setIsMetadataRequired(false);
+				typeSupply14.setIsModelRequired(false);
 				typeSupply14.setCreatedAt(new Date());
 				typeSupply14.setProvider(providerIgac);
 				typeSupply14.setProviderProfile(profileCadastral);
 				typeSupply14 = typeSupplyService.createTypeSupply(typeSupply14);
-				
+
 				ExtensionEntity extension24 = new ExtensionEntity();
 				extension24.setName("pdf");
 				extension24.setTypeSupply(typeSupply14);
@@ -404,11 +430,19 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				ProviderProfileEntity profileRegistry = new ProviderProfileEntity();
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
-				providerProfileService.createProviderProfile(profileRegistry);
-				
+				profileRegistry = providerProfileService.createProviderProfile(profileRegistry);
+
+				ProviderUserEntity user4 = new ProviderUserEntity();
+				user4.setCreatedAt(new Date());
+				user4.setProvider(providerSNR);
+				user4.setProviderProfile(profileRegistry);
+				user4.setUserCode((long) 4);
+				providerUserService.createProviderUser(user4);
+
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
 				typeSupply12.setIsMetadataRequired(false);
+				typeSupply12.setIsModelRequired(true);
 				typeSupply12.setCreatedAt(new Date());
 				typeSupply12.setProvider(providerSNR);
 				typeSupply12.setProviderProfile(profileRegistry);
@@ -466,6 +500,45 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				log.info("The domains 'requests states' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'requests states' domains");
+			}
+
+		}
+	}
+
+	public void initSupplyRequestedStates() {
+		Long countStates = supplyRequestedStateService.getCount();
+		if (countStates == 0) {
+
+			try {
+
+				SupplyRequestedStateEntity stateAccepted = new SupplyRequestedStateEntity();
+				stateAccepted.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED);
+				stateAccepted.setName("ACEPTADO");
+				supplyRequestedStateService.createState(stateAccepted);
+
+				SupplyRequestedStateEntity stateRejected = new SupplyRequestedStateEntity();
+				stateRejected.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_REJECTED);
+				stateRejected.setName("RECHAZADO");
+				supplyRequestedStateService.createState(stateRejected);
+
+				SupplyRequestedStateEntity stateValidating = new SupplyRequestedStateEntity();
+				stateValidating.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_VALIDATING);
+				stateValidating.setName("VALIDANDO");
+				supplyRequestedStateService.createState(stateValidating);
+
+				SupplyRequestedStateEntity statePending = new SupplyRequestedStateEntity();
+				statePending.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING);
+				statePending.setName("PENDIENTE");
+				supplyRequestedStateService.createState(statePending);
+
+				SupplyRequestedStateEntity stateUndelivered = new SupplyRequestedStateEntity();
+				stateUndelivered.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED);
+				stateUndelivered.setName("NO ENTREGADO");
+				supplyRequestedStateService.createState(stateUndelivered);
+
+				log.info("The domains 'supply requested states' have been loaded!");
+			} catch (Exception e) {
+				log.error("Failed to load 'supply requested states' domains");
 			}
 
 		}

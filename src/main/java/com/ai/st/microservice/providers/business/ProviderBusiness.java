@@ -16,6 +16,7 @@ import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
+import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.EmitterEntity;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
@@ -25,6 +26,7 @@ import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
+import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
@@ -48,10 +50,10 @@ public class ProviderBusiness {
 
 	@Autowired
 	private IProviderProfileService profileService;
-	
+
 	@Autowired
 	private IProviderUserService providerUserService;
-	
+
 	@Autowired
 	private ITypeSupplyService typeSupplyService;
 
@@ -171,6 +173,7 @@ public class ProviderBusiness {
 			typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
 			typeSupplyDto.setId(typeSupplyEntity.getId());
 			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
+			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
 			typeSupplyDto.setName(typeSupplyEntity.getName());
 
 			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
@@ -237,6 +240,11 @@ public class ProviderBusiness {
 				supplyRequested.setDelivered(supplyRE.getDelivered());
 				supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
 				supplyRequested.setJustification(supplyRE.getJustification());
+				supplyRequested.setModelVersion(supplyRE.getModelVersion());
+
+				SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
+				supplyRequested.setState(
+						new SupplyRequestedStateDto(stateSupplyRequested.getId(), stateSupplyRequested.getName()));
 
 				TypeSupplyEntity tsE = supplyRE.getTypeSupply();
 
@@ -245,6 +253,7 @@ public class ProviderBusiness {
 				typeSupplyDto.setDescription(tsE.getDescription());
 				typeSupplyDto.setId(tsE.getId());
 				typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
+				typeSupplyDto.setModelRequired(tsE.getIsModelRequired());
 				typeSupplyDto.setName(tsE.getName());
 
 				List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
@@ -284,7 +293,7 @@ public class ProviderBusiness {
 		return listRequestsDto;
 	}
 
-	public List<ProviderUserDto> getUsersByProvider(Long providerId) throws BusinessException {
+	public List<ProviderUserDto> getUsersByProvider(Long providerId, List<Long> profiles) throws BusinessException {
 
 		List<ProviderUserDto> users = new ArrayList<ProviderUserDto>();
 
@@ -296,33 +305,44 @@ public class ProviderBusiness {
 
 		for (ProviderUserEntity providerUserEntity : providerEntity.getUsers()) {
 
-			Long userCode = providerUserEntity.getUserCode();
+			Long profileValid = (long) 1;
+			if (profiles != null && profiles.size() > 0) {
 
-			ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
-					.orElse(null);
-			if (providerFound == null) {
-
-				ProviderUserDto providerUserDto = new ProviderUserDto();
-				providerUserDto.setUserCode(userCode);
-
-				List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
-				for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
-					if (providerUserEntity2.getUserCode() == userCode) {
-
-						ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
-						ProviderProfileDto profile = new ProviderProfileDto();
-
-						profile.setDescription(profileEntity.getDescription());
-						profile.setId(profileEntity.getId());
-						profile.setName(profileEntity.getName());
-
-						profilesDto.add(profile);
-					}
-				}
-				providerUserDto.setProfiles(profilesDto);
-
-				users.add(providerUserDto);
+				profileValid = profiles.stream()
+						.filter(profileId -> profileId == providerUserEntity.getProviderProfile().getId()).findAny()
+						.orElse(null);
 			}
+
+			if (profileValid != null) {
+				Long userCode = providerUserEntity.getUserCode();
+
+				ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
+						.orElse(null);
+				if (providerFound == null) {
+
+					ProviderUserDto providerUserDto = new ProviderUserDto();
+					providerUserDto.setUserCode(userCode);
+
+					List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+					for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
+						if (providerUserEntity2.getUserCode() == userCode) {
+
+							ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
+							ProviderProfileDto profile = new ProviderProfileDto();
+
+							profile.setDescription(profileEntity.getDescription());
+							profile.setId(profileEntity.getId());
+							profile.setName(profileEntity.getName());
+
+							profilesDto.add(profile);
+						}
+					}
+					providerUserDto.setProfiles(profilesDto);
+
+					users.add(providerUserDto);
+				}
+			}
+
 		}
 
 		return users;
@@ -362,7 +382,7 @@ public class ProviderBusiness {
 
 		providerUserEntity = providerUserService.createProviderUser(providerUserEntity);
 
-		return this.getUsersByProvider(providerId);
+		return this.getUsersByProvider(providerId, null);
 	}
 
 	public List<ProviderProfileDto> getProfilesByProvider(Long providerId) throws BusinessException {
@@ -386,26 +406,25 @@ public class ProviderBusiness {
 
 		return listProvidersDto;
 	}
-	
+
 	public ProviderProfileDto createProviderProfile(String name, String description, Long providerId)
 			throws BusinessException {
 
 		name = name.toUpperCase();
 
-		ProviderEntity providerEntity = providerService
-				.getProviderById(providerId);
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
 
 		// verify if the category exists
 		if (!(providerEntity instanceof ProviderEntity)) {
 			throw new BusinessException("The provider does not exist.");
 		}
-		
+
 		// verify that there is no provider with the same name
 		ProviderProfileEntity providerProfileExistsEntity = profileService.getProviderProfileByName(name);
 		if (providerProfileExistsEntity instanceof ProviderProfileEntity) {
 			throw new BusinessException("The name of the provider profile is already registered.");
 		}
-		
+
 		ProviderProfileEntity providerProfileEntity = new ProviderProfileEntity();
 		providerProfileEntity.setName(name);
 		providerProfileEntity.setDescription(description);
@@ -416,37 +435,35 @@ public class ProviderBusiness {
 		providerProfileDto.setName(name);
 		providerProfileDto.setDescription(description);
 		providerProfileDto.setProvider(this.providerEntityParseDto(providerEntity));
-		
+
 		return providerProfileDto;
 	}
-	
-	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId, Long providerProfileId)
-			throws BusinessException {
+
+	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
+			Long providerProfileId) throws BusinessException {
 
 		name = name.toUpperCase();
 
-		ProviderEntity providerEntity = providerService
-				.getProviderById(providerId);
-		
-		ProviderProfileEntity providerProfileEntity = profileService
-				.getProviderProfileById(providerId);
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+
+		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerId);
 
 		// verify if the provider exists
 		if (!(providerEntity instanceof ProviderEntity)) {
 			throw new BusinessException("The provider does not exist.");
 		}
-		
+
 		// verify if the provider profile exists
 		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
 			throw new BusinessException("The provider profile does not exist.");
 		}
-		
+
 		// verify that there is no provider with the same name
 		TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
 		if (typeSupplyExistsEntity instanceof TypeSupplyEntity) {
 			throw new BusinessException("The name of the type supply is already registered.");
 		}
-		
+
 		TypeSupplyEntity typeSupplyEntity = new TypeSupplyEntity();
 		typeSupplyEntity.setName(name);
 		typeSupplyEntity.setDescription(description);
@@ -461,34 +478,32 @@ public class ProviderBusiness {
 		typeSupplyDto.setMetadataRequired(metadataRequired);
 		typeSupplyDto.setProvider(this.providerEntityParseDto(providerEntity));
 		typeSupplyDto.setProviderProfile(this.providerProfileEntityParseDto(providerProfileEntity));
-		
+
 		return typeSupplyDto;
 	}
-	
+
 	public ProviderDto providerEntityParseDto(ProviderEntity provider) {
-        ProviderDto dto = null;
+		ProviderDto dto = null;
 		if (provider instanceof ProviderEntity) {
 			dto = new ProviderDto();
-		    dto.setId(provider.getId());
-		    dto.setName(provider.getName());
-		    dto.setCreatedAt(provider.getCreatedAt());
-		    dto.setProviderCategory(new ProviderCategoryDto(provider.getProviderCategory().getId(),
-				    provider.getProviderCategory().getName()));
-		    dto.setTaxIdentificationNumber(provider.getTaxIdentificationNumber());
+			dto.setId(provider.getId());
+			dto.setName(provider.getName());
+			dto.setCreatedAt(provider.getCreatedAt());
+			dto.setProviderCategory(new ProviderCategoryDto(provider.getProviderCategory().getId(),
+					provider.getProviderCategory().getName()));
+			dto.setTaxIdentificationNumber(provider.getTaxIdentificationNumber());
 		}
 		return dto;
 	}
-	
-	
-	
+
 	public ProviderProfileDto providerProfileEntityParseDto(ProviderProfileEntity providerProfileEntity) {
-	    ProviderProfileDto dto = null;
+		ProviderProfileDto dto = null;
 		if (providerProfileEntity instanceof ProviderProfileEntity) {
 			dto = new ProviderProfileDto();
-		    dto.setId(providerProfileEntity.getId());
-		    dto.setName(providerProfileEntity.getName());
-		    dto.setDescription(providerProfileEntity.getDescription());
-		    dto.setProvider(this.providerEntityParseDto(providerProfileEntity.getProvider()));
+			dto.setId(providerProfileEntity.getId());
+			dto.setName(providerProfileEntity.getName());
+			dto.setDescription(providerProfileEntity.getDescription());
+			dto.setProvider(this.providerEntityParseDto(providerProfileEntity.getProvider()));
 		}
 		return dto;
 	}

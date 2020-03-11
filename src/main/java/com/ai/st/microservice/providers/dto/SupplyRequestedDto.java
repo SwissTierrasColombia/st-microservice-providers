@@ -29,11 +29,17 @@ public class SupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Is Delivered?")
 	private Boolean delivered;
 
+	@ApiModelProperty(required = true, notes = "Supply Requested State")
+	private SupplyRequestedStateDto state;
+
 	@ApiModelProperty(required = true, notes = "Date delivered")
 	private Date deliveredAt;
 
 	@ApiModelProperty(required = true, notes = "Justification")
 	private String justification;
+	
+	@ApiModelProperty(required = true, notes = "Model version")
+	private String modelVersion;
 
 	public SupplyRequestedDto() {
 
@@ -101,6 +107,22 @@ public class SupplyRequestedDto implements Serializable {
 
 	public void setJustification(String justification) {
 		this.justification = justification;
+	}
+
+	public SupplyRequestedStateDto getState() {
+		return state;
+	}
+
+	public void setState(SupplyRequestedStateDto state) {
+		this.state = state;
+	}
+
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
 	}
 
 }

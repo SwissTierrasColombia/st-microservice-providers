@@ -16,6 +16,9 @@ public class TypeSupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = false, notes = "Observation")
 	private String observation;
 
+	@ApiModelProperty(required = false, notes = "Model version")
+	private String modelVersion;
+
 	public TypeSupplyRequestedDto() {
 
 	}
@@ -34,6 +37,14 @@ public class TypeSupplyRequestedDto implements Serializable {
 
 	public void setObservation(String observation) {
 		this.observation = observation;
+	}
+
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
 	}
 
 }

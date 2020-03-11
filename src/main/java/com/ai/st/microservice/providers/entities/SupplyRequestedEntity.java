@@ -30,12 +30,19 @@ public class SupplyRequestedEntity {
 	@JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
 	private TypeSupplyEntity typeSupply;
 
+	@Column(name = "model_version", nullable = true, length = 20)
+	private String modelVersion;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
 	private RequestEntity request;
 
 	@Column(name = "delivered", nullable = false)
 	private Boolean delivered;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "supply_requested_state_id", referencedColumnName = "id", nullable = false)
+	private SupplyRequestedStateEntity state;
 
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -114,6 +121,22 @@ public class SupplyRequestedEntity {
 
 	public void setJustification(String justification) {
 		this.justification = justification;
+	}
+
+	public SupplyRequestedStateEntity getState() {
+		return state;
+	}
+
+	public void setState(SupplyRequestedStateEntity state) {
+		this.state = state;
+	}
+
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
 	}
 
 }
