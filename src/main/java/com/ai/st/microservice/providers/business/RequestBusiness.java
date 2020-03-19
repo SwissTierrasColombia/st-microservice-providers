@@ -206,8 +206,13 @@ public class RequestBusiness {
 
 		log.info("Updating request #" + requestId + " - " + supplyRequestedId + " - " + requestEntity.getSupplies().size());
 
+		for (SupplyRequestedEntity s: requestEntity.getSupplies()) {
+			log.info("ID ---->" + s.getId());
+		}
+
 		SupplyRequestedEntity supplyRequested = requestEntity.getSupplies().stream()
 				.filter(supply -> supply.getId() == supplyRequestedId).findAny().orElse(null);
+				
 		if (supplyRequested != null) {
 
 			supplyRequested.setState(stateRequestedSupply);
