@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ai.st.microservice.providers.dto.EmitterDto;
 import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
@@ -38,6 +41,8 @@ import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
 public class RequestBusiness {
+
+	private final Logger log = LoggerFactory.getLogger(ProviderBusiness.class);
 
 	@Autowired
 	private IProviderService providerService;
@@ -199,6 +204,8 @@ public class RequestBusiness {
 			throw new BusinessException("Se debe especificar porque no se entregó el insumo.");
 		}
 
+		log.info("Updating request #" + requestId + " - " + supplyRequestedId + " - " + requestEntity.getSupplies().size());
+
 		SupplyRequestedEntity supplyRequested = requestEntity.getSupplies().stream()
 				.filter(supply -> supply.getId() == supplyRequestedId).findAny().orElse(null);
 		if (supplyRequested != null) {
@@ -216,7 +223,7 @@ public class RequestBusiness {
 			supplyRequestedService.updateSupplyRequested(supplyRequested);
 
 		} else {
-			throw new BusinessException("La tipo de insumo no esta asociado con la solicitud.");
+			throw new BusinessException("El tipo de insumo no esta asociado con la solicitud.");
 		}
 
 		RequestDto requestDto = this.getRequestById(requestId);
