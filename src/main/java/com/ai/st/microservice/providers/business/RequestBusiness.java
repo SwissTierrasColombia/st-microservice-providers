@@ -206,14 +206,22 @@ public class RequestBusiness {
 
 		log.info("Updating request #" + requestId + " - " + supplyRequestedId + " - " + requestEntity.getSupplies().size());
 
-		for (SupplyRequestedEntity s: requestEntity.getSupplies()) {
-			log.info("ID ---->" + s.getId());
-		}
 
-		SupplyRequestedEntity supplyRequested = requestEntity.getSupplies().stream()
-				.filter(supply -> supply.getId() == supplyRequestedId).findAny().orElse(null);
+		SupplyRequestedEntity supplyRequested = null;
+		for (SupplyRequestedEntity s: requestEntity.getSupplies()) {
+
+			log.info("ID ---->" + s.getId() + " == " + supplyRequestedId);
+
+			if (s.getId() == supplyRequestedId) {
+				log.info("Encontrado ...");
+				supplyRequested = s;
+			}
+
+		}
 				
 		if (supplyRequested != null) {
+
+			log.info("ID ..... " + supplyRequested.getId());
 
 			supplyRequested.setState(stateRequestedSupply);
 
@@ -228,6 +236,7 @@ public class RequestBusiness {
 			supplyRequestedService.updateSupplyRequested(supplyRequested);
 
 		} else {
+			log.error("Error el tipo de insumo no esta asociado con la solicitud ... ");
 			throw new BusinessException("El tipo de insumo no esta asociado con la solicitud.");
 		}
 
