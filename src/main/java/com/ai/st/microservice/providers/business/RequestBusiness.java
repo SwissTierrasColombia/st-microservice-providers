@@ -88,7 +88,7 @@ public class RequestBusiness {
 			}
 
 			// verify if the type of input belongs to the entity
-			if (typeSupplyEntity.getProvider().getId() != providerEntity.getId()) {
+			if (!typeSupplyEntity.getProvider().getId().equals(providerEntity.getId())) {
 				throw new BusinessException("El tipo de insumo no pertenece al proveedor.");
 			}
 
@@ -199,37 +199,27 @@ public class RequestBusiness {
 			throw new BusinessException("El estado no existe.");
 		}
 
-		if (stateRequestedSupply.getId() == SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED
+		if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)
 				&& justification.isEmpty()) {
 			throw new BusinessException("Se debe especificar porque no se entregó el insumo.");
 		}
 
-		log.info("Updating request #" + requestId + " - " + supplyRequestedId + " - " + requestEntity.getSupplies().size());
-
-
 		SupplyRequestedEntity supplyRequested = null;
-		for (SupplyRequestedEntity s: requestEntity.getSupplies()) {
-
-			log.info("ID ---->" + s.getId() + " == " + supplyRequestedId);
-
-			if (s.getId() == supplyRequestedId) {
-				log.info("Encontrado ...");
+		for (SupplyRequestedEntity s : requestEntity.getSupplies()) {
+			if (s.getId().equals(supplyRequestedId)) {
 				supplyRequested = s;
 			}
-
 		}
-				
-		if (supplyRequested != null) {
 
-			log.info("ID ..... " + supplyRequested.getId());
+		if (supplyRequested != null) {
 
 			supplyRequested.setState(stateRequestedSupply);
 
-			if (stateRequestedSupply.getId() == SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED) {
+			if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
 				supplyRequested.setDeliveredAt(new Date());
 				supplyRequested.setJustification("");
 			} else if (stateRequestedSupply
-					.getId() == SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED) {
+					.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
 				supplyRequested.setJustification(justification);
 			}
 
