@@ -309,15 +309,15 @@ public class ProviderBusiness {
 			if (profiles != null && profiles.size() > 0) {
 
 				profileValid = profiles.stream()
-						.filter(profileId -> profileId == providerUserEntity.getProviderProfile().getId()).findAny()
-						.orElse(null);
+						.filter(profileId -> profileId.equals(providerUserEntity.getProviderProfile().getId()))
+						.findAny().orElse(null);
 			}
 
 			if (profileValid != null) {
 				Long userCode = providerUserEntity.getUserCode();
 
-				ProviderUserDto providerFound = users.stream().filter(user -> userCode == user.getUserCode()).findAny()
-						.orElse(null);
+				ProviderUserDto providerFound = users.stream().filter(user -> userCode.equals(user.getUserCode()))
+						.findAny().orElse(null);
 				if (providerFound == null) {
 
 					ProviderUserDto providerUserDto = new ProviderUserDto();
@@ -325,7 +325,7 @@ public class ProviderBusiness {
 
 					List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
 					for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
-						if (providerUserEntity2.getUserCode() == userCode) {
+						if (providerUserEntity2.getUserCode().equals(userCode)) {
 
 							ProviderProfileEntity profileEntity = providerUserEntity2.getProviderProfile();
 							ProviderProfileDto profile = new ProviderProfileDto();
@@ -364,7 +364,7 @@ public class ProviderBusiness {
 		}
 
 		// verify than profile belongs to provider
-		if (profileEntity.getProvider().getId() != providerEntity.getId()) {
+		if (!profileEntity.getProvider().getId().equals(providerEntity.getId())) {
 			throw new BusinessException("El perfil del proveedor no pertenece al proveedor de insumos.");
 		}
 
