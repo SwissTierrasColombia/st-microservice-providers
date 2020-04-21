@@ -309,18 +309,18 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extensionService.createExtension(extension17);
 				
 				ExtensionEntity extension28 = new ExtensionEntity();
-				extension17.setName("gdb");
-				extension17.setTypeSupply(typeSupply9);
+				extension28.setName("gdb");
+				extension28.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension28);
 				
 				ExtensionEntity extension29 = new ExtensionEntity();
-				extension17.setName("mdb");
-				extension17.setTypeSupply(typeSupply9);
+				extension29.setName("mdb");
+				extension29.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension29);
 				
 				ExtensionEntity extension30 = new ExtensionEntity();
-				extension17.setName("pdf");
-				extension17.setTypeSupply(typeSupply9);
+				extension30.setName("pdf");
+				extension30.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension30);
 
 				TypeSupplyEntity typeSupply10 = new TypeSupplyEntity();
