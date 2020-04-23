@@ -34,6 +34,9 @@ public class RequestEntity {
 	@Column(name = "observations", nullable = true, length = 255)
 	private String observations;
 
+	@Column(name = "package", nullable = false, length = 255)
+	private String packageLabel;
+
 	@Column(name = "municipality_code", nullable = false, length = 10)
 	private String municipalityCode;
 
@@ -129,6 +132,14 @@ public class RequestEntity {
 
 	public void setMunicipalityCode(String municipalityCode) {
 		this.municipalityCode = municipalityCode;
-	}	
-	
+	}
+
+	public String getPackageLabel() {
+		return packageLabel;
+	}
+
+	public void setPackageLabel(String packageLabel) {
+		this.packageLabel = packageLabel;
+	}
+
 }

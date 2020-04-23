@@ -62,7 +62,7 @@ public class RequestBusiness {
 	@Autowired
 	private ISupplyRequestedStateService supplyRequestedStateService;
 
-	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode,
+	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode, String packageLabel,
 			List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
 		// verify that the sea deadline greater than the current date
@@ -125,6 +125,7 @@ public class RequestBusiness {
 		requestEntity.setCreatedAt(new Date());
 		requestEntity.setDeadline(deadline);
 		requestEntity.setProvider(providerEntity);
+		requestEntity.setPackageLabel(packageLabel);
 		requestEntity.setRequestState(requestStateEntity);
 		requestEntity.setMunicipalityCode(municipalityCode);
 
@@ -218,8 +219,8 @@ public class RequestBusiness {
 			if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
 				supplyRequested.setDeliveredAt(new Date());
 				supplyRequested.setJustification("");
-			} else if (stateRequestedSupply
-					.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
+			} else if (stateRequestedSupply.getId()
+					.equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
 				supplyRequested.setJustification(justification);
 			}
 
@@ -279,6 +280,7 @@ public class RequestBusiness {
 		requestDto.setDeadline(requestEntity.getDeadline());
 		requestDto.setObservations(requestEntity.getObservations());
 		requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
+		requestDto.setPackageLabel(requestEntity.getPackageLabel());
 
 		ProviderEntity providerEntity = requestEntity.getProvider();
 

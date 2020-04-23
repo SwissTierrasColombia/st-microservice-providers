@@ -21,6 +21,9 @@ public class CreateRequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Municipality Code")
 	private String municipalityCode;
 
+	@ApiModelProperty(required = true, notes = "Package")
+	private String packageLabel;
+
 	@ApiModelProperty(required = true, notes = "Emitters")
 	private List<RequestEmitterDto> emitters;
 
@@ -70,6 +73,14 @@ public class CreateRequestDto implements Serializable {
 
 	public void setMunicipalityCode(String municipalityCode) {
 		this.municipalityCode = municipalityCode;
+	}
+
+	public String getPackageLabel() {
+		return packageLabel;
+	}
+
+	public void setPackageLabel(String packageLabel) {
+		this.packageLabel = packageLabel;
 	}
 
 }

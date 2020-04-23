@@ -25,6 +25,9 @@ public class RequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Observations")
 	private String observations;
 
+	@ApiModelProperty(required = true, notes = "Package")
+	private String packageLabel;
+
 	@ApiModelProperty(required = true, notes = "Provider")
 	private ProviderDto provider;
 
@@ -115,6 +118,14 @@ public class RequestDto implements Serializable {
 
 	public void setMunicipalityCode(String municipalityCode) {
 		this.municipalityCode = municipalityCode;
+	}
+
+	public String getPackageLabel() {
+		return packageLabel;
+	}
+
+	public void setPackageLabel(String packageLabel) {
+		this.packageLabel = packageLabel;
 	}
 
 }

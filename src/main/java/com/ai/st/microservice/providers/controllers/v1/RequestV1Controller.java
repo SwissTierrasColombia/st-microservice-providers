@@ -68,6 +68,12 @@ public class RequestV1Controller {
 				throw new InputValidationException("El código del municipio es requerido.");
 			}
 
+			// validation package
+			String packageLabel = createRequestDto.getPackageLabel();
+			if (packageLabel.isEmpty()) {
+				throw new InputValidationException("El código del paquete es requerido.");
+			}
+
 			// validation deadline
 			String deadlineString = createRequestDto.getDeadline();
 			Date deadline = null;
@@ -110,7 +116,8 @@ public class RequestV1Controller {
 						"La solicitud debe contener al menos un tipo de insumo a solicitar.");
 			}
 
-			responseDto = requestBusiness.createRequest(deadline, providerId, municipalityCode, emitters, supplies);
+			responseDto = requestBusiness.createRequest(deadline, providerId, municipalityCode, packageLabel, emitters,
+					supplies);
 
 			httpStatus = HttpStatus.CREATED;
 
