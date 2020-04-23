@@ -122,4 +122,57 @@ public class ProviderUserV1Controller {
 				: new ResponseEntity<>(listUsers, httpStatus);
 	}
 
+	@RequestMapping(value = "", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Remove user to provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Remove user to provider", response = ProviderUserDto.class, responseContainer = "List"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> removeUserToProvider(@RequestBody AddUserToProviderDto requestAddUser) {
+
+		HttpStatus httpStatus = null;
+		List<ProviderUserDto> listUsers = new ArrayList<ProviderUserDto>();
+		Object responseDto = null;
+
+		try {
+
+			// validation user code
+			Long userCode = requestAddUser.getUserCode();
+			if (userCode == null || userCode <= 0) {
+				throw new InputValidationException("El código de usuario es inválido.");
+			}
+
+			// validation provider id
+			Long providerId = requestAddUser.getProviderId();
+			if (providerId == null || providerId <= 0) {
+				throw new InputValidationException("El proveedor es inválido.");
+			}
+
+			// validation profile id
+			Long profileId = requestAddUser.getProfileId();
+			if (profileId == null || profileId <= 0) {
+				throw new InputValidationException("El perfil de proveedor es inválido.");
+			}
+
+			responseDto = providerBusiness.removeUserToProvider(userCode, providerId, profileId);
+			httpStatus = (responseDto == null) ? HttpStatus.UNPROCESSABLE_ENTITY : HttpStatus.OK;
+
+		} catch (InputValidationException e) {
+			log.error("Error ProviderUserV1Controller@removeUserToProvider#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ProviderUserV1Controller@removeUserToProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderUserV1Controller@removeUserToProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listUsers, httpStatus);
+	}
+
 }
