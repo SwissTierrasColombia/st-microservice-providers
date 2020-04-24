@@ -227,6 +227,7 @@ public class ProviderBusiness {
 			requestDto.setDeadline(requestEntity.getDeadline());
 			requestDto.setObservations(requestEntity.getObservations());
 			requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
+			requestDto.setPackageLabel(requestEntity.getPackageLabel());
 
 			ProviderDto providerDto = new ProviderDto();
 			providerDto.setId(providerEntity.getId());
