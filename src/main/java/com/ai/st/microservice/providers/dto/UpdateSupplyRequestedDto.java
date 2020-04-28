@@ -19,6 +19,9 @@ public class UpdateSupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = false, notes = "Supply Requested State ID")
 	private Long supplyRequestedStateId;
 
+	@ApiModelProperty(required = false, notes = "User Code")
+	private Long deliveryBy;
+
 	public UpdateSupplyRequestedDto() {
 
 	}
@@ -45,6 +48,14 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
 	public void setSupplyRequestedStateId(Long supplyRequestedStateId) {
 		this.supplyRequestedStateId = supplyRequestedStateId;
+	}
+
+	public Long getDeliveryBy() {
+		return deliveryBy;
+	}
+
+	public void setDeliveryBy(Long deliveryBy) {
+		this.deliveryBy = deliveryBy;
 	}
 
 }
