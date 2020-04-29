@@ -40,9 +40,16 @@ public class RequestEntity {
 	@Column(name = "municipality_code", nullable = false, length = 10)
 	private String municipalityCode;
 
+	@Column(name = "closed_by", nullable = true)
+	private Long closedBy;
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+
+	@Column(name = "closed_at", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date closedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
@@ -140,6 +147,22 @@ public class RequestEntity {
 
 	public void setPackageLabel(String packageLabel) {
 		this.packageLabel = packageLabel;
+	}
+
+	public Date getClosedAt() {
+		return closedAt;
+	}
+
+	public void setClosedAt(Date closedAt) {
+		this.closedAt = closedAt;
+	}
+
+	public Long getClosedBy() {
+		return closedBy;
+	}
+
+	public void setClosedBy(Long closedBy) {
+		this.closedBy = closedBy;
 	}
 
 }

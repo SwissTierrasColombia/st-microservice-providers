@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ai.st.microservice.providers.dto.EmitterDto;
 import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
@@ -15,12 +14,8 @@ import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
-import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.RoleDto;
-import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
-import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
-import com.ai.st.microservice.providers.entities.EmitterEntity;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
@@ -29,8 +24,7 @@ import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.RoleEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
+import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderAdministratorService;
@@ -40,6 +34,7 @@ import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestService;
 import com.ai.st.microservice.providers.services.IRoleService;
+import com.ai.st.microservice.providers.services.IRequestStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
 @Component
@@ -53,6 +48,9 @@ public class ProviderBusiness {
 
 	@Autowired
 	private IRequestService requestService;
+
+	@Autowired
+	private IRequestStateService requestStateService;
 
 	@Autowired
 	private IProviderProfileService profileService;
@@ -221,86 +219,42 @@ public class ProviderBusiness {
 
 		for (RequestEntity requestEntity : listRequestEntity) {
 
-			RequestDto requestDto = new RequestDto();
-			requestDto.setId(requestEntity.getId());
-			requestDto.setCreatedAt(requestEntity.getCreatedAt());
-			requestDto.setDeadline(requestEntity.getDeadline());
-			requestDto.setObservations(requestEntity.getObservations());
-			requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
-			requestDto.setPackageLabel(requestEntity.getPackageLabel());
+			RequestBusiness requestBusiness = new RequestBusiness();
 
-			ProviderDto providerDto = new ProviderDto();
-			providerDto.setId(providerEntity.getId());
-			providerDto.setName(providerEntity.getName());
-			providerDto.setCreatedAt(providerEntity.getCreatedAt());
-			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
-			providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
-					providerEntity.getProviderCategory().getName()));
-			requestDto.setProvider(providerDto);
-
-			requestDto.setRequestState(new RequestStateDto(requestEntity.getRequestState().getId(),
-					requestEntity.getRequestState().getName()));
+			RequestDto requestDto = requestBusiness.entityParseDto(requestEntity);
 
 			listRequestsDto.add(requestDto);
+		}
 
-			List<SupplyRequestedDto> suppliesDto = new ArrayList<SupplyRequestedDto>();
-			for (SupplyRequestedEntity supplyRE : requestEntity.getSupplies()) {
+		return listRequestsDto;
+	}
 
-				SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
-				supplyRequested.setId(supplyRE.getId());
-				supplyRequested.setDescription(supplyRE.getDescription());
-				supplyRequested.setCreatedAt(supplyRE.getCreatedAt());
-				supplyRequested.setDelivered(supplyRE.getDelivered());
-				supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
-				supplyRequested.setJustification(supplyRE.getJustification());
-				supplyRequested.setModelVersion(supplyRE.getModelVersion());
+	public List<RequestDto> getRequestsByProviderAndUserClosed(Long providerId, Long userCode)
+			throws BusinessException {
 
-				SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
-				supplyRequested.setState(
-						new SupplyRequestedStateDto(stateSupplyRequested.getId(), stateSupplyRequested.getName()));
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
 
-				TypeSupplyEntity tsE = supplyRE.getTypeSupply();
+		// verify provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
 
-				TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
-				typeSupplyDto.setCreatedAt(tsE.getCreatedAt());
-				typeSupplyDto.setDescription(tsE.getDescription());
-				typeSupplyDto.setId(tsE.getId());
-				typeSupplyDto.setMetadataRequired(tsE.getIsMetadataRequired());
-				typeSupplyDto.setModelRequired(tsE.getIsModelRequired());
-				typeSupplyDto.setName(tsE.getName());
+		RequestStateEntity requestState = requestStateService
+				.getRequestStateById(RequestStateBusiness.REQUEST_STATE_DELIVERED);
 
-				List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
-				for (ExtensionEntity extensionEntity : tsE.getExtensions()) {
-					ExtensionDto extensionDto = new ExtensionDto();
-					extensionDto.setId(extensionEntity.getId());
-					extensionDto.setName(extensionEntity.getName());
-					listExtensionsDto.add(extensionDto);
-				}
-				typeSupplyDto.setExtensions(listExtensionsDto);
+		List<RequestEntity> listRequestEntity = new ArrayList<RequestEntity>();
 
-				ProviderProfileDto providerProfileDto = new ProviderProfileDto();
-				providerProfileDto.setDescription(tsE.getProviderProfile().getDescription());
-				providerProfileDto.setId(tsE.getProviderProfile().getId());
-				providerProfileDto.setName(tsE.getProviderProfile().getName());
-				typeSupplyDto.setProviderProfile(providerProfileDto);
+		listRequestEntity = requestService.getRequestByClosedByAndProviderAndRequestState(userCode, providerEntity,
+				requestState);
 
-				supplyRequested.setTypeSupply(typeSupplyDto);
+		for (RequestEntity requestEntity : listRequestEntity) {
 
-				suppliesDto.add(supplyRequested);
-			}
-			requestDto.setSuppliesRequested(suppliesDto);
+			RequestBusiness requestBusiness = new RequestBusiness();
 
-			List<EmitterDto> emittersDto = new ArrayList<EmitterDto>();
-			for (EmitterEntity emitterEntity : requestEntity.getEmitters()) {
-				EmitterDto emitterDto = new EmitterDto();
-				emitterDto.setCreatedAt(emitterEntity.getCreatedAt());
-				emitterDto.setEmitterCode(emitterEntity.getEmitterCode());
-				emitterDto.setId(emitterEntity.getId());
-				emitterDto.setEmitterType(emitterEntity.getEmitterType().name());
-				emittersDto.add(emitterDto);
-			}
-			requestDto.setEmitters(emittersDto);
+			RequestDto requestDto = requestBusiness.entityParseDto(requestEntity);
 
+			listRequestsDto.add(requestDto);
 		}
 
 		return listRequestsDto;
@@ -484,7 +438,7 @@ public class ProviderBusiness {
 	}
 
 	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-			Long providerProfileId) throws BusinessException {
+			Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
 
 		name = name.toUpperCase();
 
@@ -512,14 +466,24 @@ public class ProviderBusiness {
 		typeSupplyEntity.setName(name);
 		typeSupplyEntity.setDescription(description);
 		typeSupplyEntity.setIsMetadataRequired(metadataRequired);
+		typeSupplyEntity.setIsModelRequired(modelRequired);
+		typeSupplyEntity.setCreatedAt(new Date());
 		typeSupplyEntity.setProvider(providerEntity);
 		typeSupplyEntity.setProviderProfile(providerProfileEntity);
+		for (String e : extensions) {
+			typeSupplyEntity.getExtensions().add(new ExtensionEntity(e, typeSupplyEntity));
+		}
 		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
 		TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
 		typeSupplyDto.setName(name);
 		typeSupplyDto.setDescription(description);
 		typeSupplyDto.setMetadataRequired(metadataRequired);
+		typeSupplyDto.setModelRequired(modelRequired);
+
+		for (ExtensionEntity e : typeSupplyEntity.getExtensions()) {
+			typeSupplyDto.getExtensions().add(new ExtensionDto(e.getId(), e.getName()));
+		}
 		typeSupplyDto.setProvider(this.providerEntityParseDto(providerEntity));
 		typeSupplyDto.setProviderProfile(this.providerProfileEntityParseDto(providerProfileEntity));
 

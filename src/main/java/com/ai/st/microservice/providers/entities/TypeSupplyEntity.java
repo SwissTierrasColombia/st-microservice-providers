@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "types_supplies", schema = "providers")
 public class TypeSupplyEntity {

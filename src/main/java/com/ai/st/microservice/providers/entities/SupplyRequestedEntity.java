@@ -52,6 +52,9 @@ public class SupplyRequestedEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deliveredAt;
 
+	@Column(name = "delivered_by", nullable = true)
+	private Long deliveredBy;
+
 	@Column(name = "justification", nullable = true, length = 500)
 	private String justification;
 
@@ -137,6 +140,14 @@ public class SupplyRequestedEntity {
 
 	public void setModelVersion(String modelVersion) {
 		this.modelVersion = modelVersion;
+	}
+
+	public Long getDeliveredBy() {
+		return deliveredBy;
+	}
+
+	public void setDeliveredBy(Long deliveredBy) {
+		this.deliveredBy = deliveredBy;
 	}
 
 }

@@ -208,6 +208,40 @@ public class ProviderV1Controller {
 
 	}
 
+	@RequestMapping(value = "/{providerId}/requests/closed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests closed by provider and user")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get requests closed by provider and user", response = ProviderDto.class),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestsByProviderAndUserClosed(@PathVariable Long providerId,
+			@RequestParam(required = false, name = "user") Long userCode) {
+
+		HttpStatus httpStatus = null;
+		List<RequestDto> listRequests = new ArrayList<RequestDto>();
+		Object responseDto = null;
+
+		try {
+
+			listRequests = providerBusiness.getRequestsByProviderAndUserClosed(providerId, userCode);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getRequestsByProviderAndUserClosed#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getRequestsByProviderAndUserClosed#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listRequests, httpStatus);
+
+	}
+
 	@RequestMapping(value = "/{providerId}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get users by provider")
 	@ApiResponses(value = {
@@ -352,13 +386,13 @@ public class ProviderV1Controller {
 		return new ResponseEntity<>(responseProviderProfileDto, httpStatus);
 	}
 
-	@RequestMapping(value = "/{providerId}/profiles/{providerProfileId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{providerId}/type-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create type supply")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
 	public ResponseEntity<TypeSupplyDto> createTypeSupply(@PathVariable Long providerId,
-			@PathVariable Long providerProfileId, @RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
+			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
 
 		HttpStatus httpStatus = null;
 		TypeSupplyDto responseTypeSupplyDto = null;
@@ -375,16 +409,14 @@ public class ProviderV1Controller {
 			if (providerId == null) {
 				throw new InputValidationException("The provider is required.");
 			}
-			if (providerProfileId == null) {
+			if (createTypeSupplyDto.getProviderProfileId() == null) {
 				throw new InputValidationException("The provider profile is required.");
 			}
 
-			createTypeSupplyDto.setProviderId(providerId);
-			createTypeSupplyDto.setProviderProfileId(providerProfileId);
-
 			responseTypeSupplyDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
-					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(),
-					createTypeSupplyDto.getProviderId(), createTypeSupplyDto.getProviderProfileId());
+					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(), providerId,
+					createTypeSupplyDto.getProviderProfileId(), createTypeSupplyDto.getModelRequired(),
+					createTypeSupplyDto.getExtensions());
 
 			httpStatus = HttpStatus.CREATED;
 		} catch (InputValidationException e) {
