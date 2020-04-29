@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.business.RequestStateBusiness;
+import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
@@ -18,6 +19,7 @@ import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
@@ -26,6 +28,7 @@ import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
+import com.ai.st.microservice.providers.services.IRoleService;
 import com.ai.st.microservice.providers.services.ISupplyRequestedStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
@@ -58,6 +61,9 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	@Autowired
 	private ISupplyRequestedStateService supplyRequestedStateService;
 
+	@Autowired
+	private IRoleService roleService;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		log.info("ST - Loading Domains ... ");
@@ -65,6 +71,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 		this.initProviders();
 		this.initRequestsStates();
 		this.initSupplyRequestedStates();
+		this.initRoles();
 	}
 
 	public void initProvidersCategories() {
@@ -307,17 +314,17 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension17.setName("gpkg");
 				extension17.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension17);
-				
+
 				ExtensionEntity extension28 = new ExtensionEntity();
 				extension28.setName("gdb");
 				extension28.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension28);
-				
+
 				ExtensionEntity extension29 = new ExtensionEntity();
 				extension29.setName("mdb");
 				extension29.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension29);
-				
+
 				ExtensionEntity extension30 = new ExtensionEntity();
 				extension30.setName("pdf");
 				extension30.setTypeSupply(typeSupply9);
@@ -535,6 +542,26 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				log.info("The domains 'supply requested states' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'supply requested states' domains");
+			}
+
+		}
+	}
+
+	public void initRoles() {
+		Long countRoles = roleService.getCount();
+		if (countRoles == 0) {
+
+			try {
+
+				RoleEntity roleDirector = new RoleEntity();
+				roleDirector.setId(RoleBusiness.ROLE_DIRECTOR);
+				roleDirector.setName("DIRECTOR");
+
+				roleService.createRole(roleDirector);
+
+				log.info("The domains 'roles' have been loaded!");
+			} catch (Exception e) {
+				log.error("Failed to load 'roles' domains");
 			}
 
 		}

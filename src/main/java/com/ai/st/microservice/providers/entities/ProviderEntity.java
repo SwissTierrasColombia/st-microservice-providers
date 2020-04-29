@@ -53,6 +53,9 @@ public class ProviderEntity {
 	@OneToMany(mappedBy = "provider")
 	private List<ProviderProfileEntity> profiles = new ArrayList<ProviderProfileEntity>();
 
+	@OneToMany(mappedBy = "provider")
+	private List<ProviderAdministratorEntity> administrators = new ArrayList<ProviderAdministratorEntity>();
+
 	public ProviderEntity() {
 
 	}
@@ -127,6 +130,14 @@ public class ProviderEntity {
 
 	public void setProfiles(List<ProviderProfileEntity> profiles) {
 		this.profiles = profiles;
+	}
+
+	public List<ProviderAdministratorEntity> getAdministrators() {
+		return administrators;
+	}
+
+	public void setAdministrators(List<ProviderAdministratorEntity> administrators) {
+		this.administrators = administrators;
 	}
 
 }

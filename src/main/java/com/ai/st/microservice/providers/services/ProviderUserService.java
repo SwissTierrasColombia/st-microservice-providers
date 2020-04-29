@@ -36,4 +36,10 @@ public class ProviderUserService implements IProviderUserService {
 				provider);
 	}
 
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		providerUserRepository.deleteById(id);
+	}
+
 }
