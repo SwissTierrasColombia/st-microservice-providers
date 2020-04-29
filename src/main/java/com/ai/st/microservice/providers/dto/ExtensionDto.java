@@ -20,6 +20,12 @@ public class ExtensionDto implements Serializable {
 
 	}
 
+	public ExtensionDto(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}

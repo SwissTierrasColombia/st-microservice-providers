@@ -351,13 +351,13 @@ public class ProviderV1Controller {
 		return new ResponseEntity<>(responseProviderProfileDto, httpStatus);
 	}
 
-	@RequestMapping(value = "/{providerId}/profiles/{providerProfileId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{providerId}/type-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create type supply")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
 	public ResponseEntity<TypeSupplyDto> createTypeSupply(@PathVariable Long providerId,
-			@PathVariable Long providerProfileId, @RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
+			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
 
 		HttpStatus httpStatus = null;
 		TypeSupplyDto responseTypeSupplyDto = null;
@@ -374,16 +374,14 @@ public class ProviderV1Controller {
 			if (providerId == null) {
 				throw new InputValidationException("The provider is required.");
 			}
-			if (providerProfileId == null) {
+			if (createTypeSupplyDto.getProviderProfileId() == null) {
 				throw new InputValidationException("The provider profile is required.");
 			}
 
-			createTypeSupplyDto.setProviderId(providerId);
-			createTypeSupplyDto.setProviderProfileId(providerProfileId);
-
 			responseTypeSupplyDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
-					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(),
-					createTypeSupplyDto.getProviderId(), createTypeSupplyDto.getProviderProfileId());
+					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(), providerId,
+					createTypeSupplyDto.getProviderProfileId(), createTypeSupplyDto.getModelRequired(),
+					createTypeSupplyDto.getExtensions());
 
 			httpStatus = HttpStatus.CREATED;
 		} catch (InputValidationException e) {

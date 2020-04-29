@@ -393,7 +393,7 @@ public class ProviderBusiness {
 	}
 
 	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-			Long providerProfileId) throws BusinessException {
+			Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
 
 		name = name.toUpperCase();
 
@@ -421,14 +421,24 @@ public class ProviderBusiness {
 		typeSupplyEntity.setName(name);
 		typeSupplyEntity.setDescription(description);
 		typeSupplyEntity.setIsMetadataRequired(metadataRequired);
+		typeSupplyEntity.setIsModelRequired(modelRequired);
+		typeSupplyEntity.setCreatedAt(new Date());
 		typeSupplyEntity.setProvider(providerEntity);
 		typeSupplyEntity.setProviderProfile(providerProfileEntity);
+		for (String e : extensions) {
+			typeSupplyEntity.getExtensions().add(new ExtensionEntity(e, typeSupplyEntity));
+		}
 		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
 		TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
 		typeSupplyDto.setName(name);
 		typeSupplyDto.setDescription(description);
 		typeSupplyDto.setMetadataRequired(metadataRequired);
+		typeSupplyDto.setModelRequired(modelRequired);
+
+		for (ExtensionEntity e : typeSupplyEntity.getExtensions()) {
+			typeSupplyDto.getExtensions().add(new ExtensionDto(e.getId(), e.getName()));
+		}
 		typeSupplyDto.setProvider(this.providerEntityParseDto(providerEntity));
 		typeSupplyDto.setProviderProfile(this.providerProfileEntityParseDto(providerProfileEntity));
 
