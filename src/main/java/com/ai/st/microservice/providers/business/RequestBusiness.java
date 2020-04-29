@@ -62,7 +62,7 @@ public class RequestBusiness {
 	@Autowired
 	private ISupplyRequestedStateService supplyRequestedStateService;
 
-	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode,
+	public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode, String packageLabel,
 			List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
 		// verify that the sea deadline greater than the current date
@@ -125,6 +125,7 @@ public class RequestBusiness {
 		requestEntity.setCreatedAt(new Date());
 		requestEntity.setDeadline(deadline);
 		requestEntity.setProvider(providerEntity);
+		requestEntity.setPackageLabel(packageLabel);
 		requestEntity.setRequestState(requestStateEntity);
 		requestEntity.setMunicipalityCode(municipalityCode);
 
@@ -185,8 +186,8 @@ public class RequestBusiness {
 		return requestDto;
 	}
 
-	public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Long stateId, String justification)
-			throws BusinessException {
+	public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Long stateId, String justification,
+			Long deliveryBy) throws BusinessException {
 
 		// verify if request exists
 		RequestEntity requestEntity = requestService.getRequestById(requestId);
@@ -214,12 +215,15 @@ public class RequestBusiness {
 		if (supplyRequested != null) {
 
 			supplyRequested.setState(stateRequestedSupply);
+			if (deliveryBy != null) {
+				supplyRequested.setDeliveredBy(deliveryBy);
+			}
 
 			if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
 				supplyRequested.setDeliveredAt(new Date());
 				supplyRequested.setJustification("");
-			} else if (stateRequestedSupply
-					.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
+			} else if (stateRequestedSupply.getId()
+					.equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
 				supplyRequested.setJustification(justification);
 			}
 
@@ -234,7 +238,7 @@ public class RequestBusiness {
 		return requestDto;
 	}
 
-	public RequestDto updateRequestState(Long requestId, Long requestStateId) throws BusinessException {
+	public RequestDto updateRequestState(Long requestId, Long requestStateId, Long userCode) throws BusinessException {
 
 		// verify if request exists
 		RequestEntity requestEntity = requestService.getRequestById(requestId);
@@ -249,6 +253,13 @@ public class RequestBusiness {
 		}
 
 		requestEntity.setRequestState(requestState);
+		if (requestStateId.equals(RequestStateBusiness.REQUEST_STATE_DELIVERED)) {
+			requestEntity.setClosedAt(new Date());
+			if (userCode != null) {
+				requestEntity.setClosedBy(userCode);
+			}
+		}
+
 		requestEntity = requestService.updateRequest(requestEntity);
 
 		RequestDto requestDto = this.getRequestById(requestId);
@@ -279,6 +290,9 @@ public class RequestBusiness {
 		requestDto.setDeadline(requestEntity.getDeadline());
 		requestDto.setObservations(requestEntity.getObservations());
 		requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
+		requestDto.setPackageLabel(requestEntity.getPackageLabel());
+		requestDto.setClosedAt(requestEntity.getClosedAt());
+		requestDto.setClosedBy(requestEntity.getClosedBy());
 
 		ProviderEntity providerEntity = requestEntity.getProvider();
 
@@ -305,6 +319,7 @@ public class RequestBusiness {
 			supplyRequested.setDeliveredAt(supplyRE.getDeliveredAt());
 			supplyRequested.setJustification(supplyRE.getJustification());
 			supplyRequested.setModelVersion(supplyRE.getModelVersion());
+			supplyRequested.setDeliveredBy(supplyRE.getDeliveredBy());
 
 			SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
 			supplyRequested.setState(

@@ -25,6 +25,9 @@ public class RequestDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Observations")
 	private String observations;
 
+	@ApiModelProperty(required = true, notes = "Package")
+	private String packageLabel;
+
 	@ApiModelProperty(required = true, notes = "Provider")
 	private ProviderDto provider;
 
@@ -39,6 +42,12 @@ public class RequestDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Municipality code")
 	private String municipalityCode;
+
+	@ApiModelProperty(required = true, notes = "Date closed")
+	private Date closedAt;
+
+	@ApiModelProperty(required = true, notes = "User who closed the request")
+	private Long closedBy;
 
 	public RequestDto() {
 		suppliesRequested = new ArrayList<SupplyRequestedDto>();
@@ -115,6 +124,30 @@ public class RequestDto implements Serializable {
 
 	public void setMunicipalityCode(String municipalityCode) {
 		this.municipalityCode = municipalityCode;
+	}
+
+	public String getPackageLabel() {
+		return packageLabel;
+	}
+
+	public void setPackageLabel(String packageLabel) {
+		this.packageLabel = packageLabel;
+	}
+
+	public Date getClosedAt() {
+		return closedAt;
+	}
+
+	public void setClosedAt(Date closedAt) {
+		this.closedAt = closedAt;
+	}
+
+	public Long getClosedBy() {
+		return closedBy;
+	}
+
+	public void setClosedBy(Long closedBy) {
+		this.closedBy = closedBy;
 	}
 
 }

@@ -68,6 +68,12 @@ public class RequestV1Controller {
 				throw new InputValidationException("El código del municipio es requerido.");
 			}
 
+			// validation package
+			String packageLabel = createRequestDto.getPackageLabel();
+			if (packageLabel.isEmpty()) {
+				throw new InputValidationException("El código del paquete es requerido.");
+			}
+
 			// validation deadline
 			String deadlineString = createRequestDto.getDeadline();
 			Date deadline = null;
@@ -110,7 +116,8 @@ public class RequestV1Controller {
 						"La solicitud debe contener al menos un tipo de insumo a solicitar.");
 			}
 
-			responseDto = requestBusiness.createRequest(deadline, providerId, municipalityCode, emitters, supplies);
+			responseDto = requestBusiness.createRequest(deadline, providerId, municipalityCode, packageLabel, emitters,
+					supplies);
 
 			httpStatus = HttpStatus.CREATED;
 
@@ -181,7 +188,7 @@ public class RequestV1Controller {
 			}
 
 			responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, stateId,
-					updateSupply.getJustification());
+					updateSupply.getJustification(), updateSupply.getDeliveryBy());
 			httpStatus = HttpStatus.OK;
 
 		} catch (InputValidationException e) {
@@ -207,14 +214,16 @@ public class RequestV1Controller {
 			@ApiResponse(code = 200, message = "Update state from request to delivered", response = RequestDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> updateRequestStateToDelivered(@PathVariable Long requestId) {
+	public ResponseEntity<Object> updateRequestStateToDelivered(@PathVariable Long requestId,
+			@RequestParam(name = "closed_by") Long userCode) {
 
 		HttpStatus httpStatus = null;
 		Object responseDto = null;
 
 		try {
 
-			responseDto = requestBusiness.updateRequestState(requestId, RequestStateBusiness.REQUEST_STATE_DELIVERED);
+			responseDto = requestBusiness.updateRequestState(requestId, RequestStateBusiness.REQUEST_STATE_DELIVERED,
+					userCode);
 			httpStatus = HttpStatus.OK;
 
 		} catch (BusinessException e) {

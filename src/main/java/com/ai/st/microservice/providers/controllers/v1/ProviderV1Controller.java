@@ -207,6 +207,40 @@ public class ProviderV1Controller {
 
 	}
 
+	@RequestMapping(value = "/{providerId}/requests/closed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests closed by provider and user")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get requests closed by provider and user", response = ProviderDto.class),
+			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestsByProviderAndUserClosed(@PathVariable Long providerId,
+			@RequestParam(required = false, name = "user") Long userCode) {
+
+		HttpStatus httpStatus = null;
+		List<RequestDto> listRequests = new ArrayList<RequestDto>();
+		Object responseDto = null;
+
+		try {
+
+			listRequests = providerBusiness.getRequestsByProviderAndUserClosed(providerId, userCode);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getRequestsByProviderAndUserClosed#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getRequestsByProviderAndUserClosed#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
+				: new ResponseEntity<>(listRequests, httpStatus);
+
+	}
+
 	@RequestMapping(value = "/{providerId}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get users by provider")
 	@ApiResponses(value = {

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
+import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
+import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.repositories.RequestRepository;
 
 @Service
@@ -48,6 +50,12 @@ public class RequestService implements IRequestService {
 			emmitterTypeEnum = EmitterTypeEnum.USER;
 		}
 		return requestRepository.getRequestsByEmmiterCodeAndEmmiterType(emmiterCode, emmitterTypeEnum);
+	}
+
+	@Override
+	public List<RequestEntity> getRequestByClosedByAndProviderAndRequestState(Long closedBy, ProviderEntity provider,
+			RequestStateEntity requestState) {
+		return requestRepository.findByClosedByAndProviderAndRequestState(closedBy, provider, requestState);
 	}
 
 }

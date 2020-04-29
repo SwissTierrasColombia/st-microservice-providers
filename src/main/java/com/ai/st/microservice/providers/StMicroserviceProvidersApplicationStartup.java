@@ -307,6 +307,21 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension17.setName("gpkg");
 				extension17.setTypeSupply(typeSupply9);
 				extensionService.createExtension(extension17);
+				
+				ExtensionEntity extension28 = new ExtensionEntity();
+				extension28.setName("gdb");
+				extension28.setTypeSupply(typeSupply9);
+				extensionService.createExtension(extension28);
+				
+				ExtensionEntity extension29 = new ExtensionEntity();
+				extension29.setName("mdb");
+				extension29.setTypeSupply(typeSupply9);
+				extensionService.createExtension(extension29);
+				
+				ExtensionEntity extension30 = new ExtensionEntity();
+				extension30.setName("pdf");
+				extension30.setTypeSupply(typeSupply9);
+				extensionService.createExtension(extension30);
 
 				TypeSupplyEntity typeSupply10 = new TypeSupplyEntity();
 				typeSupply10.setName("Uso y Cobertura de la Tierra");
@@ -326,25 +341,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				extension19.setName("gpkg");
 				extension19.setTypeSupply(typeSupply10);
 				extensionService.createExtension(extension19);
-
-				TypeSupplyEntity typeSupply11 = new TypeSupplyEntity();
-				typeSupply11.setName("Disponibilidad de Agua");
-				typeSupply11.setIsMetadataRequired(false);
-				typeSupply11.setIsModelRequired(false);
-				typeSupply11.setCreatedAt(new Date());
-				typeSupply11.setProvider(providerIgac);
-				typeSupply11.setProviderProfile(profileAgrological);
-				typeSupply11 = typeSupplyService.createTypeSupply(typeSupply11);
-
-				ExtensionEntity extension20 = new ExtensionEntity();
-				extension20.setName("shp");
-				extension20.setTypeSupply(typeSupply11);
-				extensionService.createExtension(extension20);
-
-				ExtensionEntity extension21 = new ExtensionEntity();
-				extension21.setName("gpkg");
-				extension21.setTypeSupply(typeSupply11);
-				extensionService.createExtension(extension21);
 
 				TypeSupplyEntity typeSupply13 = new TypeSupplyEntity();
 				typeSupply13.setName("POT-Documentos Plan de ordenamiento territorial");
