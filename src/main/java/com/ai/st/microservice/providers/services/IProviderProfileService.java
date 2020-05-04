@@ -7,7 +7,9 @@ public interface IProviderProfileService {
 	public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile);
 
 	public ProviderProfileEntity getProviderProfileById(Long id);
-	
+
 	public ProviderProfileEntity getProviderProfileByName(String name);
+
+	public void deleteProviderProfileById(Long id);
 
 }

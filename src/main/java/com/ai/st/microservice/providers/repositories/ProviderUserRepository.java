@@ -15,4 +15,6 @@ public interface ProviderUserRepository extends CrudRepository<ProviderUserEntit
 	ProviderUserEntity findByProviderProfileAndUserCodeAndProvider(ProviderProfileEntity providerProfile, Long userCode,
 			ProviderEntity provider);
 
+	List<ProviderUserEntity> findByProviderProfile(ProviderProfileEntity providerProfile);
+
 }

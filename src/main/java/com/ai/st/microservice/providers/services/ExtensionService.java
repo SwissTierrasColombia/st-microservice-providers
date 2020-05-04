@@ -20,4 +20,10 @@ public class ExtensionService implements IExtensionService {
 		return extensionRepository.save(extension);
 	}
 
+	@Override
+	@Transactional
+	public void deleteExtensionById(Long id) {
+		extensionRepository.deleteById(id);
+	}
+
 }

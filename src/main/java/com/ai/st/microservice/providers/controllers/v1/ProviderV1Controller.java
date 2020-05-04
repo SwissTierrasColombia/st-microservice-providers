@@ -348,11 +348,11 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 201, message = "Create provider profile", response = ProviderProfileDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<ProviderProfileDto> createProviderProfile(@PathVariable Long providerId,
+	public ResponseEntity<Object> createProviderProfile(@PathVariable Long providerId,
 			@RequestBody CreateProviderProfileDto createProviderProfileDto) {
 
 		HttpStatus httpStatus = null;
-		ProviderProfileDto responseProviderProfileDto = null;
+		Object responseDto = null;
 
 		try {
 
@@ -366,24 +366,97 @@ public class ProviderV1Controller {
 			if (providerId == null) {
 				throw new InputValidationException("The provider is required.");
 			}
-			createProviderProfileDto.setProviderId(providerId);
 
-			responseProviderProfileDto = providerBusiness.createProviderProfile(createProviderProfileDto.getName(),
-					createProviderProfileDto.getDescription(), createProviderProfileDto.getProviderId());
+			responseDto = providerBusiness.createProviderProfile(createProviderProfileDto.getName(),
+					createProviderProfileDto.getDescription(), providerId);
 
 			httpStatus = HttpStatus.CREATED;
 		} catch (InputValidationException e) {
 			log.error("Error ProviderV1Controller@createProviderProfile#Validation ---> " + e.getMessage());
 			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
 		} catch (BusinessException e) {
 			log.error("Error ProviderV1Controller@createProviderProfile#Business ---> " + e.getMessage());
 			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ProviderV1Controller@createProviderProfile#General ---> " + e.getMessage());
+			responseDto = new ErrorDto(e.getMessage(), 3);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
-		return new ResponseEntity<>(responseProviderProfileDto, httpStatus);
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/profiles/{profileId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update provider profile")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Update provider profile", response = ProviderProfileDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> updateProviderProfile(@PathVariable Long providerId, @PathVariable Long profileId,
+			@RequestBody CreateProviderProfileDto updateProviderProfileDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			// validation input data
+			if (updateProviderProfileDto.getName().isEmpty()) {
+				throw new InputValidationException("The provider profile name is required.");
+			}
+			if (updateProviderProfileDto.getDescription().isEmpty()) {
+				throw new InputValidationException("The provider profile description is required.");
+			}
+
+			responseDto = providerBusiness.updateProviderProfile(updateProviderProfileDto.getName(),
+					updateProviderProfileDto.getDescription(), providerId, profileId);
+
+			httpStatus = HttpStatus.OK;
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@updateProviderProfile#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@updateProviderProfile#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@updateProviderProfile#General ---> " + e.getMessage());
+			responseDto = new ErrorDto(e.getMessage(), 3);
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/profiles/{profileId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Delete provider profile")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete provider profile"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> deleteProviderProfile(@PathVariable Long providerId, @PathVariable Long profileId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			providerBusiness.deleteProviderProfile(providerId, profileId);
+
+			httpStatus = HttpStatus.NO_CONTENT;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@deleteProviderProfile#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@deleteProviderProfile#General ---> " + e.getMessage());
+			responseDto = new ErrorDto(e.getMessage(), 3);
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
 	}
 
 	@RequestMapping(value = "/{providerId}/type-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -391,11 +464,11 @@ public class ProviderV1Controller {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Create type supply", response = TypeSupplyDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<TypeSupplyDto> createTypeSupply(@PathVariable Long providerId,
+	public ResponseEntity<Object> createTypeSupply(@PathVariable Long providerId,
 			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
 
 		HttpStatus httpStatus = null;
-		TypeSupplyDto responseTypeSupplyDto = null;
+		Object responseDto = null;
 
 		try {
 
@@ -413,7 +486,7 @@ public class ProviderV1Controller {
 				throw new InputValidationException("The provider profile is required.");
 			}
 
-			responseTypeSupplyDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
+			responseDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
 					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(), providerId,
 					createTypeSupplyDto.getProviderProfileId(), createTypeSupplyDto.getModelRequired(),
 					createTypeSupplyDto.getExtensions());
@@ -422,14 +495,95 @@ public class ProviderV1Controller {
 		} catch (InputValidationException e) {
 			log.error("Error ProviderV1Controller@createTypeSupply#Validation ---> " + e.getMessage());
 			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
 		} catch (BusinessException e) {
 			log.error("Error ProviderV1Controller@createTypeSupply#Business ---> " + e.getMessage());
 			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ProviderV1Controller@createTypeSupply#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
 		}
 
-		return new ResponseEntity<>(responseTypeSupplyDto, httpStatus);
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/type-supplies/{typeSupplyId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update type supply")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Update type supply", response = TypeSupplyDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> updateTypeSupply(@PathVariable Long providerId, @PathVariable Long typeSupplyId,
+			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			// validation input data
+			if (createTypeSupplyDto.getName().isEmpty()) {
+				throw new InputValidationException("The provider profile name is required.");
+			}
+			if (createTypeSupplyDto.getDescription().isEmpty()) {
+				throw new InputValidationException("The provider profile description is required.");
+			}
+			if (providerId == null) {
+				throw new InputValidationException("The provider is required.");
+			}
+			if (createTypeSupplyDto.getProviderProfileId() == null) {
+				throw new InputValidationException("The provider profile is required.");
+			}
+
+			responseDto = providerBusiness.updateTypeSupply(createTypeSupplyDto.getName(),
+					createTypeSupplyDto.getDescription(), createTypeSupplyDto.getMetadataRequired(), providerId,
+					createTypeSupplyDto.getProviderProfileId(), createTypeSupplyDto.getModelRequired(),
+					createTypeSupplyDto.getExtensions(), typeSupplyId);
+
+			httpStatus = HttpStatus.OK;
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@updateTypeSupply#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@updateTypeSupply#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@updateTypeSupply#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/type-supplies/{typeSupplyId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Delete type supply")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete type supply", response = TypeSupplyDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> deleteTypeSupply(@PathVariable Long providerId, @PathVariable Long typeSupplyId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			providerBusiness.deleteTypeSupply(providerId, typeSupplyId);
+			httpStatus = HttpStatus.NO_CONTENT;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@deleteTypeSupply#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@deleteTypeSupply#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
 	}
 }

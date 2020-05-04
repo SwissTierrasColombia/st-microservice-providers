@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
@@ -27,6 +26,7 @@ import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
+import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
@@ -34,6 +34,7 @@ import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestService;
 import com.ai.st.microservice.providers.services.IRoleService;
+import com.ai.st.microservice.providers.services.ISupplyRequestedService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
 
@@ -63,6 +64,15 @@ public class ProviderBusiness {
 
 	@Autowired
 	private IRoleService roleService;
+
+	@Autowired
+	private IExtensionService extensionService;
+
+	@Autowired
+	private ISupplyRequestedService supplyRequestedService;
+
+	@Autowired
+	private TypeSupplyBusiness typeSupplyBusiness;
 
 	@Autowired
 	private IProviderAdministratorService providerAdministratorService;
@@ -414,13 +424,7 @@ public class ProviderBusiness {
 
 		// verify if the category exists
 		if (!(providerEntity instanceof ProviderEntity)) {
-			throw new BusinessException("The provider does not exist.");
-		}
-
-		// verify that there is no provider with the same name
-		ProviderProfileEntity providerProfileExistsEntity = profileService.getProviderProfileByName(name);
-		if (providerProfileExistsEntity instanceof ProviderProfileEntity) {
-			throw new BusinessException("The name of the provider profile is already registered.");
+			throw new BusinessException("El proveedor no existe.");
 		}
 
 		ProviderProfileEntity providerProfileEntity = new ProviderProfileEntity();
@@ -430,11 +434,74 @@ public class ProviderBusiness {
 		providerProfileEntity = profileService.createProviderProfile(providerProfileEntity);
 
 		ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+		providerProfileDto.setId(providerProfileEntity.getId());
 		providerProfileDto.setName(name);
 		providerProfileDto.setDescription(description);
 		providerProfileDto.setProvider(this.providerEntityParseDto(providerEntity));
 
 		return providerProfileDto;
+	}
+
+	public ProviderProfileDto updateProviderProfile(String name, String description, Long providerId, Long profileId)
+			throws BusinessException {
+
+		name = name.toUpperCase();
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor no existe.");
+		}
+
+		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(profileId);
+		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+			throw new BusinessException("El perfil no existe.");
+		}
+
+		if (!providerProfileEntity.getProvider().getId().equals(providerId)) {
+			throw new BusinessException("El perfil no pertenece al proveedor.");
+		}
+
+		providerProfileEntity.setName(name);
+		providerProfileEntity.setDescription(description);
+		providerProfileEntity = profileService.createProviderProfile(providerProfileEntity);
+
+		ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+		providerProfileDto.setId(providerProfileEntity.getId());
+		providerProfileDto.setName(name);
+		providerProfileDto.setDescription(description);
+		providerProfileDto.setProvider(this.providerEntityParseDto(providerEntity));
+
+		return providerProfileDto;
+	}
+
+	public void deleteProviderProfile(Long providerId, Long profileId) throws BusinessException {
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor no existe.");
+		}
+
+		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(profileId);
+		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+			throw new BusinessException("El perfil no existe.");
+		}
+
+		if (!providerProfileEntity.getProvider().getId().equals(providerId)) {
+			throw new BusinessException("El perfil no pertenece al proveedor.");
+		}
+
+		int countTypeSupplies = typeSupplyService.getTypeSupliesByProfile(providerProfileEntity).size();
+		if (countTypeSupplies > 0) {
+			throw new BusinessException("No se puede eliminar el perfil porque ya esta asociado tipos de insumo.");
+		}
+
+		int countProvidersUsers = providerUserService.getProviderUsersByProfile(providerProfileEntity).size();
+		if (countProvidersUsers > 0) {
+			throw new BusinessException("No se puede eliminar el perfil porque ya esta asociado a usuarios.");
+		}
+
+		profileService.deleteProviderProfileById(profileId);
+
 	}
 
 	public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
@@ -444,22 +511,28 @@ public class ProviderBusiness {
 
 		ProviderEntity providerEntity = providerService.getProviderById(providerId);
 
-		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerId);
+		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerProfileId);
 
 		// verify if the provider exists
 		if (!(providerEntity instanceof ProviderEntity)) {
-			throw new BusinessException("The provider does not exist.");
+			throw new BusinessException("El proveedor no existe.");
 		}
 
 		// verify if the provider profile exists
 		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
-			throw new BusinessException("The provider profile does not exist.");
+			throw new BusinessException("El perfil del proveedor no existe.");
 		}
 
 		// verify that there is no provider with the same name
 		TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
 		if (typeSupplyExistsEntity instanceof TypeSupplyEntity) {
-			throw new BusinessException("The name of the type supply is already registered.");
+			throw new BusinessException("El nombre del tipo de insumo ya esta registrado.");
+		}
+
+		ProviderProfileEntity profileFound = providerEntity.getProfiles().stream()
+				.filter(p -> p.getId().equals(providerProfileId)).findAny().orElse(null);
+		if (profileFound == null) {
+			throw new BusinessException("El perfil no pertenece al proveedor.");
 		}
 
 		TypeSupplyEntity typeSupplyEntity = new TypeSupplyEntity();
@@ -470,24 +543,115 @@ public class ProviderBusiness {
 		typeSupplyEntity.setCreatedAt(new Date());
 		typeSupplyEntity.setProvider(providerEntity);
 		typeSupplyEntity.setProviderProfile(providerProfileEntity);
-		for (String e : extensions) {
-			typeSupplyEntity.getExtensions().add(new ExtensionEntity(e, typeSupplyEntity));
-		}
 		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
-		TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
-		typeSupplyDto.setName(name);
-		typeSupplyDto.setDescription(description);
-		typeSupplyDto.setMetadataRequired(metadataRequired);
-		typeSupplyDto.setModelRequired(modelRequired);
-
-		for (ExtensionEntity e : typeSupplyEntity.getExtensions()) {
-			typeSupplyDto.getExtensions().add(new ExtensionDto(e.getId(), e.getName()));
+		for (String nameExtension : extensions) {
+			ExtensionEntity extensionEntity = new ExtensionEntity();
+			extensionEntity.setName(nameExtension);
+			extensionEntity.setTypeSupply(typeSupplyEntity);
+			extensionService.createExtension(extensionEntity);
 		}
-		typeSupplyDto.setProvider(this.providerEntityParseDto(providerEntity));
-		typeSupplyDto.setProviderProfile(this.providerProfileEntityParseDto(providerProfileEntity));
 
+		TypeSupplyDto typeSupplyDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
 		return typeSupplyDto;
+	}
+
+	public TypeSupplyDto updateTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
+			Long providerProfileId, boolean modelRequired, List<String> extensions, Long typeSupplyId)
+			throws BusinessException {
+
+		name = name.toUpperCase();
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+
+		ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerProfileId);
+
+		// verify if the provider exists
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor no existe.");
+		}
+
+		// verify if the provider profile exists
+		if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+			throw new BusinessException("El perfil del proveedor no existe.");
+		}
+
+		TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
+		if (!(typeSupplyEntity instanceof TypeSupplyEntity)) {
+			throw new BusinessException("El tipo de insumo no existe.");
+		}
+
+		// verify that there is no provider with the same name
+		TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
+		if (typeSupplyExistsEntity instanceof TypeSupplyEntity
+				&& !typeSupplyExistsEntity.getId().equals(typeSupplyId)) {
+			throw new BusinessException("El nombre del tipo de insumo ya esta registrado.");
+		}
+
+		ProviderProfileEntity profileFound = providerEntity.getProfiles().stream()
+				.filter(p -> p.getId().equals(providerProfileId)).findAny().orElse(null);
+		if (profileFound == null) {
+			throw new BusinessException("El perfil no pertenece al proveedor.");
+		}
+
+		if (!typeSupplyEntity.getProvider().getId().equals(providerId)) {
+			throw new BusinessException("El tipo de insumo no pertenece al proveedor");
+		}
+
+		typeSupplyEntity.setName(name);
+		typeSupplyEntity.setDescription(description);
+		typeSupplyEntity.setIsMetadataRequired(metadataRequired);
+		typeSupplyEntity.setIsModelRequired(modelRequired);
+		typeSupplyEntity.setProviderProfile(providerProfileEntity);
+
+		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
+
+		// remove extensions
+		for (ExtensionEntity extensionEntity : typeSupplyEntity.getExtensions()) {
+			extensionService.deleteExtensionById(extensionEntity.getId());
+		}
+
+		// add extensions
+		for (String nameExtension : extensions) {
+			ExtensionEntity extensionEntity = new ExtensionEntity();
+			extensionEntity.setName(nameExtension);
+			extensionEntity.setTypeSupply(typeSupplyEntity);
+			extensionService.createExtension(extensionEntity);
+		}
+
+		TypeSupplyDto typeSupplyDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
+		return typeSupplyDto;
+	}
+
+	public void deleteTypeSupply(Long providerId, Long typeSupplyId) throws BusinessException {
+
+		// verify if the provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor no existe.");
+		}
+
+		TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
+		if (!(typeSupplyEntity instanceof TypeSupplyEntity)) {
+			throw new BusinessException("El tipo de insumo no existe.");
+		}
+
+		if (!typeSupplyEntity.getProvider().getId().equals(providerId)) {
+			throw new BusinessException("El tipo de insumo no pertenece al proveedor");
+		}
+
+		int count = supplyRequestedService.getSuppliesRequestedByTypeSupply(typeSupplyEntity).size();
+		if (count > 0) {
+			throw new BusinessException("No se puede borrar el tipo de insumo porque ya ha sido solicitado");
+		}
+
+		// remove extensions
+		for (ExtensionEntity extensionEntity : typeSupplyEntity.getExtensions()) {
+			extensionService.deleteExtensionById(extensionEntity.getId());
+		}
+
+		typeSupplyService.deleteTypeSupplyById(typeSupplyEntity.getId());
+
 	}
 
 	public List<ProviderAdministratorDto> addAdministratorToProvider(Long userCode, Long providerId, Long roleId)

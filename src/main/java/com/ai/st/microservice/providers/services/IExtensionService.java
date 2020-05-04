@@ -6,4 +6,6 @@ public interface IExtensionService {
 
 	public ExtensionEntity createExtension(ExtensionEntity extension);
 
+	public void deleteExtensionById(Long id);
+
 }

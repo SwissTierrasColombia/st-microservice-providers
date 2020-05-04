@@ -1,10 +1,13 @@
 package com.ai.st.microservice.providers.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.repositories.TypeSupplyRepository;
 
@@ -28,6 +31,17 @@ public class TypeSupplyService implements ITypeSupplyService {
 	@Override
 	public TypeSupplyEntity getTypeSupplyByName(String name) {
 		return typeSupplyRepository.findByName(name);
+	}
+
+	@Override
+	@Transactional
+	public void deleteTypeSupplyById(Long id) {
+		typeSupplyRepository.deleteById(id);
+	}
+
+	@Override
+	public List<TypeSupplyEntity> getTypeSupliesByProfile(ProviderProfileEntity providerProfileEntity) {
+		return typeSupplyRepository.findByProviderProfile(providerProfileEntity);
 	}
 
 }
