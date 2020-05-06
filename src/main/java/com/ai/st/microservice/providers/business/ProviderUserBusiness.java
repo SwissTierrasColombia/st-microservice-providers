@@ -1,5 +1,6 @@
 package com.ai.st.microservice.providers.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
+import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
 import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderUserService;
@@ -38,6 +41,27 @@ public class ProviderUserBusiness {
 		}
 
 		return providerDto;
+	}
+
+	public List<ProviderProfileDto> getProfilesByUser(Long userCode) throws BusinessException {
+
+		List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+
+		List<ProviderUserEntity> listUsers = providerUserService.getProvidersUsersByCodeUser(userCode);
+
+		for (ProviderUserEntity providerUser : listUsers) {
+
+			ProviderProfileEntity profileEntity = providerUser.getProviderProfile();
+
+			ProviderProfileDto profileDto = new ProviderProfileDto();
+			profileDto.setId(profileEntity.getId());
+			profileDto.setName(profileEntity.getName());
+			profileDto.setDescription(profileEntity.getDescription());
+
+			profilesDto.add(profileDto);
+		}
+
+		return profilesDto;
 	}
 
 }
