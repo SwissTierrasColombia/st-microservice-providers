@@ -28,6 +28,11 @@ public class ProviderProfileService implements IProviderProfileService {
 	@Override
 	public ProviderProfileEntity getProviderProfileByName(String name) {
 		return providerProfileRepository.findByName(name);
- 	}
+	}
+
+	@Override
+	public void deleteProviderProfileById(Long id) {
+		providerProfileRepository.deleteById(id);
+	}
 
 }

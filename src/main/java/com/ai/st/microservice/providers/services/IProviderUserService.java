@@ -17,4 +17,6 @@ public interface IProviderUserService {
 
 	public void deleteById(Long id);
 
+	public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile);
+
 }

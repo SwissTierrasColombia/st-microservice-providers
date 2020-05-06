@@ -12,12 +12,9 @@ public class CreateProviderProfileDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Provider name")
 	private String name;
-	
+
 	@ApiModelProperty(required = false, notes = "Provider description")
 	private String description;
-
-	@ApiModelProperty(required = false, notes = "Provider ID")
-	private Long providerId;
 
 	public CreateProviderProfileDto() {
 
@@ -37,14 +34,6 @@ public class CreateProviderProfileDto implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Long getProviderId() {
-		return providerId;
-	}
-
-	public void setProviderId(Long providerId) {
-		this.providerId = providerId;
 	}
 
 }

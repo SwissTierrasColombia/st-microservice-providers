@@ -31,7 +31,6 @@ public class ExtensionEntity {
 	}
 
 	public ExtensionEntity(String name, TypeSupplyEntity typeSupply) {
-		super();
 		this.name = name;
 		this.typeSupply = typeSupply;
 	}

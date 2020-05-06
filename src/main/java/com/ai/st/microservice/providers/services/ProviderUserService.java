@@ -42,4 +42,9 @@ public class ProviderUserService implements IProviderUserService {
 		providerUserRepository.deleteById(id);
 	}
 
+	@Override
+	public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile) {
+		return providerUserRepository.findByProviderProfile(providerProfile);
+	}
+
 }
