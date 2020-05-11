@@ -20,6 +20,7 @@ import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.business.ProviderUserBusiness;
 import com.ai.st.microservice.providers.dto.AddUserToProviderDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
+import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
@@ -173,6 +174,34 @@ public class ProviderUserV1Controller {
 
 		return (responseDto != null) ? new ResponseEntity<>(responseDto, httpStatus)
 				: new ResponseEntity<>(listUsers, httpStatus);
+	}
+
+	@RequestMapping(value = "{userCode}/profiles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get profiles by user")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get profiles by user", response = ProviderAdministratorDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<?> getProfilesByUser(@PathVariable Long userCode) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+			responseDto = providerUserBusiness.getProfilesByUser(userCode);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderUserV1Controller@getProfilesByUser#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderUserV1Controller@getProfilesByUser#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
 	}
 
 }
