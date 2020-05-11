@@ -2,6 +2,8 @@ package com.ai.st.microservice.providers.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
@@ -20,5 +22,14 @@ public interface IRequestService {
 
 	public List<RequestEntity> getRequestByClosedByAndProviderAndRequestState(Long closedBy, ProviderEntity provider,
 			RequestStateEntity requestState);
+
+	public Page<RequestEntity> getRequestsByManagerAndMunicipality(Long emmiterCode, String emmiterType,
+			String municipalityCode, int page, int numberItems);
+
+	public Page<RequestEntity> getRequestsByManagerAndProvider(Long emmiterCode, String emmiterType, Long providerId,
+			int page, int numberItems);
+
+	public List<RequestEntity> getRequestsByManagerAndPackage(Long emmiterCode, String emmiterType,
+			String packageLabel);
 
 }

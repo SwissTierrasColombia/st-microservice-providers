@@ -245,7 +245,7 @@ public class RequestV1Controller {
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
 	public ResponseEntity<Object> getRequestByEmmiters(
-			@RequestParam(name = "emmiter_code", required = true) Long emmiterCode,
+			@RequestParam(name = "emmiter_code", required = true) Long managerCode,
 			@RequestParam(name = "emmiter_type", required = true) String emmiterType) {
 
 		HttpStatus httpStatus = null;
@@ -253,7 +253,7 @@ public class RequestV1Controller {
 
 		try {
 
-			responseDto = requestBusiness.getRequestByEmmiters(emmiterCode, emmiterType.toUpperCase());
+			responseDto = requestBusiness.getRequestByEmmiters(managerCode, emmiterType.toUpperCase());
 			httpStatus = HttpStatus.OK;
 
 		} catch (BusinessException e) {
@@ -262,6 +262,98 @@ public class RequestV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error RequestV1Controller@getRequestByEmmiters#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/search-manager-municipality", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by manager and municipality")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get requests", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestByManagerAndMunicipality(
+			@RequestParam(name = "manager", required = true) Long managerCode,
+			@RequestParam(name = "municipality", required = true) String municipalityCode,
+			@RequestParam(name = "page", required = true) Integer page) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestByManagerAndMunicipality(page, municipalityCode, managerCode);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndMunicipality#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndMunicipality#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/search-manager-provider", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by manager and provider")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get requests", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestByManagerAndProvider(
+			@RequestParam(name = "manager", required = true) Long managerCode,
+			@RequestParam(name = "provider", required = true) Long providerId,
+			@RequestParam(name = "page", required = true) Integer page) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestByManagerAndProvider(page, providerId, managerCode);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/search-manager-package", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by manager and package")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get requests", response = RequestDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestByManagerAndPackage(
+			@RequestParam(name = "manager", required = true) Long managerCode,
+			@RequestParam(name = "package_label", required = true) String packageLabel) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestByManagerAndPackage(managerCode, packageLabel);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndPackage#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestByManagerAndPackage#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}
