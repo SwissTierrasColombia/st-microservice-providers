@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.RequestEmitterDto;
+import com.ai.st.microservice.providers.dto.RequestPaginatedDto;
 import com.ai.st.microservice.providers.dto.RequestStateDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
@@ -271,6 +273,82 @@ public class RequestBusiness {
 		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
 
 		List<RequestEntity> listRequestsEntity = requestService.getRequestsByEmmiter(emmiterCode, emmiterType);
+
+		if (listRequestsEntity.size() > 0) {
+			for (RequestEntity requestEntity : listRequestsEntity) {
+				RequestDto requestDto = entityParseDto(requestEntity);
+				listRequestsDto.add(requestDto);
+			}
+		}
+
+		return listRequestsDto;
+	}
+
+	public RequestPaginatedDto getRequestByManagerAndMunicipality(int page, String municipalityCode, Long emmiterCode)
+			throws BusinessException {
+
+		if (page <= 0) {
+			page = 1;
+		}
+
+		Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndMunicipality(emmiterCode,
+				EmitterTypeEnum.ENTITY.name(), municipalityCode, page - 1, 10);
+
+		List<RequestEntity> listRequestsEntity = pageEntity.toList();
+
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+		for (RequestEntity requestEntity : listRequestsEntity) {
+			RequestDto requestDto = entityParseDto(requestEntity);
+			listRequestsDto.add(requestDto);
+		}
+
+		RequestPaginatedDto dataPaginatedDto = new RequestPaginatedDto();
+		dataPaginatedDto.setNumber(pageEntity.getNumber());
+		dataPaginatedDto.setItems(listRequestsDto);
+		dataPaginatedDto.setNumberOfElements(pageEntity.getNumberOfElements());
+		dataPaginatedDto.setTotalElements(pageEntity.getTotalElements());
+		dataPaginatedDto.setTotalPages(pageEntity.getTotalPages());
+		dataPaginatedDto.setSize(pageEntity.getSize());
+
+		return dataPaginatedDto;
+	}
+
+	public RequestPaginatedDto getRequestByManagerAndProvider(int page, Long providerId, Long emmiterCode)
+			throws BusinessException {
+
+		if (page <= 0) {
+			page = 1;
+		}
+
+		Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndProvider(emmiterCode,
+				EmitterTypeEnum.ENTITY.name(), providerId, page - 1, 10);
+
+		List<RequestEntity> listRequestsEntity = pageEntity.toList();
+
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+		for (RequestEntity requestEntity : listRequestsEntity) {
+			RequestDto requestDto = entityParseDto(requestEntity);
+			listRequestsDto.add(requestDto);
+		}
+
+		RequestPaginatedDto dataPaginatedDto = new RequestPaginatedDto();
+		dataPaginatedDto.setNumber(pageEntity.getNumber());
+		dataPaginatedDto.setItems(listRequestsDto);
+		dataPaginatedDto.setNumberOfElements(pageEntity.getNumberOfElements());
+		dataPaginatedDto.setTotalElements(pageEntity.getTotalElements());
+		dataPaginatedDto.setTotalPages(pageEntity.getTotalPages());
+		dataPaginatedDto.setSize(pageEntity.getSize());
+
+		return dataPaginatedDto;
+	}
+
+	public List<RequestDto> getRequestByManagerAndPackage(Long emmiterCode, String packageLabel)
+			throws BusinessException {
+
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+
+		List<RequestEntity> listRequestsEntity = requestService.getRequestsByManagerAndPackage(emmiterCode,
+				EmitterTypeEnum.ENTITY.name(), packageLabel);
 
 		if (listRequestsEntity.size() > 0) {
 			for (RequestEntity requestEntity : listRequestsEntity) {
