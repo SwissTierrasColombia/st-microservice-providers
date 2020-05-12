@@ -48,4 +48,9 @@ public class ProviderService implements IProviderService {
 		return providerRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public ProviderEntity saveProvider(ProviderEntity providerEntity) {
+		return providerRepository.save(providerEntity);
+	}
+
 }

@@ -770,4 +770,34 @@ public class ProviderBusiness {
 		return dto;
 	}
 
+	public ProviderDto updateProvider(Long id, String name, String taxIdentificationNumber, Long providerCategoryId) throws BusinessException{
+		
+		name = name.toUpperCase();
+
+		ProviderCategoryEntity providerCategoryEntity = providerCategoryService
+				.getProviderCategoryById(providerCategoryId);
+
+		// verify if the category exists
+		if (!(providerCategoryEntity instanceof ProviderCategoryEntity)) {
+			throw new BusinessException("The category does not exist.");
+		}
+		
+		ProviderEntity providerEntity = providerService.getProviderById(id);
+
+		providerEntity.setName(name);
+		providerEntity.setTaxIdentificationNumber(taxIdentificationNumber);
+		providerEntity.setProviderCategory(providerCategoryEntity);
+		providerEntity = providerService.saveProvider(providerEntity);
+
+		ProviderDto providerDto = new ProviderDto();
+		providerDto.setId(providerEntity.getId());
+		providerDto.setName(providerEntity.getName());
+		providerDto.setCreatedAt(providerEntity.getCreatedAt());
+		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+		providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+				providerEntity.getProviderCategory().getName()));
+
+		return providerDto;
+	}
+
 }

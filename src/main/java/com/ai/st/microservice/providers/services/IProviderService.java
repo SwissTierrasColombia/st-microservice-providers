@@ -19,4 +19,6 @@ public interface IProviderService {
 
 	public ProviderEntity getProviderById(Long id);
 
+	public ProviderEntity saveProvider(ProviderEntity providerEntity);
+
 }

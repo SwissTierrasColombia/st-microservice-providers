@@ -28,6 +28,7 @@ import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
+import com.ai.st.microservice.providers.dto.UpdateProviderDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
 
@@ -100,6 +101,47 @@ public class ProviderV1Controller {
 
 			responseProviderDto = providerBusiness.createProvider(createProviderDto.getName(),
 					createProviderDto.getTaxIdentificationNumber(), createProviderDto.getProviderCategoryId());
+
+			httpStatus = HttpStatus.CREATED;
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@createProvider#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@createProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@createProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseProviderDto, httpStatus);
+	}
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update provider")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Update provider", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<ProviderDto> updateProvider(@RequestBody UpdateProviderDto updateProviderDto) {
+
+		HttpStatus httpStatus = null;
+		ProviderDto responseProviderDto = null;
+
+		try {
+
+			// validation input data
+			if (updateProviderDto.getName().isEmpty()) {
+				throw new InputValidationException("The provider name is required.");
+			}
+			if (updateProviderDto.getTaxIdentificationNumber().isEmpty()) {
+				throw new InputValidationException("The tax identification number is required.");
+			}
+			if (updateProviderDto.getProviderCategoryId() == null) {
+				throw new InputValidationException("The provider category is required.");
+			}
+
+			responseProviderDto = providerBusiness.updateProvider(updateProviderDto.getId(), updateProviderDto.getName(),
+					updateProviderDto.getTaxIdentificationNumber(), updateProviderDto.getProviderCategoryId());
 
 			httpStatus = HttpStatus.CREATED;
 		} catch (InputValidationException e) {
