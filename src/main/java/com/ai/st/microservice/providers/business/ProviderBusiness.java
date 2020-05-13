@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
@@ -195,7 +196,17 @@ public class ProviderBusiness {
 			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
 			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
 			typeSupplyDto.setName(typeSupplyEntity.getName());
-
+			
+			List<ExtensionEntity> extensions = typeSupplyEntity.getExtensions();
+			List<ExtensionDto> extensionsDto = new ArrayList<ExtensionDto>();
+			for (ExtensionEntity item : extensions) {
+				ExtensionDto extensionDto = new ExtensionDto();
+				extensionDto.setId(item.getId());
+				extensionDto.setName(item.getName());
+				extensionsDto.add(extensionDto);
+			}
+			typeSupplyDto.setExtensions(extensionsDto);
+			
 			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
 			providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
 			providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
