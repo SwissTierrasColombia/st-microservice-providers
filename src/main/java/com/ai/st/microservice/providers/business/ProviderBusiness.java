@@ -196,7 +196,7 @@ public class ProviderBusiness {
 			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
 			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
 			typeSupplyDto.setName(typeSupplyEntity.getName());
-			
+
 			List<ExtensionEntity> extensions = typeSupplyEntity.getExtensions();
 			List<ExtensionDto> extensionsDto = new ArrayList<ExtensionDto>();
 			for (ExtensionEntity item : extensions) {
@@ -206,7 +206,7 @@ public class ProviderBusiness {
 				extensionsDto.add(extensionDto);
 			}
 			typeSupplyDto.setExtensions(extensionsDto);
-			
+
 			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
 			providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
 			providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
@@ -781,8 +781,9 @@ public class ProviderBusiness {
 		return dto;
 	}
 
-	public ProviderDto updateProvider(Long id, String name, String taxIdentificationNumber, Long providerCategoryId) throws BusinessException{
-		
+	public ProviderDto updateProvider(Long id, String name, String taxIdentificationNumber, Long providerCategoryId)
+			throws BusinessException {
+
 		name = name.toUpperCase();
 
 		ProviderCategoryEntity providerCategoryEntity = providerCategoryService
@@ -792,7 +793,7 @@ public class ProviderBusiness {
 		if (!(providerCategoryEntity instanceof ProviderCategoryEntity)) {
 			throw new BusinessException("The category does not exist.");
 		}
-		
+
 		ProviderEntity providerEntity = providerService.getProviderById(id);
 
 		providerEntity.setName(name);
@@ -809,6 +810,17 @@ public class ProviderBusiness {
 				providerEntity.getProviderCategory().getName()));
 
 		return providerDto;
+	}
+
+	public void deleteProvider(Long providerId) throws BusinessException {
+
+		// verify if the provider exists
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (!(providerEntity instanceof ProviderEntity)) {
+			throw new BusinessException("El proveedor no existe.");
+		}
+
+		providerService.deleteProvider(providerEntity);
 	}
 
 }

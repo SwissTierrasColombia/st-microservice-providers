@@ -53,4 +53,9 @@ public class ProviderService implements IProviderService {
 		return providerRepository.save(providerEntity);
 	}
 
+	@Override
+	public void deleteProvider(ProviderEntity providerEntity) {
+		providerRepository.delete(providerEntity);
+	}
+
 }

@@ -157,6 +157,34 @@ public class ProviderV1Controller {
 
 		return new ResponseEntity<>(responseProviderDto, httpStatus);
 	}
+	
+	@RequestMapping(value = "/{providerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Delete provider")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete provider", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> deleteProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			providerBusiness.deleteProvider(providerId);
+			httpStatus = HttpStatus.NO_CONTENT;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@deleteProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@deleteProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
 
 	@RequestMapping(value = "/{providerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get provider by id")
