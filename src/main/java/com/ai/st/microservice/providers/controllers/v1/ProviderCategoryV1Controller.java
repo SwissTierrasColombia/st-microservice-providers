@@ -27,8 +27,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE,
-		RequestMethod.OPTIONS })
 @Api(value = "Manage Providers Categories", description = "Manage Providers Categories", tags = {
 		"Providers Categories" })
 @RestController
