@@ -2,8 +2,7 @@ spring:
   application:
     name: st-microservice-providers
   profiles:
-    active: 
-      - "develop"
+    active: "develop"
   cloud:
     config:
       enabled: true
@@ -31,3 +30,11 @@ spring:
     config:
       failFast: true
       uri: http://172.31.34.168:8890
+      
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      failFast: false
+      uri: http://localhost:8889
