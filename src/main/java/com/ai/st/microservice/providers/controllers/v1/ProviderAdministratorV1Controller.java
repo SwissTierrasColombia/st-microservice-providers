@@ -108,7 +108,7 @@ public class ProviderAdministratorV1Controller {
 			@ApiResponse(code = 200, message = "Get roles by user", response = ProviderAdministratorDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<?> getRolesByUser(@PathVariable Long userCode) {
+	public ResponseEntity<Object> getRolesByUser(@PathVariable Long userCode) {
 
 		HttpStatus httpStatus = null;
 		Object responseDto = null;

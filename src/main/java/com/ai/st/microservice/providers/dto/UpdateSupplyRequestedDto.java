@@ -22,6 +22,15 @@ public class UpdateSupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = false, notes = "User Code")
 	private Long deliveryBy;
 
+	@ApiModelProperty(required = false, notes = "Url file")
+	private String url;
+
+	@ApiModelProperty(required = false, notes = "Observations")
+	private String observations;
+
+	@ApiModelProperty(required = false, notes = "Ftp")
+	private String ftp;
+
 	public UpdateSupplyRequestedDto() {
 
 	}
@@ -56,6 +65,30 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
 	public void setDeliveryBy(Long deliveryBy) {
 		this.deliveryBy = deliveryBy;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getObservations() {
+		return observations;
+	}
+
+	public void setObservations(String observations) {
+		this.observations = observations;
+	}
+
+	public String getFtp() {
+		return ftp;
+	}
+
+	public void setFtp(String ftp) {
+		this.ftp = ftp;
 	}
 
 }
