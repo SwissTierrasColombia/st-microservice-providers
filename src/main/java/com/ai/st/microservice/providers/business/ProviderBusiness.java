@@ -648,12 +648,12 @@ public class ProviderBusiness {
 		}
 
 		if (!typeSupplyEntity.getProvider().getId().equals(providerId)) {
-			throw new BusinessException("El tipo de insumo no pertenece al proveedor");
+			throw new BusinessException("El tipo de insumo no pertenece al proveedor.");
 		}
 
 		int count = supplyRequestedService.getSuppliesRequestedByTypeSupply(typeSupplyEntity).size();
 		if (count > 0) {
-			throw new BusinessException("No se puede borrar el tipo de insumo porque ya ha sido solicitado");
+			throw new BusinessException("No se puede borrar el tipo de insumo porque ya ha sido solicitado.");
 		}
 
 		// remove extensions
