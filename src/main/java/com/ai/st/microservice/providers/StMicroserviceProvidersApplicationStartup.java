@@ -105,6 +105,11 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerCategoryLand.setName("TIERRAS");
 				providerCategoryService.createProviderCategory(providerCategoryLand);
 
+				ProviderCategoryEntity providerCategoryGeneral = new ProviderCategoryEntity();
+				providerCategoryGeneral.setId(ProviderCategoryBusiness.PROVIDER_CATEGORY_GENERAL);
+				providerCategoryGeneral.setName("GENERAL");
+				providerCategoryService.createProviderCategory(providerCategoryGeneral);
+
 				log.info("The domains 'providers categories' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'providers categories' domains");
@@ -565,7 +570,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 				RoleEntity roleDirector = new RoleEntity();
 				roleDirector.setId(RoleBusiness.ROLE_DIRECTOR);
-				roleDirector.setName("DIRECTOR");
+				roleDirector.setName("ADMINISTRADOR PROVEEDOR");
 
 				roleService.createRole(roleDirector);
 
