@@ -53,7 +53,7 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 200, message = "Get providers", response = ProviderDto.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<List<ProviderDto>> getProviders() {
+	public ResponseEntity<Object> getProviders() {
 
 		HttpStatus httpStatus = null;
 		List<ProviderDto> listProviders = new ArrayList<ProviderDto>();
@@ -89,14 +89,15 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (createProviderDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider name is required.");
+			if (createProviderDto.getName() == null || createProviderDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del proveedor es requerido.");
 			}
-			if (createProviderDto.getTaxIdentificationNumber().isEmpty()) {
-				throw new InputValidationException("The tax identification number is required.");
+			if (createProviderDto.getTaxIdentificationNumber() == null
+					|| createProviderDto.getTaxIdentificationNumber().isEmpty()) {
+				throw new InputValidationException("El nit es requerido.");
 			}
 			if (createProviderDto.getProviderCategoryId() == null) {
-				throw new InputValidationException("The provider category is required.");
+				throw new InputValidationException("La categoría es requerida.");
 			}
 
 			responseProviderDto = providerBusiness.createProvider(createProviderDto.getName(),
@@ -116,7 +117,7 @@ public class ProviderV1Controller {
 
 		return new ResponseEntity<>(responseProviderDto, httpStatus);
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Update provider")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Update provider", response = ProviderDto.class),
@@ -130,34 +131,39 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (updateProviderDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider name is required.");
+			if (updateProviderDto.getName() == null || updateProviderDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del proveedor es requerido.");
 			}
-			if (updateProviderDto.getTaxIdentificationNumber().isEmpty()) {
-				throw new InputValidationException("The tax identification number is required.");
+			if (updateProviderDto.getTaxIdentificationNumber() == null
+					|| updateProviderDto.getTaxIdentificationNumber().isEmpty()) {
+				throw new InputValidationException("El nit es requerido.");
 			}
 			if (updateProviderDto.getProviderCategoryId() == null) {
-				throw new InputValidationException("The provider category is required.");
+				throw new InputValidationException("La categoría es requerida.");
+			}
+			if (updateProviderDto.getId() == null) {
+				throw new InputValidationException("El ID de la categoría es requerido.");
 			}
 
-			responseProviderDto = providerBusiness.updateProvider(updateProviderDto.getId(), updateProviderDto.getName(),
-					updateProviderDto.getTaxIdentificationNumber(), updateProviderDto.getProviderCategoryId());
+			responseProviderDto = providerBusiness.updateProvider(updateProviderDto.getId(),
+					updateProviderDto.getName(), updateProviderDto.getTaxIdentificationNumber(),
+					updateProviderDto.getProviderCategoryId());
 
-			httpStatus = HttpStatus.CREATED;
+			httpStatus = HttpStatus.OK;
 		} catch (InputValidationException e) {
-			log.error("Error ProviderV1Controller@createProvider#Validation ---> " + e.getMessage());
+			log.error("Error ProviderV1Controller@updateProvider#Validation ---> " + e.getMessage());
 			httpStatus = HttpStatus.BAD_REQUEST;
 		} catch (BusinessException e) {
-			log.error("Error ProviderV1Controller@createProvider#Business ---> " + e.getMessage());
+			log.error("Error ProviderV1Controller@updateProvider#Business ---> " + e.getMessage());
 			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 		} catch (Exception e) {
-			log.error("Error ProviderV1Controller@createProvider#General ---> " + e.getMessage());
+			log.error("Error ProviderV1Controller@updateProvider#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
 		return new ResponseEntity<>(responseProviderDto, httpStatus);
 	}
-	
+
 	@RequestMapping(value = "/{providerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Delete provider")
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete provider", response = ProviderDto.class),
@@ -427,14 +433,17 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (createProviderProfileDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider profile name is required.");
+			if (createProviderProfileDto.getName() == null || createProviderProfileDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del perfil es requerido.");
 			}
-			if (createProviderProfileDto.getDescription().isEmpty()) {
-				throw new InputValidationException("The provider profile description is required.");
+
+			if (createProviderProfileDto.getDescription() == null
+					|| createProviderProfileDto.getDescription().isEmpty()) {
+				throw new InputValidationException("La descripción es requerida.");
 			}
+
 			if (providerId == null) {
-				throw new InputValidationException("The provider is required.");
+				throw new InputValidationException("El proveedor es requerido.");
 			}
 
 			responseDto = providerBusiness.createProviderProfile(createProviderProfileDto.getName(),
@@ -473,11 +482,12 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (updateProviderProfileDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider profile name is required.");
+			if (updateProviderProfileDto.getName() == null || updateProviderProfileDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del perfil es requerido.");
 			}
-			if (updateProviderProfileDto.getDescription().isEmpty()) {
-				throw new InputValidationException("The provider profile description is required.");
+			if (updateProviderProfileDto.getDescription() == null
+					|| updateProviderProfileDto.getDescription().isEmpty()) {
+				throw new InputValidationException("La descripción es requerida.");
 			}
 
 			responseDto = providerBusiness.updateProviderProfile(updateProviderProfileDto.getName(),
@@ -543,17 +553,26 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (createTypeSupplyDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider profile name is required.");
+			if (createTypeSupplyDto.getName() == null || createTypeSupplyDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del insumo es requerido.");
 			}
-			if (createTypeSupplyDto.getDescription().isEmpty()) {
-				throw new InputValidationException("The provider profile description is required.");
+			if (createTypeSupplyDto.getDescription() == null || createTypeSupplyDto.getDescription().isEmpty()) {
+				throw new InputValidationException("La descripción del insumo es requerida.");
 			}
 			if (providerId == null) {
-				throw new InputValidationException("The provider is required.");
+				throw new InputValidationException("El proveedor es requerido.");
 			}
 			if (createTypeSupplyDto.getProviderProfileId() == null) {
-				throw new InputValidationException("The provider profile is required.");
+				throw new InputValidationException("El perfil del proveedor es requerido.");
+			}
+			if (createTypeSupplyDto.getExtensions() == null || createTypeSupplyDto.getExtensions().size() == 0) {
+				throw new InputValidationException("Las extensiones son requeridas.");
+			}
+			if (createTypeSupplyDto.getMetadataRequired() == null) {
+				throw new InputValidationException("Se debe especificar si el insumo requiere metadata.");
+			}
+			if (createTypeSupplyDto.getModelRequired() == null) {
+				throw new InputValidationException("Se debe especificar si el insumo requiere versión del modelo.");
 			}
 
 			responseDto = providerBusiness.createTypeSupply(createTypeSupplyDto.getName(),
@@ -593,17 +612,26 @@ public class ProviderV1Controller {
 		try {
 
 			// validation input data
-			if (createTypeSupplyDto.getName().isEmpty()) {
-				throw new InputValidationException("The provider profile name is required.");
+			if (createTypeSupplyDto.getName() == null || createTypeSupplyDto.getName().isEmpty()) {
+				throw new InputValidationException("El nombre del insumo es requerido.");
 			}
-			if (createTypeSupplyDto.getDescription().isEmpty()) {
-				throw new InputValidationException("The provider profile description is required.");
+			if (createTypeSupplyDto.getDescription() == null || createTypeSupplyDto.getDescription().isEmpty()) {
+				throw new InputValidationException("La descripción del insumo es requerida.");
 			}
 			if (providerId == null) {
-				throw new InputValidationException("The provider is required.");
+				throw new InputValidationException("El proveedor es requerido.");
 			}
 			if (createTypeSupplyDto.getProviderProfileId() == null) {
-				throw new InputValidationException("The provider profile is required.");
+				throw new InputValidationException("El perfil del proveedor es requerido.");
+			}
+			if (createTypeSupplyDto.getExtensions() == null || createTypeSupplyDto.getExtensions().size() == 0) {
+				throw new InputValidationException("Las extensiones son requeridas.");
+			}
+			if (createTypeSupplyDto.getMetadataRequired() == null) {
+				throw new InputValidationException("Se debe especificar si el insumo requiere metadata.");
+			}
+			if (createTypeSupplyDto.getModelRequired() == null) {
+				throw new InputValidationException("Se debe especificar si el insumo requiere versión del modelo.");
 			}
 
 			responseDto = providerBusiness.updateTypeSupply(createTypeSupplyDto.getName(),

@@ -58,6 +58,15 @@ public class SupplyRequestedEntity {
 	@Column(name = "justification", nullable = true, length = 500)
 	private String justification;
 
+	@Column(name = "url", nullable = true, length = 1000)
+	private String url;
+
+	@Column(name = "observations", nullable = true, length = 500)
+	private String observations;
+
+	@Column(name = "ftp", nullable = true, length = 500)
+	private String ftp;
+
 	public SupplyRequestedEntity() {
 
 	}
@@ -148,6 +157,30 @@ public class SupplyRequestedEntity {
 
 	public void setDeliveredBy(Long deliveredBy) {
 		this.deliveredBy = deliveredBy;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getObservations() {
+		return observations;
+	}
+
+	public void setObservations(String observations) {
+		this.observations = observations;
+	}
+
+	public String getFtp() {
+		return ftp;
+	}
+
+	public void setFtp(String ftp) {
+		this.ftp = ftp;
 	}
 
 }

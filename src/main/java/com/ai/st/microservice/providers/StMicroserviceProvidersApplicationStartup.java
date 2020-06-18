@@ -5,6 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,9 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 	private static final Logger log = LoggerFactory.getLogger(StMicroserviceProvidersApplicationStartup.class);
 
+	@Value("${spring.profiles.active}")
+	private String activeProfile;
+
 	@Autowired
 	private IProviderCategoryService providerCategoryService;
 
@@ -66,12 +70,18 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+
 		log.info("ST - Loading Domains ... ");
+
 		this.initProvidersCategories();
-		this.initProviders();
 		this.initRequestsStates();
 		this.initSupplyRequestedStates();
 		this.initRoles();
+
+		if (!activeProfile.equalsIgnoreCase("test")) {
+			this.initProviders();
+		}
+
 	}
 
 	public void initProvidersCategories() {
@@ -94,6 +104,11 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerCategoryLand.setId(ProviderCategoryBusiness.PROVIDER_CATEGORY_LAND);
 				providerCategoryLand.setName("TIERRAS");
 				providerCategoryService.createProviderCategory(providerCategoryLand);
+
+				ProviderCategoryEntity providerCategoryGeneral = new ProviderCategoryEntity();
+				providerCategoryGeneral.setId(ProviderCategoryBusiness.PROVIDER_CATEGORY_GENERAL);
+				providerCategoryGeneral.setName("GENERAL");
+				providerCategoryService.createProviderCategory(providerCategoryGeneral);
 
 				log.info("The domains 'providers categories' have been loaded!");
 			} catch (Exception e) {
@@ -555,7 +570,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 				RoleEntity roleDirector = new RoleEntity();
 				roleDirector.setId(RoleBusiness.ROLE_DIRECTOR);
-				roleDirector.setName("DIRECTOR");
+				roleDirector.setName("ADMINISTRADOR PROVEEDOR");
 
 				roleService.createRole(roleDirector);
 

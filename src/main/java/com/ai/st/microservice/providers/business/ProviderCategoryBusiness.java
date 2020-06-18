@@ -17,6 +17,7 @@ public class ProviderCategoryBusiness {
 	public static final Long PROVIDER_CATEGORY_CADASTRAL = (long) 1;
 	public static final Long PROVIDER_CATEGORY_REGISTRY = (long) 2;
 	public static final Long PROVIDER_CATEGORY_LAND = (long) 3;
+	public static final Long PROVIDER_CATEGORY_GENERAL = (long) 4;
 
 	@Autowired
 	private IProviderCategoryService providerCategoryService;
