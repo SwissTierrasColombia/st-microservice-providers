@@ -15,6 +15,7 @@ import com.ai.st.microservice.providers.business.RequestStateBusiness;
 import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
+import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
@@ -24,6 +25,7 @@ import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
+import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
@@ -67,6 +69,9 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 	@Autowired
 	private IRoleService roleService;
+
+	@Autowired
+	private IProviderAdministratorService providerAdministratorService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -132,6 +137,10 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 				ProviderCategoryEntity providerCategoryLand = providerCategoryService
 						.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_LAND);
+
+				RoleEntity roleDirector = roleService.getRoleById(RoleBusiness.ROLE_DIRECTOR);
+
+				RoleEntity roleDelegate = roleService.getRoleById(RoleBusiness.ROLE_DELEGATE);
 
 				// provider IGAC
 
@@ -457,6 +466,20 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				user4.setUserCode((long) 4);
 				providerUserService.createProviderUser(user4);
 
+				ProviderAdministratorEntity user5 = new ProviderAdministratorEntity();
+				user5.setCreatedAt(new Date());
+				user5.setProvider(providerSNR);
+				user5.setUserCode((long) 9);
+				user5.setRole(roleDirector);
+				providerAdministratorService.createProviderAdministrator(user5);
+
+				ProviderAdministratorEntity user6 = new ProviderAdministratorEntity();
+				user6.setCreatedAt(new Date());
+				user6.setProvider(providerSNR);
+				user6.setUserCode((long) 10);
+				user6.setRole(roleDelegate);
+				providerAdministratorService.createProviderAdministrator(user6);
+
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
 				typeSupply12.setIsMetadataRequired(false);
@@ -554,6 +577,21 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				stateUndelivered.setName("NO ENTREGADO");
 				supplyRequestedStateService.createState(stateUndelivered);
 
+				SupplyRequestedStateEntity statetPendingReview = new SupplyRequestedStateEntity();
+				statetPendingReview.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING_REVIEW);
+				statetPendingReview.setName("PENDIENTE DE REVISIÓN");
+				supplyRequestedStateService.createState(statetPendingReview);
+
+				SupplyRequestedStateEntity statetSettingReview = new SupplyRequestedStateEntity();
+				statetSettingReview.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_SETTING_REVIEW);
+				statetSettingReview.setName("CONFIGURANDO REVISIÓN");
+				supplyRequestedStateService.createState(statetSettingReview);
+
+				SupplyRequestedStateEntity statetInReview = new SupplyRequestedStateEntity();
+				statetInReview.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_IN_REVIEW);
+				statetInReview.setName("EN REVISIÓN");
+				supplyRequestedStateService.createState(statetInReview);
+
 				log.info("The domains 'supply requested states' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'supply requested states' domains");
@@ -571,8 +609,12 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				RoleEntity roleDirector = new RoleEntity();
 				roleDirector.setId(RoleBusiness.ROLE_DIRECTOR);
 				roleDirector.setName("ADMINISTRADOR PROVEEDOR");
-
 				roleService.createRole(roleDirector);
+
+				RoleEntity roleDelegate = new RoleEntity();
+				roleDelegate.setId(RoleBusiness.ROLE_DELEGATE);
+				roleDelegate.setName("DELEGADO");
+				roleService.createRole(roleDelegate);
 
 				log.info("The domains 'roles' have been loaded!");
 			} catch (Exception e) {
