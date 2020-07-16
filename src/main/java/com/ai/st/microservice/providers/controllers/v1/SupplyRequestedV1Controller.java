@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ai.st.microservice.providers.business.AttachmentBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedBusiness;
 import com.ai.st.microservice.providers.business.SupplyRevisionBusiness;
+import com.ai.st.microservice.providers.dto.AttachmentDto;
+import com.ai.st.microservice.providers.dto.CreateAttachmentDto;
 import com.ai.st.microservice.providers.dto.CreateSupplyRevisionDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.SupplyRevisionDto;
+import com.ai.st.microservice.providers.dto.UpdateSupplyRevisionDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
@@ -39,6 +43,9 @@ public class SupplyRequestedV1Controller {
 
 	@Autowired
 	private SupplyRevisionBusiness supplyRevisionBusiness;
+
+	@Autowired
+	private AttachmentBusiness attachmentBusiness;
 
 	@RequestMapping(value = "/{supplyRequestedId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get supply requested by id")
@@ -117,6 +124,10 @@ public class SupplyRequestedV1Controller {
 			log.error("Error SupplyRequestedV1Controller@getSupplyRequestedById#Validation ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
+		} catch (BusinessException e) {
+			log.error("Error SupplyRequestedV1Controller@getSupplyRequestedById#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 3);
 		} catch (Exception e) {
 			log.error("Error SupplyRequestedV1Controller@getSupplyRequestedById#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -173,6 +184,87 @@ public class SupplyRequestedV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error SupplyRequestedV1Controller@getRevisionFromSupply#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "{supplyRequestedId}/attachments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Add attachment to supply requested")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Add attachment to supply requested", response = AttachmentDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<?> addAttachmentToSupplyRequested(@PathVariable Long supplyRequestedId,
+			@RequestBody CreateAttachmentDto createAttachmentDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			if (createAttachmentDto.getFileUrl() == null || createAttachmentDto.getFileUrl().isEmpty()) {
+				throw new InputValidationException("La url del archivo es requerida.");
+			}
+
+			if (createAttachmentDto.getBoundaryId() == null || createAttachmentDto.getBoundaryId() <= 0) {
+				throw new InputValidationException("La fuente cabidad lindero es requerida.");
+			}
+
+			if (createAttachmentDto.getCreatedBy() == null || createAttachmentDto.getCreatedBy() <= 0) {
+				throw new InputValidationException("El usuario es requerido.");
+			}
+
+			responseDto = attachmentBusiness.createAttachment(supplyRequestedId, createAttachmentDto.getBoundaryId(),
+					createAttachmentDto.getFileUrl(), createAttachmentDto.getCreatedBy());
+			httpStatus = HttpStatus.OK;
+
+		} catch (InputValidationException e) {
+			log.error("Error SupplyRequestedV1Controller@getSupplyRequestedById#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		catch (BusinessException e) {
+			log.error(
+					"Error SupplyRequestedV1Controller@addAttachmentToSupplyRequested#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error(
+					"Error SupplyRequestedV1Controller@addAttachmentToSupplyRequested#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "{supplyRequestedId}/revision/{revisionId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update revision")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Revision updated", response = SupplyRevisionDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<?> updateRevision(@PathVariable Long supplyRequestedId, @PathVariable Long revisionId,
+			@RequestBody UpdateSupplyRevisionDto updateRevisionDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = supplyRevisionBusiness.updateSupplyRevision(supplyRequestedId, revisionId,
+					updateRevisionDto.getFinishedBy());
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error SupplyRequestedV1Controller@updateRevision#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		} catch (Exception e) {
+			log.error("Error SupplyRequestedV1Controller@updateRevision#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}

@@ -30,12 +30,15 @@ public class AttachmentEntity {
 	@Column(name = "file_url", nullable = false, length = 1000)
 	private String fileUrl;
 
+	@Column(name = "boundary_id", nullable = false)
+	private Long boundaryId;
+
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
 	@Column(name = "created_by", nullable = false)
-	private Date createdBy;
+	private Long createdBy;
 
 	public AttachmentEntity() {
 
@@ -73,12 +76,20 @@ public class AttachmentEntity {
 		this.createdAt = createdAt;
 	}
 
-	public Date getCreatedBy() {
+	public Long getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(Date createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public Long getBoundaryId() {
+		return boundaryId;
+	}
+
+	public void setBoundaryId(Long boundaryId) {
+		this.boundaryId = boundaryId;
 	}
 
 }

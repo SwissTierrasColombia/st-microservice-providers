@@ -56,6 +56,34 @@ public class SupplyRevisionBusiness {
 		return supplyRevisionDto;
 	}
 
+	public SupplyRevisionDto updateSupplyRevision(Long supplyRequestedId, Long revisionId, Long finishedBy)
+			throws BusinessException {
+
+		SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);
+		if (!(supplyRequestedEntity instanceof SupplyRequestedEntity)) {
+			throw new BusinessException("El insumo solicitado no existe.");
+		}
+
+		SupplyRevisionEntity supplyRevisionEntity = supplyRevisionService.getSupplyRevisionById(revisionId);
+		if (!(supplyRevisionEntity instanceof SupplyRevisionEntity)) {
+			throw new BusinessException("La revisión no existe.");
+		}
+
+		if (!supplyRevisionEntity.getSupplyRequested().getId().equals(supplyRequestedId)) {
+			throw new BusinessException("La revisión no pertenece al insumo solicitado.");
+		}
+
+		if (finishedBy != null && finishedBy > 0) {
+			supplyRevisionEntity.setFinishedAt(new Date());
+			supplyRevisionEntity.setFinishedBy(finishedBy);
+		}
+
+		supplyRevisionEntity = supplyRevisionService.createSupplyRevision(supplyRevisionEntity);
+
+		SupplyRevisionDto supplyRevisionDto = entityParseToDto(supplyRevisionEntity);
+		return supplyRevisionDto;
+	}
+
 	public void deleteRevision(Long supplyRequestedId, Long supplyRevisionId) throws BusinessException {
 
 		SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);

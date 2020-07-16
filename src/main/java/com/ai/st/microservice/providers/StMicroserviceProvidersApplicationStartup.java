@@ -448,7 +448,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				// provider SNR
 
 				ProviderEntity providerSNR = new ProviderEntity();
-				providerSNR.setName("SUPERINTENDENCIA DE NOTARIADO Y REGISTRO");
+				providerSNR.setName("SNR");
 				providerSNR.setTaxIdentificationNumber("0001-8");
 				providerSNR.setCreatedAt(new Date());
 				providerSNR.setProviderCategory(providerCategoryRegistry);
@@ -592,6 +592,11 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				statetInReview.setName("EN REVISIÓN");
 				supplyRequestedStateService.createState(statetInReview);
 
+				SupplyRequestedStateEntity statetClosingReview = new SupplyRequestedStateEntity();
+				statetClosingReview.setId(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_CLOSING_REVIEW);
+				statetClosingReview.setName("CERRANDO REVISIÓN");
+				supplyRequestedStateService.createState(statetClosingReview);
+
 				log.info("The domains 'supply requested states' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'supply requested states' domains");
@@ -613,7 +618,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 
 				RoleEntity roleDelegate = new RoleEntity();
 				roleDelegate.setId(RoleBusiness.ROLE_DELEGATE);
-				roleDelegate.setName("DELEGADO");
+				roleDelegate.setName("REVISOR");
 				roleService.createRole(roleDelegate);
 
 				log.info("The domains 'roles' have been loaded!");
