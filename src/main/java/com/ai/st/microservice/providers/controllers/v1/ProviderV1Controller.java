@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ai.st.microservice.providers.business.ProviderBusiness;
+import com.ai.st.microservice.providers.business.SupplyRequestedBusiness;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.CreateProviderProfileDto;
 import com.ai.st.microservice.providers.dto.CreateTypeSupplyDto;
@@ -27,6 +28,7 @@ import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
 import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
+import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.dto.UpdateProviderDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
@@ -46,6 +48,9 @@ public class ProviderV1Controller {
 
 	@Autowired
 	private ProviderBusiness providerBusiness;
+
+	@Autowired
+	private SupplyRequestedBusiness supplyRequestedBusiness;
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get providers")
@@ -684,4 +689,34 @@ public class ProviderV1Controller {
 
 		return new ResponseEntity<>(responseDto, httpStatus);
 	}
+
+	@RequestMapping(value = "/{providerId}/supplies-requested", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get supplies requested by provider")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Get supplies requested by provider", response = SupplyRequestedDto.class, responseContainer = "List"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getSuppliesRequested(@PathVariable Long providerId,
+			@RequestParam(name = "states", required = true) List<Long> states) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = supplyRequestedBusiness.getSuppliesRequestedByProvider(providerId, states);
+			httpStatus = HttpStatus.OK;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getSuppliesRequested#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getSuppliesRequested#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
 }

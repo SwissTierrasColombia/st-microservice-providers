@@ -28,4 +28,14 @@ public class SupplyRequestedService implements ISupplyRequestedService {
 		return supplyRequestedRepository.findByTypeSupply(supplyEntity);
 	}
 
+	@Override
+	public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states) {
+		return supplyRequestedRepository.getSuppliesRequestedByProviderAndStates(providerId, states);
+	}
+
+	@Override
+	public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId) {
+		return supplyRequestedRepository.findById(supplyRequestedId).orElse(null);
+	}
+
 }

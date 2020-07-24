@@ -6,5 +6,6 @@ import org.springframework.stereotype.Component;
 public class RoleBusiness {
 
 	public static final Long ROLE_DIRECTOR = (long) 1;
+	public static final Long ROLE_DELEGATE = (long) 2;
 
 }

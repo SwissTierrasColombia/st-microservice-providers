@@ -11,4 +11,8 @@ public interface ISupplyRequestedService {
 
 	public List<SupplyRequestedEntity> getSuppliesRequestedByTypeSupply(TypeSupplyEntity supplyEntity);
 
+	public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states);
+
+	public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId);
+
 }
