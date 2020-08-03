@@ -15,6 +15,7 @@ import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.entities.RequestEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
@@ -122,7 +123,11 @@ public class SupplyRequestedBusiness {
 		supplyRequested.setTypeSupply(typeSupplyDto);
 
 		RequestDto requestDto = new RequestDto();
-		requestDto.setId(supplyRE.getRequest().getId());
+
+		RequestEntity requestEntity = supplyRE.getRequest();
+
+		requestDto.setId(requestEntity.getId());
+		requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
 
 		supplyRequested.setRequest(requestDto);
 
