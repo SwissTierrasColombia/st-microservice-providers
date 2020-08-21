@@ -10,11 +10,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import com.ai.st.microservice.providers.business.PetitionStateBusiness;
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.business.RequestStateBusiness;
 import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
+import com.ai.st.microservice.providers.entities.PetitionStateEntity;
 import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
@@ -25,6 +27,7 @@ import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
+import com.ai.st.microservice.providers.services.IPetitionStateService;
 import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
@@ -73,6 +76,9 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	@Autowired
 	private IProviderAdministratorService providerAdministratorService;
 
+	@Autowired
+	private IPetitionStateService petitionStateService;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
@@ -82,6 +88,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 		this.initRequestsStates();
 		this.initSupplyRequestedStates();
 		this.initRoles();
+		this.initPetitionStates();
 
 		if (!activeProfile.equalsIgnoreCase("test")) {
 			this.initProviders();
@@ -624,6 +631,35 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				log.info("The domains 'roles' have been loaded!");
 			} catch (Exception e) {
 				log.error("Failed to load 'roles' domains");
+			}
+
+		}
+	}
+
+	public void initPetitionStates() {
+		Long countStates = petitionStateService.getCount();
+		if (countStates == 0) {
+
+			try {
+
+				PetitionStateEntity statePending = new PetitionStateEntity();
+				statePending.setId(PetitionStateBusiness.PETITION_STATE_PENDING);
+				statePending.setName("PENDIENTE");
+				petitionStateService.createPetitionState(statePending);
+
+				PetitionStateEntity stateAccept = new PetitionStateEntity();
+				stateAccept.setId(PetitionStateBusiness.PETITION_STATE_ACCEPT);
+				stateAccept.setName("ACEPTADO");
+				petitionStateService.createPetitionState(stateAccept);
+
+				PetitionStateEntity stateReject = new PetitionStateEntity();
+				stateReject.setId(PetitionStateBusiness.PETITION_STATE_REJECT);
+				stateReject.setName("RECHAZADO");
+				petitionStateService.createPetitionState(stateReject);
+
+				log.info("The domains 'petitions states' have been loaded!");
+			} catch (Exception e) {
+				log.error("Failed to load 'petitions states' domains");
 			}
 
 		}

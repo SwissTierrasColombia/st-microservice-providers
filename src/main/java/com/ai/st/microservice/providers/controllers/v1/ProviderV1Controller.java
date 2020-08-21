@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ai.st.microservice.providers.business.PetitionBusiness;
 import com.ai.st.microservice.providers.business.ProviderBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedBusiness;
+import com.ai.st.microservice.providers.dto.CreatePetitionDto;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.CreateProviderProfileDto;
 import com.ai.st.microservice.providers.dto.CreateTypeSupplyDto;
 import com.ai.st.microservice.providers.dto.ErrorDto;
+import com.ai.st.microservice.providers.dto.PetitionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.ProviderProfileDto;
@@ -30,6 +33,7 @@ import com.ai.st.microservice.providers.dto.ProviderUserDto;
 import com.ai.st.microservice.providers.dto.RequestDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
+import com.ai.st.microservice.providers.dto.UpdatePetitionDto;
 import com.ai.st.microservice.providers.dto.UpdateProviderDto;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.exceptions.InputValidationException;
@@ -51,6 +55,9 @@ public class ProviderV1Controller {
 
 	@Autowired
 	private SupplyRequestedBusiness supplyRequestedBusiness;
+
+	@Autowired
+	private PetitionBusiness petitionBusiness;
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get providers")
@@ -712,6 +719,138 @@ public class ProviderV1Controller {
 			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ProviderV1Controller@getSuppliesRequested#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/petitions", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create petition")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Petition created", response = PetitionDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> createPetition(@PathVariable Long providerId,
+			@RequestBody CreatePetitionDto createPetitionDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			// validation input data
+			if (createPetitionDto.getObservations() == null || createPetitionDto.getObservations().isEmpty()) {
+				throw new InputValidationException("Las observaciones son requeridas.");
+			}
+			if (createPetitionDto.getManagerCode() == null || createPetitionDto.getManagerCode() <= 0) {
+				throw new InputValidationException("El código del gestor es requerido.");
+			}
+
+			responseDto = petitionBusiness.createPetition(providerId, createPetitionDto.getManagerCode(),
+					createPetitionDto.getObservations());
+			httpStatus = HttpStatus.CREATED;
+
+		} catch (InputValidationException e) {
+			log.error("Error ProviderV1Controller@createPetition#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new ErrorDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@createPetition#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@createPetition#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/petitions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get petitions")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Petitions", response = PetitionDto.class, responseContainer = "List"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getPetitionsByProvider(@PathVariable Long providerId,
+			@RequestParam(name = "states", required = true) List<Long> states) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = petitionBusiness.getPetitionsByProvider(providerId, states);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getPetitionsByProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getPetitionsByProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/petitions/{petitionId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update petition")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Petition updated", response = PetitionDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> updatePetition(@PathVariable Long providerId, @PathVariable Long petitionId,
+			@RequestBody UpdatePetitionDto updatePetitionDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = petitionBusiness.updatePetition(providerId, petitionId,
+					updatePetitionDto.getPetitionStateId(), updatePetitionDto.getJustitication());
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@updatePetition#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@updatePetition#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/petitions-manager/{managerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get petitions from manager")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Petitions from manager", response = PetitionDto.class, responseContainer = "List"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getPetitionsFromManager(@PathVariable Long providerId,
+			@PathVariable Long managerId) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = petitionBusiness.getPetitionsFromManager(providerId, managerId);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@getPetitionsFromManager#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@getPetitionsFromManager#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new ErrorDto(e.getMessage(), 3);
 		}
