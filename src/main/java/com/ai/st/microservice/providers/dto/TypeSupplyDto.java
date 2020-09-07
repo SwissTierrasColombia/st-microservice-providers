@@ -18,6 +18,9 @@ public class TypeSupplyDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Date creation")
 	private Date createdAt;
+	
+	@ApiModelProperty(required = true, notes = "Active")
+	private Boolean active;
 
 	@ApiModelProperty(required = true, notes = "Description")
 	private String description;
@@ -113,6 +116,14 @@ public class TypeSupplyDto implements Serializable {
 
 	public void setModelRequired(Boolean modelRequired) {
 		this.modelRequired = modelRequired;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }

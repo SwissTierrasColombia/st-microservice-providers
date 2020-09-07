@@ -237,7 +237,8 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 404, message = "Provider not found.", response = ProviderDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> getTypeSuppliesByProvider(@PathVariable Long providerId) {
+	public ResponseEntity<Object> getTypeSuppliesByProvider(@PathVariable Long providerId,
+			@RequestParam(name = "onlyActive", required = false, defaultValue = "false") Boolean onlyActive) {
 
 		HttpStatus httpStatus = null;
 		List<TypeSupplyDto> listTypesSupplies = new ArrayList<TypeSupplyDto>();
@@ -245,7 +246,7 @@ public class ProviderV1Controller {
 
 		try {
 
-			listTypesSupplies = providerBusiness.getTypesSuppliesByProviderId(providerId);
+			listTypesSupplies = providerBusiness.getTypesSuppliesByProviderId(providerId, onlyActive);
 			httpStatus = HttpStatus.OK;
 
 		} catch (BusinessException e) {
@@ -834,8 +835,7 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 200, message = "Petitions from manager", response = PetitionDto.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> getPetitionsFromManager(@PathVariable Long providerId,
-			@PathVariable Long managerId) {
+	public ResponseEntity<Object> getPetitionsFromManager(@PathVariable Long providerId, @PathVariable Long managerId) {
 
 		HttpStatus httpStatus = null;
 		Object responseDto = null;

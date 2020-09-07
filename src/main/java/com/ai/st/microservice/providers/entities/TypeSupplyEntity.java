@@ -37,6 +37,9 @@ public class TypeSupplyEntity {
 
 	@Column(name = "model_required", nullable = false)
 	private Boolean isModelRequired;
+	
+	@Column(name = "active", nullable = false)
+	private Boolean active;
 
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -127,6 +130,14 @@ public class TypeSupplyEntity {
 
 	public void setIsModelRequired(Boolean isModelRequired) {
 		this.isModelRequired = isModelRequired;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }

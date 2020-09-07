@@ -201,6 +201,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply1.setCreatedAt(new Date());
 				typeSupply1.setProvider(providerIgac);
 				typeSupply1.setProviderProfile(profileCadastral);
+				typeSupply1.setActive(true);
 				typeSupply1 = typeSupplyService.createTypeSupply(typeSupply1);
 
 				ExtensionEntity extension1 = new ExtensionEntity();
@@ -225,6 +226,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply2.setCreatedAt(new Date());
 				typeSupply2.setProvider(providerIgac);
 				typeSupply2.setProviderProfile(profileCadastral);
+				typeSupply2.setActive(true);
 				typeSupply2 = typeSupplyService.createTypeSupply(typeSupply2);
 
 				ExtensionEntity extension4 = new ExtensionEntity();
@@ -239,6 +241,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply4.setCreatedAt(new Date());
 				typeSupply4.setProvider(providerIgac);
 				typeSupply4.setProviderProfile(profileCartographic);
+				typeSupply4.setActive(true);
 				typeSupply4 = typeSupplyService.createTypeSupply(typeSupply4);
 
 				ExtensionEntity extension6 = new ExtensionEntity();
@@ -258,6 +261,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply5.setCreatedAt(new Date());
 				typeSupply5.setProvider(providerIgac);
 				typeSupply5.setProviderProfile(profileCartographic);
+				typeSupply5.setActive(true);
 				typeSupply5 = typeSupplyService.createTypeSupply(typeSupply5);
 
 				ExtensionEntity extension8 = new ExtensionEntity();
@@ -277,6 +281,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply6.setCreatedAt(new Date());
 				typeSupply6.setProvider(providerIgac);
 				typeSupply6.setProviderProfile(profileCartographic);
+				typeSupply6.setActive(true);
 				typeSupply6 = typeSupplyService.createTypeSupply(typeSupply6);
 
 				ExtensionEntity extension10 = new ExtensionEntity();
@@ -296,6 +301,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply7.setCreatedAt(new Date());
 				typeSupply7.setProvider(providerIgac);
 				typeSupply7.setProviderProfile(profileCartographic);
+				typeSupply7.setActive(true);
 				typeSupply7 = typeSupplyService.createTypeSupply(typeSupply7);
 
 				ExtensionEntity extension12 = new ExtensionEntity();
@@ -315,6 +321,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply8.setCreatedAt(new Date());
 				typeSupply8.setProvider(providerIgac);
 				typeSupply8.setProviderProfile(profileCartographic);
+				typeSupply8.setActive(true);
 				typeSupply8 = typeSupplyService.createTypeSupply(typeSupply8);
 
 				ExtensionEntity extension14 = new ExtensionEntity();
@@ -334,6 +341,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply9.setCreatedAt(new Date());
 				typeSupply9.setProvider(providerIgac);
 				typeSupply9.setProviderProfile(profileAgrological);
+				typeSupply9.setActive(true);
 				typeSupply9 = typeSupplyService.createTypeSupply(typeSupply9);
 
 				ExtensionEntity extension16 = new ExtensionEntity();
@@ -368,6 +376,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply10.setCreatedAt(new Date());
 				typeSupply10.setProvider(providerIgac);
 				typeSupply10.setProviderProfile(profileAgrological);
+				typeSupply10.setActive(true);
 				typeSupply10 = typeSupplyService.createTypeSupply(typeSupply10);
 
 				ExtensionEntity extension18 = new ExtensionEntity();
@@ -387,6 +396,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply13.setCreatedAt(new Date());
 				typeSupply13.setProvider(providerIgac);
 				typeSupply13.setProviderProfile(profileCadastral);
+				typeSupply13.setActive(true);
 				typeSupply13 = typeSupplyService.createTypeSupply(typeSupply13);
 
 				ExtensionEntity extension23 = new ExtensionEntity();
@@ -401,6 +411,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply14.setCreatedAt(new Date());
 				typeSupply14.setProvider(providerIgac);
 				typeSupply14.setProviderProfile(profileCadastral);
+				typeSupply14.setActive(true);
 				typeSupply14 = typeSupplyService.createTypeSupply(typeSupply14);
 
 				ExtensionEntity extension24 = new ExtensionEntity();
@@ -494,6 +505,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply12.setCreatedAt(new Date());
 				typeSupply12.setProvider(providerSNR);
 				typeSupply12.setProviderProfile(profileRegistry);
+				typeSupply12.setActive(true);
 				typeSupply12 = typeSupplyService.createTypeSupply(typeSupply12);
 
 				ExtensionEntity extension22 = new ExtensionEntity();
