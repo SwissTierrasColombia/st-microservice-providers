@@ -67,7 +67,7 @@ public class StGetProvidersTests {
 	@Test
 	@Transactional
 	public void validateGetProviders() {
-		ResponseEntity<Object> data = providerController.getProviders();
+		ResponseEntity<Object> data = providerController.getProviders(false);
 
 		@SuppressWarnings("unchecked")
 		List<ProviderDto> providers = (List<ProviderDto>) data.getBody();

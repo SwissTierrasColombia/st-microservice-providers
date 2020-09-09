@@ -18,5 +18,7 @@ public interface ProviderRepository extends CrudRepository<ProviderEntity, Long>
 	List<ProviderEntity> getProvidersByCategoryId(@Param("providerCategoryId") Long providerCategoryId);
 
 	ProviderEntity findByNameAndProviderCategory(String name, ProviderCategoryEntity category);
+	
+	List<ProviderEntity> findByActive(Boolean active);
 
 }

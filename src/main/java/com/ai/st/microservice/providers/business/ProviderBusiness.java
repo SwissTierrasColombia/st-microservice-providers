@@ -77,20 +77,21 @@ public class ProviderBusiness {
 	@Autowired
 	private IProviderAdministratorService providerAdministratorService;
 
-	public List<ProviderDto> getProviders() throws BusinessException {
+	public List<ProviderDto> getProviders(Boolean onlyActive) throws BusinessException {
 
 		List<ProviderDto> listProvidersDto = new ArrayList<ProviderDto>();
-
-		List<ProviderEntity> listProvidersEntity = providerService.getAllProviders();
+		
+		List<ProviderEntity> listProvidersEntity = new ArrayList<ProviderEntity>();
+		
+		if (onlyActive) {
+			listProvidersEntity = providerService.getAllProvidersActive(onlyActive);
+		} else {
+			listProvidersEntity = providerService.getAllProviders();
+		}
+		
 		for (ProviderEntity providerEntity : listProvidersEntity) {
 
-			ProviderDto providerDto = new ProviderDto();
-			providerDto.setId(providerEntity.getId());
-			providerDto.setName(providerEntity.getName());
-			providerDto.setCreatedAt(providerEntity.getCreatedAt());
-			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
-			providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
-					providerEntity.getProviderCategory().getName()));
+			ProviderDto providerDto = entityParseDto(providerEntity);
 
 			listProvidersDto.add(providerDto);
 		}
@@ -859,4 +860,3 @@ public class ProviderBusiness {
 	}
 
 }
-

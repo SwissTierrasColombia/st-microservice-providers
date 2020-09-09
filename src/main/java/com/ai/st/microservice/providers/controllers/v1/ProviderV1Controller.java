@@ -65,16 +65,17 @@ public class ProviderV1Controller {
 			@ApiResponse(code = 200, message = "Get providers", response = ProviderDto.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> getProviders() {
+	public ResponseEntity<Object> getProviders(
+			@RequestParam(name = "onlyActive", required = false, defaultValue = "false") Boolean onlyActive) {
 
 		HttpStatus httpStatus = null;
 		List<ProviderDto> listProviders = new ArrayList<ProviderDto>();
 
 		try {
 
-			listProviders = providerBusiness.getProviders();
-
+			listProviders = providerBusiness.getProviders(onlyActive);
 			httpStatus = HttpStatus.OK;
+
 		} catch (BusinessException e) {
 			listProviders = null;
 			log.error("Error ProviderV1Controller@getProviders#Business ---> " + e.getMessage());

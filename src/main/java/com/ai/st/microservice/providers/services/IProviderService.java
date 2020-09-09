@@ -22,5 +22,7 @@ public interface IProviderService {
 	public ProviderEntity saveProvider(ProviderEntity providerEntity);
 
 	public void deleteProvider(ProviderEntity providerEntity);
+	
+	public List<ProviderEntity> getAllProvidersActive(Boolean active);
 
 }
