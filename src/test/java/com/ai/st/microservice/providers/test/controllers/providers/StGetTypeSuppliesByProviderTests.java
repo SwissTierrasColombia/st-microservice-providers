@@ -92,7 +92,7 @@ public class StGetTypeSuppliesByProviderTests {
 	@Transactional
 	public void validateGetTypesSuppliesByProvider() {
 
-		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider(providerEntity.getId());
+		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider(providerEntity.getId(), false);
 
 		@SuppressWarnings("unchecked")
 		List<TypeSupplyDto> typeSupplies = (List<TypeSupplyDto>) data.getBody();
@@ -105,7 +105,7 @@ public class StGetTypeSuppliesByProviderTests {
 	@Test
 	@Transactional
 	public void shouldErrorWhenProviderDoesNotExists() {
-		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider((long) 150);
+		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider((long) 150, false);
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
 				"Debe arrojar un estado http con código 422");
 	}

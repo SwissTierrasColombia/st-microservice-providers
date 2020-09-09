@@ -533,6 +533,7 @@ public class ProviderBusiness {
 		typeSupplyEntity.setIsModelRequired(modelRequired);
 		typeSupplyEntity.setCreatedAt(new Date());
 		typeSupplyEntity.setProvider(providerEntity);
+		typeSupplyEntity.setActive(true);
 		typeSupplyEntity.setProviderProfile(providerProfileEntity);
 		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
