@@ -176,6 +176,56 @@ public class ProviderV1Controller {
 		return new ResponseEntity<>(responseProviderDto, httpStatus);
 	}
 
+	@RequestMapping(value = "/{providerId}/enable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update provider")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Provider updated", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<?> enableProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		ProviderDto responseProviderDto = null;
+
+		try {
+
+			responseProviderDto = providerBusiness.enableProvider(providerId);
+			httpStatus = HttpStatus.OK;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@enableProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@enableProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseProviderDto, httpStatus);
+	}
+
+	@RequestMapping(value = "/{providerId}/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update provider")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Provider updated", response = ProviderDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<?> disableProvider(@PathVariable Long providerId) {
+
+		HttpStatus httpStatus = null;
+		ProviderDto responseProviderDto = null;
+
+		try {
+
+			responseProviderDto = providerBusiness.disableProvider(providerId);
+			httpStatus = HttpStatus.OK;
+		} catch (BusinessException e) {
+			log.error("Error ProviderV1Controller@disableProvider#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		} catch (Exception e) {
+			log.error("Error ProviderV1Controller@disableProvider#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<>(responseProviderDto, httpStatus);
+	}
+
 	@RequestMapping(value = "/{providerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Delete provider")
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete provider", response = ProviderDto.class),

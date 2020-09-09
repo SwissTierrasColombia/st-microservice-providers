@@ -156,6 +156,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerIgac.setTaxIdentificationNumber("0001-1");
 				providerIgac.setCreatedAt(new Date());
 				providerIgac.setProviderCategory(providerCategoryCadastral);
+				providerIgac.setActive(true);
 				providerIgac = providerService.createProvider(providerIgac);
 
 				ProviderProfileEntity profileCadastral = new ProviderProfileEntity();
@@ -426,6 +427,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerUAECD.setTaxIdentificationNumber("0001-2");
 				providerUAECD.setCreatedAt(new Date());
 				providerUAECD.setProviderCategory(providerCategoryCadastral);
+				providerUAECD.setActive(true);
 				providerService.createProvider(providerUAECD);
 
 				ProviderEntity providerAMCO = new ProviderEntity();
@@ -433,6 +435,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerAMCO.setTaxIdentificationNumber("0001-3");
 				providerAMCO.setCreatedAt(new Date());
 				providerAMCO.setProviderCategory(providerCategoryCadastral);
+				providerAMCO.setActive(true);
 				providerService.createProvider(providerAMCO);
 
 				ProviderEntity providerAntioquia = new ProviderEntity();
@@ -440,6 +443,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerAntioquia.setTaxIdentificationNumber("0001-4");
 				providerAntioquia.setCreatedAt(new Date());
 				providerAntioquia.setProviderCategory(providerCategoryCadastral);
+				providerAntioquia.setActive(true);
 				providerService.createProvider(providerAntioquia);
 
 				ProviderEntity providerMedellin = new ProviderEntity();
@@ -447,6 +451,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerMedellin.setTaxIdentificationNumber("0001-5");
 				providerMedellin.setCreatedAt(new Date());
 				providerMedellin.setProviderCategory(providerCategoryCadastral);
+				providerMedellin.setActive(true);
 				providerService.createProvider(providerMedellin);
 
 				ProviderEntity providerCali = new ProviderEntity();
@@ -454,6 +459,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerCali.setTaxIdentificationNumber("0001-6");
 				providerCali.setCreatedAt(new Date());
 				providerCali.setProviderCategory(providerCategoryCadastral);
+				providerCali.setActive(true);
 				providerService.createProvider(providerCali);
 
 				ProviderEntity providerBarranquilla = new ProviderEntity();
@@ -461,6 +467,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerBarranquilla.setTaxIdentificationNumber("0001-7");
 				providerBarranquilla.setCreatedAt(new Date());
 				providerBarranquilla.setProviderCategory(providerCategoryCadastral);
+				providerBarranquilla.setActive(true);
 				providerService.createProvider(providerBarranquilla);
 
 				// provider SNR
@@ -470,6 +477,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerSNR.setTaxIdentificationNumber("0001-8");
 				providerSNR.setCreatedAt(new Date());
 				providerSNR.setProviderCategory(providerCategoryRegistry);
+				providerSNR.setActive(true);
 				providerSNR = providerService.createProvider(providerSNR);
 
 				ProviderProfileEntity profileRegistry = new ProviderProfileEntity();
@@ -520,6 +528,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerANT.setTaxIdentificationNumber("0001-9");
 				providerANT.setCreatedAt(new Date());
 				providerANT.setProviderCategory(providerCategoryLand);
+				providerANT.setActive(true);
 				providerANT = providerService.createProvider(providerANT);
 
 				ProviderProfileEntity profileANT = new ProviderProfileEntity();

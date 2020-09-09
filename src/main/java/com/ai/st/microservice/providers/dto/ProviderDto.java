@@ -13,6 +13,9 @@ public class ProviderDto {
 
 	@ApiModelProperty(required = true, notes = "Provider name")
 	private String name;
+	
+	@ApiModelProperty(required = true, notes = "Active")
+	private Boolean active;
 
 	@ApiModelProperty(required = true, notes = "Provider tax identification number")
 	private String taxIdentificationNumber;
@@ -65,6 +68,14 @@ public class ProviderDto {
 
 	public void setProviderCategory(ProviderCategoryDto providerCategory) {
 		this.providerCategory = providerCategory;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }

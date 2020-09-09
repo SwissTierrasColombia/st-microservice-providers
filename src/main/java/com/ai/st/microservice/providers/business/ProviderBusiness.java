@@ -793,6 +793,34 @@ public class ProviderBusiness {
 		return providerDto;
 	}
 
+	public ProviderDto enableProvider(Long providerId) throws BusinessException {
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (providerEntity == null) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		providerEntity.setActive(true);
+		providerEntity = providerService.saveProvider(providerEntity);
+
+		ProviderDto providerDto = entityParseDto(providerEntity);
+		return providerDto;
+	}
+
+	public ProviderDto disableProvider(Long providerId) throws BusinessException {
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (providerEntity == null) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		providerEntity.setActive(false);
+		providerEntity = providerService.saveProvider(providerEntity);
+
+		ProviderDto providerDto = entityParseDto(providerEntity);
+		return providerDto;
+	}
+
 	public void deleteProvider(Long providerId) throws BusinessException {
 
 		// verify if the provider exists
@@ -816,4 +844,19 @@ public class ProviderBusiness {
 		providerService.deleteProvider(providerEntity);
 	}
 
+	public ProviderDto entityParseDto(ProviderEntity providerEntity) {
+
+		ProviderDto providerDto = new ProviderDto();
+		providerDto.setId(providerEntity.getId());
+		providerDto.setName(providerEntity.getName());
+		providerDto.setActive(providerEntity.getActive());
+		providerDto.setCreatedAt(providerEntity.getCreatedAt());
+		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+		providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+				providerEntity.getProviderCategory().getName()));
+
+		return providerDto;
+	}
+
 }
+

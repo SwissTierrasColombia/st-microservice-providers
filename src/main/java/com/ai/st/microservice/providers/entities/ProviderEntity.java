@@ -36,6 +36,9 @@ public class ProviderEntity {
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@Column(name = "active", nullable = false)
+	private Boolean active;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_category_id", referencedColumnName = "id", nullable = false)
@@ -138,6 +141,14 @@ public class ProviderEntity {
 
 	public void setAdministrators(List<ProviderAdministratorEntity> administrators) {
 		this.administrators = administrators;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }
