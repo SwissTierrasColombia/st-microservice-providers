@@ -17,22 +17,18 @@ import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.PetitionStateEntity;
-import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
-import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IPetitionStateService;
-import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
-import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
 import com.ai.st.microservice.providers.services.IRoleService;
 import com.ai.st.microservice.providers.services.ISupplyRequestedStateService;
@@ -65,16 +61,10 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	private IRequestStateService requestStateService;
 
 	@Autowired
-	private IProviderUserService providerUserService;
-
-	@Autowired
 	private ISupplyRequestedStateService supplyRequestedStateService;
 
 	@Autowired
 	private IRoleService roleService;
-
-	@Autowired
-	private IProviderAdministratorService providerAdministratorService;
 
 	@Autowired
 	private IPetitionStateService petitionStateService;
@@ -145,10 +135,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				ProviderCategoryEntity providerCategoryLand = providerCategoryService
 						.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_LAND);
 
-				RoleEntity roleDirector = roleService.getRoleById(RoleBusiness.ROLE_DIRECTOR);
-
-				RoleEntity roleDelegate = roleService.getRoleById(RoleBusiness.ROLE_DELEGATE);
-
 				// provider IGAC
 
 				ProviderEntity providerIgac = new ProviderEntity();
@@ -173,27 +159,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileAgrological.setName("AGROLÓGICO");
 				profileAgrological.setProvider(providerIgac);
 				profileAgrological = providerProfileService.createProviderProfile(profileAgrological);
-
-				ProviderUserEntity user1 = new ProviderUserEntity();
-				user1.setCreatedAt(new Date());
-				user1.setProvider(providerIgac);
-				user1.setProviderProfile(profileCadastral);
-				user1.setUserCode((long) 5);
-				providerUserService.createProviderUser(user1);
-
-				ProviderUserEntity user2 = new ProviderUserEntity();
-				user2.setCreatedAt(new Date());
-				user2.setProvider(providerIgac);
-				user2.setProviderProfile(profileCartographic);
-				user2.setUserCode((long) 5);
-				providerUserService.createProviderUser(user2);
-
-				ProviderUserEntity user3 = new ProviderUserEntity();
-				user3.setCreatedAt(new Date());
-				user3.setProvider(providerIgac);
-				user3.setProviderProfile(profileCadastral);
-				user3.setUserCode((long) 7);
-				providerUserService.createProviderUser(user3);
 
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Fichas Prediales");
@@ -484,27 +449,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
 				profileRegistry = providerProfileService.createProviderProfile(profileRegistry);
-
-				ProviderUserEntity user4 = new ProviderUserEntity();
-				user4.setCreatedAt(new Date());
-				user4.setProvider(providerSNR);
-				user4.setProviderProfile(profileRegistry);
-				user4.setUserCode((long) 4);
-				providerUserService.createProviderUser(user4);
-
-				ProviderAdministratorEntity user5 = new ProviderAdministratorEntity();
-				user5.setCreatedAt(new Date());
-				user5.setProvider(providerSNR);
-				user5.setUserCode((long) 9);
-				user5.setRole(roleDirector);
-				providerAdministratorService.createProviderAdministrator(user5);
-
-				ProviderAdministratorEntity user6 = new ProviderAdministratorEntity();
-				user6.setCreatedAt(new Date());
-				user6.setProvider(providerSNR);
-				user6.setUserCode((long) 10);
-				user6.setRole(roleDelegate);
-				providerAdministratorService.createProviderAdministrator(user6);
 
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
