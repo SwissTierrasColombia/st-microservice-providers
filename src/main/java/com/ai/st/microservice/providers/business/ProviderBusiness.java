@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ai.st.microservice.providers.dto.ExtensionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
@@ -78,20 +77,21 @@ public class ProviderBusiness {
 	@Autowired
 	private IProviderAdministratorService providerAdministratorService;
 
-	public List<ProviderDto> getProviders() throws BusinessException {
+	public List<ProviderDto> getProviders(Boolean onlyActive) throws BusinessException {
 
 		List<ProviderDto> listProvidersDto = new ArrayList<ProviderDto>();
-
-		List<ProviderEntity> listProvidersEntity = providerService.getAllProviders();
+		
+		List<ProviderEntity> listProvidersEntity = new ArrayList<ProviderEntity>();
+		
+		if (onlyActive) {
+			listProvidersEntity = providerService.getAllProvidersActive(onlyActive);
+		} else {
+			listProvidersEntity = providerService.getAllProviders();
+		}
+		
 		for (ProviderEntity providerEntity : listProvidersEntity) {
 
-			ProviderDto providerDto = new ProviderDto();
-			providerDto.setId(providerEntity.getId());
-			providerDto.setName(providerEntity.getName());
-			providerDto.setCreatedAt(providerEntity.getCreatedAt());
-			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
-			providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
-					providerEntity.getProviderCategory().getName()));
+			ProviderDto providerDto = entityParseDto(providerEntity);
 
 			listProvidersDto.add(providerDto);
 		}
@@ -176,7 +176,8 @@ public class ProviderBusiness {
 		return providerDto;
 	}
 
-	public List<TypeSupplyDto> getTypesSuppliesByProviderId(Long providerId) throws BusinessException {
+	public List<TypeSupplyDto> getTypesSuppliesByProviderId(Long providerId, Boolean onlyActive)
+			throws BusinessException {
 
 		List<TypeSupplyDto> listTypeSupplyDtos = new ArrayList<TypeSupplyDto>();
 
@@ -189,31 +190,11 @@ public class ProviderBusiness {
 		List<TypeSupplyEntity> listTypeSupplyEntities = providerEntity.getTypesSupplies();
 		for (TypeSupplyEntity typeSupplyEntity : listTypeSupplyEntities) {
 
-			TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
-			typeSupplyDto.setCreatedAt(typeSupplyEntity.getCreatedAt());
-			typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
-			typeSupplyDto.setId(typeSupplyEntity.getId());
-			typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
-			typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
-			typeSupplyDto.setName(typeSupplyEntity.getName());
-
-			List<ExtensionEntity> extensions = typeSupplyEntity.getExtensions();
-			List<ExtensionDto> extensionsDto = new ArrayList<ExtensionDto>();
-			for (ExtensionEntity item : extensions) {
-				ExtensionDto extensionDto = new ExtensionDto();
-				extensionDto.setId(item.getId());
-				extensionDto.setName(item.getName());
-				extensionsDto.add(extensionDto);
+			if ((onlyActive && typeSupplyEntity.getActive()) || !onlyActive) {
+				TypeSupplyDto typeSupplyDto = typeSupplyBusiness.entityParseDto(typeSupplyEntity);
+				listTypeSupplyDtos.add(typeSupplyDto);
 			}
-			typeSupplyDto.setExtensions(extensionsDto);
 
-			ProviderProfileDto providerProfileDto = new ProviderProfileDto();
-			providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
-			providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
-			providerProfileDto.setName(typeSupplyEntity.getProviderProfile().getName());
-			typeSupplyDto.setProviderProfile(providerProfileDto);
-
-			listTypeSupplyDtos.add(typeSupplyDto);
 		}
 
 		return listTypeSupplyDtos;
@@ -553,6 +534,7 @@ public class ProviderBusiness {
 		typeSupplyEntity.setIsModelRequired(modelRequired);
 		typeSupplyEntity.setCreatedAt(new Date());
 		typeSupplyEntity.setProvider(providerEntity);
+		typeSupplyEntity.setActive(true);
 		typeSupplyEntity.setProviderProfile(providerProfileEntity);
 		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
@@ -812,6 +794,34 @@ public class ProviderBusiness {
 		return providerDto;
 	}
 
+	public ProviderDto enableProvider(Long providerId) throws BusinessException {
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (providerEntity == null) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		providerEntity.setActive(true);
+		providerEntity = providerService.saveProvider(providerEntity);
+
+		ProviderDto providerDto = entityParseDto(providerEntity);
+		return providerDto;
+	}
+
+	public ProviderDto disableProvider(Long providerId) throws BusinessException {
+
+		ProviderEntity providerEntity = providerService.getProviderById(providerId);
+		if (providerEntity == null) {
+			throw new BusinessException("El proveedor de insumo no existe.");
+		}
+
+		providerEntity.setActive(false);
+		providerEntity = providerService.saveProvider(providerEntity);
+
+		ProviderDto providerDto = entityParseDto(providerEntity);
+		return providerDto;
+	}
+
 	public void deleteProvider(Long providerId) throws BusinessException {
 
 		// verify if the provider exists
@@ -820,7 +830,33 @@ public class ProviderBusiness {
 			throw new BusinessException("El proveedor no existe.");
 		}
 
+		if (providerEntity.getTypesSupplies().size() > 0) {
+			throw new BusinessException("No se puede eliminar el proveedor porque ya tiene configurado insumos.");
+		}
+
+		if (providerEntity.getProfiles().size() > 0) {
+			throw new BusinessException("No se puede eliminar el proveedor porque ya tiene áreas registradas.");
+		}
+
+		if (providerEntity.getAdministrators().size() > 0 || providerEntity.getUsers().size() > 0) {
+			throw new BusinessException("No se puede eliminar el proveedor porque ya tiene usuarios registrados.");
+		}
+
 		providerService.deleteProvider(providerEntity);
+	}
+
+	public ProviderDto entityParseDto(ProviderEntity providerEntity) {
+
+		ProviderDto providerDto = new ProviderDto();
+		providerDto.setId(providerEntity.getId());
+		providerDto.setName(providerEntity.getName());
+		providerDto.setActive(providerEntity.getActive());
+		providerDto.setCreatedAt(providerEntity.getCreatedAt());
+		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+		providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+				providerEntity.getProviderCategory().getName()));
+
+		return providerDto;
 	}
 
 }

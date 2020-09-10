@@ -17,22 +17,18 @@ import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.business.SupplyRequestedStateBusiness;
 import com.ai.st.microservice.providers.entities.ExtensionEntity;
 import com.ai.st.microservice.providers.entities.PetitionStateEntity;
-import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
 import com.ai.st.microservice.providers.entities.ProviderEntity;
 import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
-import com.ai.st.microservice.providers.entities.ProviderUserEntity;
 import com.ai.st.microservice.providers.entities.RequestStateEntity;
 import com.ai.st.microservice.providers.entities.RoleEntity;
 import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
 import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.services.IExtensionService;
 import com.ai.st.microservice.providers.services.IPetitionStateService;
-import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
-import com.ai.st.microservice.providers.services.IProviderUserService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
 import com.ai.st.microservice.providers.services.IRoleService;
 import com.ai.st.microservice.providers.services.ISupplyRequestedStateService;
@@ -65,16 +61,10 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 	private IRequestStateService requestStateService;
 
 	@Autowired
-	private IProviderUserService providerUserService;
-
-	@Autowired
 	private ISupplyRequestedStateService supplyRequestedStateService;
 
 	@Autowired
 	private IRoleService roleService;
-
-	@Autowired
-	private IProviderAdministratorService providerAdministratorService;
 
 	@Autowired
 	private IPetitionStateService petitionStateService;
@@ -145,10 +135,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				ProviderCategoryEntity providerCategoryLand = providerCategoryService
 						.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_LAND);
 
-				RoleEntity roleDirector = roleService.getRoleById(RoleBusiness.ROLE_DIRECTOR);
-
-				RoleEntity roleDelegate = roleService.getRoleById(RoleBusiness.ROLE_DELEGATE);
-
 				// provider IGAC
 
 				ProviderEntity providerIgac = new ProviderEntity();
@@ -156,6 +142,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerIgac.setTaxIdentificationNumber("0001-1");
 				providerIgac.setCreatedAt(new Date());
 				providerIgac.setProviderCategory(providerCategoryCadastral);
+				providerIgac.setActive(true);
 				providerIgac = providerService.createProvider(providerIgac);
 
 				ProviderProfileEntity profileCadastral = new ProviderProfileEntity();
@@ -173,27 +160,6 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				profileAgrological.setProvider(providerIgac);
 				profileAgrological = providerProfileService.createProviderProfile(profileAgrological);
 
-				ProviderUserEntity user1 = new ProviderUserEntity();
-				user1.setCreatedAt(new Date());
-				user1.setProvider(providerIgac);
-				user1.setProviderProfile(profileCadastral);
-				user1.setUserCode((long) 5);
-				providerUserService.createProviderUser(user1);
-
-				ProviderUserEntity user2 = new ProviderUserEntity();
-				user2.setCreatedAt(new Date());
-				user2.setProvider(providerIgac);
-				user2.setProviderProfile(profileCartographic);
-				user2.setUserCode((long) 5);
-				providerUserService.createProviderUser(user2);
-
-				ProviderUserEntity user3 = new ProviderUserEntity();
-				user3.setCreatedAt(new Date());
-				user3.setProvider(providerIgac);
-				user3.setProviderProfile(profileCadastral);
-				user3.setUserCode((long) 7);
-				providerUserService.createProviderUser(user3);
-
 				TypeSupplyEntity typeSupply1 = new TypeSupplyEntity();
 				typeSupply1.setName("Fichas Prediales");
 				typeSupply1.setIsMetadataRequired(false);
@@ -201,6 +167,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply1.setCreatedAt(new Date());
 				typeSupply1.setProvider(providerIgac);
 				typeSupply1.setProviderProfile(profileCadastral);
+				typeSupply1.setActive(true);
 				typeSupply1 = typeSupplyService.createTypeSupply(typeSupply1);
 
 				ExtensionEntity extension1 = new ExtensionEntity();
@@ -225,6 +192,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply2.setCreatedAt(new Date());
 				typeSupply2.setProvider(providerIgac);
 				typeSupply2.setProviderProfile(profileCadastral);
+				typeSupply2.setActive(true);
 				typeSupply2 = typeSupplyService.createTypeSupply(typeSupply2);
 
 				ExtensionEntity extension4 = new ExtensionEntity();
@@ -239,6 +207,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply4.setCreatedAt(new Date());
 				typeSupply4.setProvider(providerIgac);
 				typeSupply4.setProviderProfile(profileCartographic);
+				typeSupply4.setActive(true);
 				typeSupply4 = typeSupplyService.createTypeSupply(typeSupply4);
 
 				ExtensionEntity extension6 = new ExtensionEntity();
@@ -258,6 +227,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply5.setCreatedAt(new Date());
 				typeSupply5.setProvider(providerIgac);
 				typeSupply5.setProviderProfile(profileCartographic);
+				typeSupply5.setActive(true);
 				typeSupply5 = typeSupplyService.createTypeSupply(typeSupply5);
 
 				ExtensionEntity extension8 = new ExtensionEntity();
@@ -277,6 +247,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply6.setCreatedAt(new Date());
 				typeSupply6.setProvider(providerIgac);
 				typeSupply6.setProviderProfile(profileCartographic);
+				typeSupply6.setActive(true);
 				typeSupply6 = typeSupplyService.createTypeSupply(typeSupply6);
 
 				ExtensionEntity extension10 = new ExtensionEntity();
@@ -296,6 +267,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply7.setCreatedAt(new Date());
 				typeSupply7.setProvider(providerIgac);
 				typeSupply7.setProviderProfile(profileCartographic);
+				typeSupply7.setActive(true);
 				typeSupply7 = typeSupplyService.createTypeSupply(typeSupply7);
 
 				ExtensionEntity extension12 = new ExtensionEntity();
@@ -315,6 +287,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply8.setCreatedAt(new Date());
 				typeSupply8.setProvider(providerIgac);
 				typeSupply8.setProviderProfile(profileCartographic);
+				typeSupply8.setActive(true);
 				typeSupply8 = typeSupplyService.createTypeSupply(typeSupply8);
 
 				ExtensionEntity extension14 = new ExtensionEntity();
@@ -334,6 +307,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply9.setCreatedAt(new Date());
 				typeSupply9.setProvider(providerIgac);
 				typeSupply9.setProviderProfile(profileAgrological);
+				typeSupply9.setActive(true);
 				typeSupply9 = typeSupplyService.createTypeSupply(typeSupply9);
 
 				ExtensionEntity extension16 = new ExtensionEntity();
@@ -368,6 +342,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply10.setCreatedAt(new Date());
 				typeSupply10.setProvider(providerIgac);
 				typeSupply10.setProviderProfile(profileAgrological);
+				typeSupply10.setActive(true);
 				typeSupply10 = typeSupplyService.createTypeSupply(typeSupply10);
 
 				ExtensionEntity extension18 = new ExtensionEntity();
@@ -387,6 +362,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply13.setCreatedAt(new Date());
 				typeSupply13.setProvider(providerIgac);
 				typeSupply13.setProviderProfile(profileCadastral);
+				typeSupply13.setActive(true);
 				typeSupply13 = typeSupplyService.createTypeSupply(typeSupply13);
 
 				ExtensionEntity extension23 = new ExtensionEntity();
@@ -401,6 +377,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply14.setCreatedAt(new Date());
 				typeSupply14.setProvider(providerIgac);
 				typeSupply14.setProviderProfile(profileCadastral);
+				typeSupply14.setActive(true);
 				typeSupply14 = typeSupplyService.createTypeSupply(typeSupply14);
 
 				ExtensionEntity extension24 = new ExtensionEntity();
@@ -415,6 +392,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerUAECD.setTaxIdentificationNumber("0001-2");
 				providerUAECD.setCreatedAt(new Date());
 				providerUAECD.setProviderCategory(providerCategoryCadastral);
+				providerUAECD.setActive(true);
 				providerService.createProvider(providerUAECD);
 
 				ProviderEntity providerAMCO = new ProviderEntity();
@@ -422,6 +400,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerAMCO.setTaxIdentificationNumber("0001-3");
 				providerAMCO.setCreatedAt(new Date());
 				providerAMCO.setProviderCategory(providerCategoryCadastral);
+				providerAMCO.setActive(true);
 				providerService.createProvider(providerAMCO);
 
 				ProviderEntity providerAntioquia = new ProviderEntity();
@@ -429,6 +408,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerAntioquia.setTaxIdentificationNumber("0001-4");
 				providerAntioquia.setCreatedAt(new Date());
 				providerAntioquia.setProviderCategory(providerCategoryCadastral);
+				providerAntioquia.setActive(true);
 				providerService.createProvider(providerAntioquia);
 
 				ProviderEntity providerMedellin = new ProviderEntity();
@@ -436,6 +416,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerMedellin.setTaxIdentificationNumber("0001-5");
 				providerMedellin.setCreatedAt(new Date());
 				providerMedellin.setProviderCategory(providerCategoryCadastral);
+				providerMedellin.setActive(true);
 				providerService.createProvider(providerMedellin);
 
 				ProviderEntity providerCali = new ProviderEntity();
@@ -443,6 +424,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerCali.setTaxIdentificationNumber("0001-6");
 				providerCali.setCreatedAt(new Date());
 				providerCali.setProviderCategory(providerCategoryCadastral);
+				providerCali.setActive(true);
 				providerService.createProvider(providerCali);
 
 				ProviderEntity providerBarranquilla = new ProviderEntity();
@@ -450,6 +432,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerBarranquilla.setTaxIdentificationNumber("0001-7");
 				providerBarranquilla.setCreatedAt(new Date());
 				providerBarranquilla.setProviderCategory(providerCategoryCadastral);
+				providerBarranquilla.setActive(true);
 				providerService.createProvider(providerBarranquilla);
 
 				// provider SNR
@@ -459,33 +442,13 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerSNR.setTaxIdentificationNumber("0001-8");
 				providerSNR.setCreatedAt(new Date());
 				providerSNR.setProviderCategory(providerCategoryRegistry);
+				providerSNR.setActive(true);
 				providerSNR = providerService.createProvider(providerSNR);
 
 				ProviderProfileEntity profileRegistry = new ProviderProfileEntity();
 				profileRegistry.setName("REGISTRO");
 				profileRegistry.setProvider(providerSNR);
 				profileRegistry = providerProfileService.createProviderProfile(profileRegistry);
-
-				ProviderUserEntity user4 = new ProviderUserEntity();
-				user4.setCreatedAt(new Date());
-				user4.setProvider(providerSNR);
-				user4.setProviderProfile(profileRegistry);
-				user4.setUserCode((long) 4);
-				providerUserService.createProviderUser(user4);
-
-				ProviderAdministratorEntity user5 = new ProviderAdministratorEntity();
-				user5.setCreatedAt(new Date());
-				user5.setProvider(providerSNR);
-				user5.setUserCode((long) 9);
-				user5.setRole(roleDirector);
-				providerAdministratorService.createProviderAdministrator(user5);
-
-				ProviderAdministratorEntity user6 = new ProviderAdministratorEntity();
-				user6.setCreatedAt(new Date());
-				user6.setProvider(providerSNR);
-				user6.setUserCode((long) 10);
-				user6.setRole(roleDelegate);
-				providerAdministratorService.createProviderAdministrator(user6);
 
 				TypeSupplyEntity typeSupply12 = new TypeSupplyEntity();
 				typeSupply12.setName("Datos registrales en modelo de insumos");
@@ -494,6 +457,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				typeSupply12.setCreatedAt(new Date());
 				typeSupply12.setProvider(providerSNR);
 				typeSupply12.setProviderProfile(profileRegistry);
+				typeSupply12.setActive(true);
 				typeSupply12 = typeSupplyService.createTypeSupply(typeSupply12);
 
 				ExtensionEntity extension22 = new ExtensionEntity();
@@ -508,6 +472,7 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerANT.setTaxIdentificationNumber("0001-9");
 				providerANT.setCreatedAt(new Date());
 				providerANT.setProviderCategory(providerCategoryLand);
+				providerANT.setActive(true);
 				providerANT = providerService.createProvider(providerANT);
 
 				ProviderProfileEntity profileANT = new ProviderProfileEntity();

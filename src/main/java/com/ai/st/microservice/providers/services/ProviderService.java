@@ -58,4 +58,9 @@ public class ProviderService implements IProviderService {
 		providerRepository.delete(providerEntity);
 	}
 
+	@Override
+	public List<ProviderEntity> getAllProvidersActive(Boolean active) {
+		return providerRepository.findByActive(active);
+	}
+
 }
