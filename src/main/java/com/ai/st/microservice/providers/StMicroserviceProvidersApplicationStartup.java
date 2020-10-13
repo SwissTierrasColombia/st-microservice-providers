@@ -138,7 +138,8 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				// provider IGAC
 
 				ProviderEntity providerIgac = new ProviderEntity();
-				providerIgac.setName("IGAC");
+				providerIgac.setName("INSTITUTO GEOGRÁFICO AGUSTÍN CODAZZI");
+				providerIgac.setAlias("IGAC");
 				providerIgac.setTaxIdentificationNumber("0001-1");
 				providerIgac.setCreatedAt(new Date());
 				providerIgac.setProviderCategory(providerCategoryCadastral);
@@ -388,7 +389,8 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				// provider UAECD
 
 				ProviderEntity providerUAECD = new ProviderEntity();
-				providerUAECD.setName("UAECD");
+				providerUAECD.setName("UNIDAD ADMINISTRATIVA ESPECIAL DE CATASTRO DISTRITAL");
+				providerUAECD.setAlias("UAECD");
 				providerUAECD.setTaxIdentificationNumber("0001-2");
 				providerUAECD.setCreatedAt(new Date());
 				providerUAECD.setProviderCategory(providerCategoryCadastral);
@@ -396,7 +398,8 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				providerService.createProvider(providerUAECD);
 
 				ProviderEntity providerAMCO = new ProviderEntity();
-				providerAMCO.setName("AMCO");
+				providerAMCO.setName("ÁREA METROPOLITANA CENTRO OCCIDENTE");
+				providerAMCO.setAlias("AMCO");
 				providerAMCO.setTaxIdentificationNumber("0001-3");
 				providerAMCO.setCreatedAt(new Date());
 				providerAMCO.setProviderCategory(providerCategoryCadastral);
@@ -438,7 +441,8 @@ public class StMicroserviceProvidersApplicationStartup implements ApplicationLis
 				// provider SNR
 
 				ProviderEntity providerSNR = new ProviderEntity();
-				providerSNR.setName("SNR");
+				providerSNR.setName("SUPERINTENDENCIA DE NOTARIADO Y REGISTRO");
+				providerSNR.setAlias("SNR");
 				providerSNR.setTaxIdentificationNumber("0001-8");
 				providerSNR.setCreatedAt(new Date());
 				providerSNR.setProviderCategory(providerCategoryRegistry);

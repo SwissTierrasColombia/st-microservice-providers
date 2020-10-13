@@ -24,8 +24,6 @@ import org.springframework.util.Assert;
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.controllers.v1.ProviderAdministratorV1Controller;
-import com.ai.st.microservice.providers.dto.AddAdministratorToProviderDto;
-import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.RoleDto;
 import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
 import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
