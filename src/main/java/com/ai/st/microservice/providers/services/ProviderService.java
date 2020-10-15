@@ -63,4 +63,9 @@ public class ProviderService implements IProviderService {
 		return providerRepository.findByActive(active);
 	}
 
+	@Override
+	public Long setValueSequence(Long value) {
+		return providerRepository.setValSequence(value);
+	}
+
 }
