@@ -33,6 +33,7 @@ public class ProviderUserBusiness {
 
 			providerDto = new ProviderDto();
 			providerDto.setId(providerEntity.getId());
+			providerDto.setAlias(providerEntity.getAlias());
 			providerDto.setName(providerEntity.getName());
 			providerDto.setCreatedAt(providerEntity.getCreatedAt());
 			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
