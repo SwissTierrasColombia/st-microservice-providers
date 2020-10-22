@@ -372,6 +372,22 @@ public class RequestBusiness {
 		return listRequestsDto;
 	}
 
+	public List<RequestDto> getRequestByPackage(String packageLabel) throws BusinessException {
+
+		List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+
+		List<RequestEntity> listRequestsEntity = requestService.getRequestsByPackage(packageLabel);
+
+		if (listRequestsEntity.size() > 0) {
+			for (RequestEntity requestEntity : listRequestsEntity) {
+				RequestDto requestDto = entityParseDto(requestEntity);
+				listRequestsDto.add(requestDto);
+			}
+		}
+
+		return listRequestsDto;
+	}
+
 	public RequestDto entityParseDto(RequestEntity requestEntity) {
 
 		RequestDto requestDto = new RequestDto();
