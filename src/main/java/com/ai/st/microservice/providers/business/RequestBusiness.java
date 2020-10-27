@@ -405,6 +405,7 @@ public class RequestBusiness {
 		ProviderDto providerDto = new ProviderDto();
 		providerDto.setId(providerEntity.getId());
 		providerDto.setName(providerEntity.getName());
+		providerDto.setAlias(providerEntity.getAlias());
 		providerDto.setCreatedAt(providerEntity.getCreatedAt());
 		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
 		providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),

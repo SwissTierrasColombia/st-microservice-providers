@@ -68,4 +68,9 @@ public class ProviderService implements IProviderService {
 		return providerRepository.setValSequence(value);
 	}
 
+	@Override
+	public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode) {
+		return providerRepository.getProvidersWhereManagerRequested(managerCode);
+	}
+
 }

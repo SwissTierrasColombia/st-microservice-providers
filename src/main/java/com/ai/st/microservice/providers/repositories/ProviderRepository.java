@@ -24,4 +24,9 @@ public interface ProviderRepository extends CrudRepository<ProviderEntity, Long>
 	@Query(value = "SELECT setval('providers.providers_id_seq', :value, true);", nativeQuery = true)
 	Long setValSequence(@Param("value") Long value);
 
+	@Query(value = "select \n" + "p.*\n" + "from \n" + "providers.providers p,\n" + "providers.requests r ,\n"
+			+ "providers.emitters e \n" + "where\n" + "r.provider_id = p.id \n" + "and e.emitter_type = 'ENTITY'\n"
+			+ "and e.emitter_code = :managerCode \n" + "and e.request_id  = r.id \n" + "group by p.id;", nativeQuery = true)
+	List<ProviderEntity> getProvidersWhereManagerRequested(@Param("managerCode") Long managerCode);
+
 }

@@ -821,6 +821,24 @@ public class ProviderBusiness {
 		providerService.deleteProvider(providerEntity);
 	}
 
+	public List<ProviderDto> getProvidersWhereManagerRequested(Long managerCode) throws BusinessException {
+
+		List<ProviderDto> providersDto = new ArrayList<ProviderDto>();
+
+		if (managerCode != null) {
+
+			List<ProviderEntity> providersEntity = providerService.getProvidersWhereManagerRequested(managerCode);
+
+			for (ProviderEntity providerEntity : providersEntity) {
+				ProviderDto providerDto = entityParseDto(providerEntity);
+				providersDto.add(providerDto);
+			}
+
+		}
+
+		return providersDto;
+	}
+
 	public ProviderDto entityParseDto(ProviderEntity providerEntity) {
 
 		ProviderDto providerDto = new ProviderDto();

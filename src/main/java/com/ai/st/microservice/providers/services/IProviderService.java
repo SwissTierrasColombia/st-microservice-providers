@@ -27,4 +27,6 @@ public interface IProviderService {
 
 	public Long setValueSequence(Long value);
 
+	public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode);
+
 }
