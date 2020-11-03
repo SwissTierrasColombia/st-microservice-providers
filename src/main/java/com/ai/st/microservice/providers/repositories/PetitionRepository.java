@@ -11,7 +11,9 @@ import com.ai.st.microservice.providers.entities.ProviderEntity;
 public interface PetitionRepository extends CrudRepository<PetitionEntity, Long> {
 
 	List<PetitionEntity> findByPetitionStateInAndProvider(List<PetitionStateEntity> states, ProviderEntity provider);
-	
+
 	List<PetitionEntity> findByManagerCodeAndProvider(Long managerCode, ProviderEntity provider);
+
+	List<PetitionEntity> findByManagerCode(Long managerCode);
 
 }

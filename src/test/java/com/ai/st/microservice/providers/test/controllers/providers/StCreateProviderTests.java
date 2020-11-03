@@ -49,8 +49,8 @@ public class StCreateProviderTests {
 		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.notNull(providerDto, "La respuesta no puede ser nula.");
 		assertEquals(HttpStatus.CREATED, data.getStatusCode());
@@ -66,8 +66,8 @@ public class StCreateProviderTests {
 		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser null.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -83,8 +83,8 @@ public class StCreateProviderTests {
 		createProviderDto.setName(RandomStringUtils.random(10, true, false));
 		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser null.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -100,8 +100,8 @@ public class StCreateProviderTests {
 		createProviderDto.setName(RandomStringUtils.random(10, true, false));
 		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 
-		ResponseEntity<ProviderDto> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser null.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -118,8 +118,8 @@ public class StCreateProviderTests {
 		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		createProviderDto.setProviderCategoryId((long) 50);
 
-		ResponseEntity<ProviderDto> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser null.");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),

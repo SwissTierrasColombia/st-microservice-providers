@@ -39,4 +39,6 @@ public interface RequestRepository extends PagingAndSortingRepository<RequestEnt
 	List<RequestEntity> getRequestsByManagerAndPackage(@Param("emmiterCode") Long emmiterCode,
 			@Param("emmiterType") EmitterTypeEnum emmiterType, @Param("packageLabel") String packageLabel);
 
+	List<RequestEntity> findByPackageLabel(String packageLabel);
+
 }
