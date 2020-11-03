@@ -362,4 +362,33 @@ public class RequestV1Controller {
 		return new ResponseEntity<>(responseDto, httpStatus);
 	}
 
+	@RequestMapping(value = "/search-package", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get requests by package")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get requests", response = RequestDto.class, responseContainer = "List"),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> getRequestByPackage(
+			@RequestParam(name = "package_label", required = true) String packageLabel) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			responseDto = requestBusiness.getRequestByPackage(packageLabel);
+			httpStatus = HttpStatus.OK;
+
+		} catch (BusinessException e) {
+			log.error("Error RequestV1Controller@getRequestByPackage#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new ErrorDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error RequestV1Controller@getRequestByPackage#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new ErrorDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
 }

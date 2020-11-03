@@ -44,4 +44,9 @@ public class TypeSupplyService implements ITypeSupplyService {
 		return typeSupplyRepository.findByProviderProfile(providerProfileEntity);
 	}
 
+	@Override
+	public Long setValueSequence(Long value) {
+		return typeSupplyRepository.setValSequence(value);
+	}
+
 }

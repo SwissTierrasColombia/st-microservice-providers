@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,13 +31,16 @@ public class ProviderEntity {
 	@Column(name = "name", nullable = false, length = 255)
 	private String name;
 
+	@Column(name = "alias", nullable = true, length = 20)
+	private String alias;
+
 	@Column(name = "tax_identification_number", nullable = false, length = 255)
 	private String taxIdentificationNumber;
 
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
-	
+
 	@Column(name = "active", nullable = false)
 	private Boolean active;
 
@@ -45,6 +49,7 @@ public class ProviderEntity {
 	private ProviderCategoryEntity providerCategory;
 
 	@OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
+	@OrderBy("id asc")
 	private List<TypeSupplyEntity> typesSupplies = new ArrayList<TypeSupplyEntity>();
 
 	@OneToMany(mappedBy = "provider")
@@ -149,6 +154,14 @@ public class ProviderEntity {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 }

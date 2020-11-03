@@ -74,8 +74,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		updateProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.notNull(providerDto, "La respuesta no puede ser nula.");
 		assertEquals(HttpStatus.OK, data.getStatusCode());
@@ -92,8 +92,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		updateProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser nula.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -110,8 +110,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setName(RandomStringUtils.random(10, true, false));
 		updateProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser nula.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -128,8 +128,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		updateProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser nula.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -146,8 +146,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setName(RandomStringUtils.random(10, true, false));
 		updateProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser nula.");
 		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -165,8 +165,8 @@ public class StUpdateProviderTests {
 		updateProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 		updateProviderDto.setProviderCategoryId((long) 50);
 
-		ResponseEntity<ProviderDto> data = providerController.updateProvider(updateProviderDto);
-		ProviderDto providerDto = data.getBody();
+		ResponseEntity<?> data = providerController.updateProvider(updateProviderDto);
+		ProviderDto providerDto = (ProviderDto) data.getBody();
 
 		Assert.isNull(providerDto, "La respuesta debe ser nula.");
 		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),

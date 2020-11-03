@@ -5,7 +5,7 @@ import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "ProviderDto", description = "Provider Dto")
+@ApiModel(value = "ProviderDto")
 public class ProviderDto {
 
 	@ApiModelProperty(required = true, notes = "Provider ID")
@@ -13,6 +13,9 @@ public class ProviderDto {
 
 	@ApiModelProperty(required = true, notes = "Provider name")
 	private String name;
+	
+	@ApiModelProperty(required = false, notes = "Provider alias")
+	private String alias;
 	
 	@ApiModelProperty(required = true, notes = "Active")
 	private Boolean active;
@@ -76,6 +79,14 @@ public class ProviderDto {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 }

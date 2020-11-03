@@ -16,5 +16,7 @@ public interface ITypeSupplyService {
 	public void deleteTypeSupplyById(Long id);
 
 	public List<TypeSupplyEntity> getTypeSupliesByProfile(ProviderProfileEntity providerProfileEntity);
+	
+	public Long setValueSequence(Long value);
 
 }

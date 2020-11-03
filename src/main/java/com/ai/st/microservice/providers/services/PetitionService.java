@@ -40,4 +40,9 @@ public class PetitionService implements IPetitionService {
 		return petitionRepository.findByManagerCodeAndProvider(managerCode, provider);
 	}
 
+	@Override
+	public List<PetitionEntity> getPetitionsByManagerCode(Long managerCode) {
+		return petitionRepository.findByManagerCode(managerCode);
+	}
+
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "UpdateProviderDto", description = "Update Provider Dto")
+@ApiModel(value = "UpdateProviderDto")
 public class UpdateProviderDto implements Serializable {
 
 	private static final long serialVersionUID = 6515735489433109160L;
@@ -15,6 +15,9 @@ public class UpdateProviderDto implements Serializable {
 
 	@ApiModelProperty(required = true, notes = "Provider name")
 	private String name;
+	
+	@ApiModelProperty(required = false, notes = "Provider alias")
+	private String alias;
 
 	@ApiModelProperty(required = true, notes = "Provider tax identification number")
 	private String taxIdentificationNumber;
@@ -56,6 +59,14 @@ public class UpdateProviderDto implements Serializable {
 
 	public void setProviderCategoryId(Long providerCategoryId) {
 		this.providerCategoryId = providerCategoryId;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 }

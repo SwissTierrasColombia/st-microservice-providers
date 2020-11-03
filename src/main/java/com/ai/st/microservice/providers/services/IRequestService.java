@@ -32,4 +32,6 @@ public interface IRequestService {
 	public List<RequestEntity> getRequestsByManagerAndPackage(Long emmiterCode, String emmiterType,
 			String packageLabel);
 
+	public List<RequestEntity> getRequestsByPackage(String packageLabel);
+
 }

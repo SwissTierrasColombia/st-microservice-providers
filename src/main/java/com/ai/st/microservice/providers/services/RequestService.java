@@ -107,4 +107,9 @@ public class RequestService implements IRequestService {
 		return requestRepository.getRequestsByManagerAndPackage(emmiterCode, emmitterTypeEnum, packageLabel);
 	}
 
+	@Override
+	public List<RequestEntity> getRequestsByPackage(String packageLabel) {
+		return requestRepository.findByPackageLabel(packageLabel);
+	}
+
 }

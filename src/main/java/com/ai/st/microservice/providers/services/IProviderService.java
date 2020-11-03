@@ -22,7 +22,11 @@ public interface IProviderService {
 	public ProviderEntity saveProvider(ProviderEntity providerEntity);
 
 	public void deleteProvider(ProviderEntity providerEntity);
-	
+
 	public List<ProviderEntity> getAllProvidersActive(Boolean active);
+
+	public Long setValueSequence(Long value);
+
+	public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode);
 
 }

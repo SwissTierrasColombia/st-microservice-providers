@@ -136,6 +136,18 @@ public class PetitionBusiness {
 		return petitionsDtoLis;
 	}
 
+	public List<PetitionDto> getPetitionsByManagerCode(Long managerCode) throws BusinessException {
+
+		List<PetitionEntity> petitionsEntityList = petitionService.getPetitionsByManagerCode(managerCode);
+
+		List<PetitionDto> petitionsDtoLis = new ArrayList<>();
+		for (PetitionEntity petitionEntity : petitionsEntityList) {
+			petitionsDtoLis.add(entityParseDto(petitionEntity));
+		}
+
+		return petitionsDtoLis;
+	}
+
 	public PetitionDto entityParseDto(PetitionEntity petitionEntity) {
 
 		PetitionDto petitionDto = new PetitionDto();

@@ -17,4 +17,6 @@ public interface IPetitionService {
 
 	public List<PetitionEntity> getPetitionsByProviderAndManagerCode(ProviderEntity provider, Long managerCode);
 
+	public List<PetitionEntity> getPetitionsByManagerCode(Long managerCode);
+
 }
