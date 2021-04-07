@@ -3,22 +3,11 @@ package com.ai.st.microservice.providers.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ai.st.microservice.providers.dto.*;
+import com.ai.st.microservice.providers.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ai.st.microservice.providers.dto.ExtensionDto;
-import com.ai.st.microservice.providers.dto.ProviderDto;
-import com.ai.st.microservice.providers.dto.ProviderProfileDto;
-import com.ai.st.microservice.providers.dto.RequestDto;
-import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
-import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
-import com.ai.st.microservice.providers.dto.TypeSupplyDto;
-import com.ai.st.microservice.providers.entities.ExtensionEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
-import com.ai.st.microservice.providers.entities.RequestEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
-import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.ISupplyRequestedService;
@@ -129,6 +118,18 @@ public class SupplyRequestedBusiness {
 
         requestDto.setId(requestEntity.getId());
         requestDto.setMunicipalityCode(requestEntity.getMunicipalityCode());
+
+        List<EmitterEntity> emitters = requestEntity.getEmitters();
+        for (EmitterEntity emitter : emitters) {
+
+            EmitterDto emitterDto = new EmitterDto();
+            emitterDto.setId(emitter.getId());
+            emitterDto.setCreatedAt(emitter.getCreatedAt());
+            emitterDto.setEmitterCode(emitter.getEmitterCode());
+            emitterDto.setEmitterType(emitter.getEmitterType().toString());
+
+            requestDto.getEmitters().add(emitterDto);
+        }
 
         supplyRequested.setRequest(requestDto);
 
