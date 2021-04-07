@@ -26,6 +26,9 @@ public class SupplyRequestedEntity {
 	@Column(name = "description", nullable = true, length = 500)
 	private String description;
 
+	@Column(name = "errors", nullable = true, length = 1000)
+	private String errors;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
 	private TypeSupplyEntity typeSupply;
@@ -183,4 +186,11 @@ public class SupplyRequestedEntity {
 		this.ftp = ftp;
 	}
 
+	public String getErrors() {
+		return errors;
+	}
+
+	public void setErrors(String errors) {
+		this.errors = errors;
+	}
 }

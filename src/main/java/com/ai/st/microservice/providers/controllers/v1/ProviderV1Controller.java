@@ -298,7 +298,7 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getTypeSuppliesByProvider(@PathVariable Long providerId,
 			@RequestParam(name = "onlyActive", required = false, defaultValue = "false") Boolean onlyActive) {
 
-		HttpStatus httpStatus = null;
+		HttpStatus httpStatus;
 		List<TypeSupplyDto> listTypesSupplies = new ArrayList<TypeSupplyDto>();
 		Object responseDto = null;
 
@@ -331,8 +331,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getRequestsByProvider(@PathVariable Long providerId,
 			@RequestParam(required = false, name = "state") Long requestStateId) {
 
-		HttpStatus httpStatus = null;
-		List<RequestDto> listRequests = new ArrayList<RequestDto>();
+		HttpStatus httpStatus;
+		List<RequestDto> listRequests = new ArrayList<>();
 		Object responseDto = null;
 
 		try {
@@ -365,8 +365,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getRequestsByProviderAndUserClosed(@PathVariable Long providerId,
 			@RequestParam(required = false, name = "user") Long userCode) {
 
-		HttpStatus httpStatus = null;
-		List<RequestDto> listRequests = new ArrayList<RequestDto>();
+		HttpStatus httpStatus;
+		List<RequestDto> listRequests = new ArrayList<>();
 		Object responseDto = null;
 
 		try {
@@ -399,8 +399,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getUsersByProvider(@PathVariable Long providerId,
 			@RequestParam(name = "profiles", required = false) List<Long> profiles) {
 
-		HttpStatus httpStatus = null;
-		List<ProviderUserDto> listUsers = new ArrayList<ProviderUserDto>();
+		HttpStatus httpStatus;
+		List<ProviderUserDto> listUsers = new ArrayList<>();
 		Object responseDto = null;
 
 		try {
@@ -433,8 +433,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getAdministratorsByProvider(@PathVariable Long providerId,
 			@RequestParam(name = "roles", required = false) List<Long> roles) {
 
-		HttpStatus httpStatus = null;
-		List<ProviderAdministratorDto> listUsers = new ArrayList<ProviderAdministratorDto>();
+		HttpStatus httpStatus;
+		List<ProviderAdministratorDto> listUsers = new ArrayList<>();
 		Object responseDto = null;
 
 		try {
@@ -466,8 +466,8 @@ public class ProviderV1Controller {
 	@ResponseBody
 	public ResponseEntity<Object> getProfilesByProvider(@PathVariable Long providerId) {
 
-		HttpStatus httpStatus = null;
-		List<ProviderProfileDto> listProfiles = new ArrayList<ProviderProfileDto>();
+		HttpStatus httpStatus;
+		List<ProviderProfileDto> listProfiles = new ArrayList<>();
 		Object responseDto = null;
 
 		try {
@@ -498,8 +498,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> createProviderProfile(@PathVariable Long providerId,
 			@RequestBody CreateProviderProfileDto createProviderProfileDto) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+		HttpStatus httpStatus;
+		Object responseDto;
 
 		try {
 
@@ -547,8 +547,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> updateProviderProfile(@PathVariable Long providerId, @PathVariable Long profileId,
 			@RequestBody CreateProviderProfileDto updateProviderProfileDto) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+		HttpStatus httpStatus;
+		Object responseDto;
 
 		try {
 
@@ -589,7 +589,7 @@ public class ProviderV1Controller {
 	@ResponseBody
 	public ResponseEntity<Object> deleteProviderProfile(@PathVariable Long providerId, @PathVariable Long profileId) {
 
-		HttpStatus httpStatus = null;
+		HttpStatus httpStatus;
 		Object responseDto = null;
 
 		try {
@@ -618,8 +618,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> createTypeSupply(@PathVariable Long providerId,
 			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+		HttpStatus httpStatus;
+		Object responseDto;
 
 		try {
 
@@ -677,8 +677,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> updateTypeSupply(@PathVariable Long providerId, @PathVariable Long typeSupplyId,
 			@RequestBody CreateTypeSupplyDto createTypeSupplyDto) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+		HttpStatus httpStatus;
+		Object responseDto;
 
 		try {
 
@@ -735,7 +735,7 @@ public class ProviderV1Controller {
 	@ResponseBody
 	public ResponseEntity<Object> deleteTypeSupply(@PathVariable Long providerId, @PathVariable Long typeSupplyId) {
 
-		HttpStatus httpStatus = null;
+		HttpStatus httpStatus;
 		Object responseDto = null;
 
 		try {
@@ -765,8 +765,8 @@ public class ProviderV1Controller {
 	public ResponseEntity<Object> getSuppliesRequested(@PathVariable Long providerId,
 			@RequestParam(name = "states", required = true) List<Long> states) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+		HttpStatus httpStatus;
+		Object responseDto;
 
 		try {
 

@@ -17,6 +17,9 @@ public class SupplyRequestedDto implements Serializable {
 	@ApiModelProperty(required = true, notes = "Description")
 	private String description;
 
+	@ApiModelProperty(required = true, notes = "Errors")
+	private String errors;
+
 	@ApiModelProperty(required = true, notes = "Request")
 	private RequestDto request;
 
@@ -169,4 +172,11 @@ public class SupplyRequestedDto implements Serializable {
 		this.ftp = ftp;
 	}
 
+	public String getErrors() {
+		return errors;
+	}
+
+	public void setErrors(String errors) {
+		this.errors = errors;
+	}
 }
