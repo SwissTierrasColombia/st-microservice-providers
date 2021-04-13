@@ -188,7 +188,7 @@ public class RequestBusiness {
     }
 
     public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Long stateId, String justification,
-                                            Long deliveryBy, String url, String observations, String errors, String ftp) throws BusinessException {
+                                            Long deliveryBy, String url, String observations, Boolean isValidated, String errors, String ftp) throws BusinessException {
 
         // verify if request exists
         RequestEntity requestEntity = requestService.getRequestById(requestId);
@@ -226,6 +226,15 @@ public class RequestBusiness {
 
             if (observations != null) {
                 supplyRequested.setObservations(observations);
+            }
+
+            if (isValidated != null) {
+                supplyRequested.setGeometryValidated(isValidated);
+            }
+
+            int limit = 1000;
+            if (errors != null && errors.length() > limit) {
+                errors = errors.substring(errors.length() - limit);
             }
 
             supplyRequested.setErrors(errors);
@@ -430,6 +439,7 @@ public class RequestBusiness {
             supplyRequested.setObservations(supplyRE.getObservations());
             supplyRequested.setFtp(supplyRE.getFtp());
             supplyRequested.setErrors(supplyRE.getErrors());
+            supplyRequested.setGeometryValidated(supplyRE.getGeometryValidated());
 
             SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
             supplyRequested.setState(

@@ -18,179 +18,190 @@ import javax.persistence.TemporalType;
 @Table(name = "supplies_requested", schema = "providers")
 public class SupplyRequestedEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "description", nullable = true, length = 500)
-	private String description;
+    @Column(name = "description", nullable = true, length = 500)
+    private String description;
 
-	@Column(name = "errors", nullable = true, length = 1000)
-	private String errors;
+    @Column(name = "errors", nullable = true, length = 1000)
+    private String errors;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
-	private TypeSupplyEntity typeSupply;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
+    private TypeSupplyEntity typeSupply;
 
-	@Column(name = "model_version", nullable = true, length = 20)
-	private String modelVersion;
+    @Column(name = "model_version", nullable = true, length = 20)
+    private String modelVersion;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
-	private RequestEntity request;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
+    private RequestEntity request;
 
-	@Column(name = "delivered", nullable = false)
-	private Boolean delivered;
+    @Column(name = "delivered", nullable = false)
+    private Boolean delivered;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "supply_requested_state_id", referencedColumnName = "id", nullable = false)
-	private SupplyRequestedStateEntity state;
+    @Column(name = "is_geometry_validated", nullable = true)
+    private Boolean isGeometryValidated;
 
-	@Column(name = "created_at", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supply_requested_state_id", referencedColumnName = "id", nullable = false)
+    private SupplyRequestedStateEntity state;
 
-	@Column(name = "delivered_at", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date deliveredAt;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@Column(name = "delivered_by", nullable = true)
-	private Long deliveredBy;
+    @Column(name = "delivered_at", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deliveredAt;
 
-	@Column(name = "justification", nullable = true, length = 500)
-	private String justification;
+    @Column(name = "delivered_by", nullable = true)
+    private Long deliveredBy;
 
-	@Column(name = "url", nullable = true, length = 1000)
-	private String url;
+    @Column(name = "justification", nullable = true, length = 500)
+    private String justification;
 
-	@Column(name = "observations", nullable = true, length = 500)
-	private String observations;
+    @Column(name = "url", nullable = true, length = 1000)
+    private String url;
 
-	@Column(name = "ftp", nullable = true, length = 500)
-	private String ftp;
+    @Column(name = "observations", nullable = true, length = 500)
+    private String observations;
 
-	public SupplyRequestedEntity() {
+    @Column(name = "ftp", nullable = true, length = 500)
+    private String ftp;
 
-	}
+    public SupplyRequestedEntity() {
 
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public TypeSupplyEntity getTypeSupply() {
-		return typeSupply;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setTypeSupply(TypeSupplyEntity typeSupply) {
-		this.typeSupply = typeSupply;
-	}
+    public TypeSupplyEntity getTypeSupply() {
+        return typeSupply;
+    }
 
-	public RequestEntity getRequest() {
-		return request;
-	}
+    public void setTypeSupply(TypeSupplyEntity typeSupply) {
+        this.typeSupply = typeSupply;
+    }
 
-	public void setRequest(RequestEntity request) {
-		this.request = request;
-	}
+    public RequestEntity getRequest() {
+        return request;
+    }
 
-	public Boolean getDelivered() {
-		return delivered;
-	}
+    public void setRequest(RequestEntity request) {
+        this.request = request;
+    }
 
-	public void setDelivered(Boolean delivered) {
-		this.delivered = delivered;
-	}
+    public Boolean getDelivered() {
+        return delivered;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public void setDelivered(Boolean delivered) {
+        this.delivered = delivered;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public Date getDeliveredAt() {
-		return deliveredAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setDeliveredAt(Date deliveredAt) {
-		this.deliveredAt = deliveredAt;
-	}
+    public Date getDeliveredAt() {
+        return deliveredAt;
+    }
 
-	public String getJustification() {
-		return justification;
-	}
+    public void setDeliveredAt(Date deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
 
-	public void setJustification(String justification) {
-		this.justification = justification;
-	}
+    public String getJustification() {
+        return justification;
+    }
 
-	public SupplyRequestedStateEntity getState() {
-		return state;
-	}
+    public void setJustification(String justification) {
+        this.justification = justification;
+    }
 
-	public void setState(SupplyRequestedStateEntity state) {
-		this.state = state;
-	}
+    public SupplyRequestedStateEntity getState() {
+        return state;
+    }
 
-	public String getModelVersion() {
-		return modelVersion;
-	}
+    public void setState(SupplyRequestedStateEntity state) {
+        this.state = state;
+    }
 
-	public void setModelVersion(String modelVersion) {
-		this.modelVersion = modelVersion;
-	}
+    public String getModelVersion() {
+        return modelVersion;
+    }
 
-	public Long getDeliveredBy() {
-		return deliveredBy;
-	}
+    public void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
 
-	public void setDeliveredBy(Long deliveredBy) {
-		this.deliveredBy = deliveredBy;
-	}
+    public Long getDeliveredBy() {
+        return deliveredBy;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setDeliveredBy(Long deliveredBy) {
+        this.deliveredBy = deliveredBy;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getObservations() {
-		return observations;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setObservations(String observations) {
-		this.observations = observations;
-	}
+    public String getObservations() {
+        return observations;
+    }
 
-	public String getFtp() {
-		return ftp;
-	}
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
 
-	public void setFtp(String ftp) {
-		this.ftp = ftp;
-	}
+    public String getFtp() {
+        return ftp;
+    }
 
-	public String getErrors() {
-		return errors;
-	}
+    public void setFtp(String ftp) {
+        this.ftp = ftp;
+    }
 
-	public void setErrors(String errors) {
-		this.errors = errors;
-	}
+    public String getErrors() {
+        return errors;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
+    }
+
+    public Boolean getGeometryValidated() {
+        return isGeometryValidated;
+    }
+
+    public void setGeometryValidated(Boolean geometryValidated) {
+        isGeometryValidated = geometryValidated;
+    }
 }

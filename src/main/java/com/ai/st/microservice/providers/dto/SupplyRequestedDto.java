@@ -9,174 +9,185 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "SupplyRequestedDto", description = "Supply Requested Dto")
 public class SupplyRequestedDto implements Serializable {
 
-	private static final long serialVersionUID = -5639936149692833884L;
+    private static final long serialVersionUID = -5639936149692833884L;
 
-	@ApiModelProperty(required = true, notes = "Supply Requested ID")
-	private Long id;
+    @ApiModelProperty(required = true, notes = "Supply Requested ID")
+    private Long id;
 
-	@ApiModelProperty(required = true, notes = "Description")
-	private String description;
+    @ApiModelProperty(required = true, notes = "Description")
+    private String description;
 
-	@ApiModelProperty(required = true, notes = "Errors")
-	private String errors;
+    @ApiModelProperty(required = true, notes = "Errors")
+    private String errors;
 
-	@ApiModelProperty(required = true, notes = "Request")
-	private RequestDto request;
+    @ApiModelProperty(required = true, notes = "Request")
+    private RequestDto request;
 
-	@ApiModelProperty(required = true, notes = "Type supply")
-	private TypeSupplyDto typeSupply;
+    @ApiModelProperty(required = true, notes = "Type supply")
+    private TypeSupplyDto typeSupply;
 
-	@ApiModelProperty(required = true, notes = "Date creation")
-	private Date createdAt;
+    @ApiModelProperty(required = true, notes = "Date creation")
+    private Date createdAt;
 
-	@ApiModelProperty(required = true, notes = "Is Delivered?")
-	private Boolean delivered;
+    @ApiModelProperty(required = true, notes = "Is Delivered?")
+    private Boolean delivered;
 
-	@ApiModelProperty(required = true, notes = "Supply Requested State")
-	private SupplyRequestedStateDto state;
+    @ApiModelProperty(required = true, notes = "Supply Requested State")
+    private SupplyRequestedStateDto state;
 
-	@ApiModelProperty(required = true, notes = "Date delivered")
-	private Date deliveredAt;
+    @ApiModelProperty(required = true, notes = "Date delivered")
+    private Date deliveredAt;
 
-	@ApiModelProperty(required = true, notes = "Justification")
-	private String justification;
+    @ApiModelProperty(required = true, notes = "Justification")
+    private String justification;
 
-	@ApiModelProperty(required = true, notes = "Model version")
-	private String modelVersion;
+    @ApiModelProperty(required = true, notes = "Model version")
+    private String modelVersion;
 
-	@ApiModelProperty(required = true, notes = "Delivered by (user)")
-	private Long deliveredBy;
+    @ApiModelProperty(required = true, notes = "Delivered by (user)")
+    private Long deliveredBy;
 
-	@ApiModelProperty(required = true, notes = "URL")
-	private String url;
+    @ApiModelProperty(required = true, notes = "URL")
+    private String url;
 
-	@ApiModelProperty(required = true, notes = "Observations")
-	private String observations;
+    @ApiModelProperty(required = true, notes = "Observations")
+    private String observations;
 
-	@ApiModelProperty(required = true, notes = "FTP")
-	private String ftp;
+    @ApiModelProperty(required = true, notes = "FTP")
+    private String ftp;
 
-	public SupplyRequestedDto() {
+    @ApiModelProperty(required = true, notes = "is geometry validated?")
+    private Boolean isGeometryValidated;
 
-	}
+    public SupplyRequestedDto() {
 
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public RequestDto getRequest() {
-		return request;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setRequest(RequestDto request) {
-		this.request = request;
-	}
+    public RequestDto getRequest() {
+        return request;
+    }
 
-	public TypeSupplyDto getTypeSupply() {
-		return typeSupply;
-	}
+    public void setRequest(RequestDto request) {
+        this.request = request;
+    }
 
-	public void setTypeSupply(TypeSupplyDto typeSupply) {
-		this.typeSupply = typeSupply;
-	}
+    public TypeSupplyDto getTypeSupply() {
+        return typeSupply;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public void setTypeSupply(TypeSupplyDto typeSupply) {
+        this.typeSupply = typeSupply;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public Boolean getDelivered() {
-		return delivered;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setDelivered(Boolean delivered) {
-		this.delivered = delivered;
-	}
+    public Boolean getDelivered() {
+        return delivered;
+    }
 
-	public Date getDeliveredAt() {
-		return deliveredAt;
-	}
+    public void setDelivered(Boolean delivered) {
+        this.delivered = delivered;
+    }
 
-	public void setDeliveredAt(Date deliveredAt) {
-		this.deliveredAt = deliveredAt;
-	}
+    public Date getDeliveredAt() {
+        return deliveredAt;
+    }
 
-	public String getJustification() {
-		return justification;
-	}
+    public void setDeliveredAt(Date deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
 
-	public void setJustification(String justification) {
-		this.justification = justification;
-	}
+    public String getJustification() {
+        return justification;
+    }
 
-	public SupplyRequestedStateDto getState() {
-		return state;
-	}
+    public void setJustification(String justification) {
+        this.justification = justification;
+    }
 
-	public void setState(SupplyRequestedStateDto state) {
-		this.state = state;
-	}
+    public SupplyRequestedStateDto getState() {
+        return state;
+    }
 
-	public String getModelVersion() {
-		return modelVersion;
-	}
+    public void setState(SupplyRequestedStateDto state) {
+        this.state = state;
+    }
 
-	public void setModelVersion(String modelVersion) {
-		this.modelVersion = modelVersion;
-	}
+    public String getModelVersion() {
+        return modelVersion;
+    }
 
-	public Long getDeliveredBy() {
-		return deliveredBy;
-	}
+    public void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
 
-	public void setDeliveredBy(Long deliveredBy) {
-		this.deliveredBy = deliveredBy;
-	}
+    public Long getDeliveredBy() {
+        return deliveredBy;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setDeliveredBy(Long deliveredBy) {
+        this.deliveredBy = deliveredBy;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getObservations() {
-		return observations;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setObservations(String observations) {
-		this.observations = observations;
-	}
+    public String getObservations() {
+        return observations;
+    }
 
-	public String getFtp() {
-		return ftp;
-	}
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
 
-	public void setFtp(String ftp) {
-		this.ftp = ftp;
-	}
+    public String getFtp() {
+        return ftp;
+    }
 
-	public String getErrors() {
-		return errors;
-	}
+    public void setFtp(String ftp) {
+        this.ftp = ftp;
+    }
 
-	public void setErrors(String errors) {
-		this.errors = errors;
-	}
+    public String getErrors() {
+        return errors;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
+    }
+
+    public Boolean getGeometryValidated() {
+        return isGeometryValidated;
+    }
+
+    public void setGeometryValidated(Boolean geometryValidated) {
+        isGeometryValidated = geometryValidated;
+    }
 }

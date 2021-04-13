@@ -34,6 +34,9 @@ public class UpdateSupplyRequestedDto implements Serializable {
     @ApiModelProperty(required = false, notes = "Ftp")
     private String ftp;
 
+    @ApiModelProperty(required = false, notes = "is validated?")
+    private Boolean validated;
+
     public Boolean getDelivered() {
         return delivered;
     }
@@ -96,5 +99,13 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
     public void setErrors(String errors) {
         this.errors = errors;
+    }
+
+    public Boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(Boolean validated) {
+        this.validated = validated;
     }
 }
