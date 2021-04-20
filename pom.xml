@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.ai.st.microservice.providers</groupId>
 	<artifactId>st-microservice-providers</artifactId>
-	<version>1.8.5</version>
+	<version>1.12.5</version>
 	<name>st-microservice-providers</name>
 	<description>Microservice Providers</description>
 
