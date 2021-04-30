@@ -71,7 +71,9 @@ public class SupplyRequestedBusiness {
         supplyRequested.setObservations(supplyRE.getObservations());
         supplyRequested.setFtp(supplyRE.getFtp());
         supplyRequested.setErrors(supplyRE.getErrors());
-        supplyRequested.setGeometryValidated(supplyRE.getGeometryValidated());
+        supplyRequested.setValid(supplyRE.getValid());
+        supplyRequested.setExtraFile(supplyRE.getExtraFile());
+        supplyRequested.setLog(supplyRE.getLog());
 
         SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
         supplyRequested

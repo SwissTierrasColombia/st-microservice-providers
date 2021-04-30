@@ -23,17 +23,17 @@ public class SupplyRequestedEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "description", nullable = true, length = 500)
+    @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "errors", nullable = true, length = 1000)
+    @Column(name = "errors", length = 1000)
     private String errors;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_supply_id", referencedColumnName = "id", nullable = false)
     private TypeSupplyEntity typeSupply;
 
-    @Column(name = "model_version", nullable = true, length = 20)
+    @Column(name = "model_version", length = 20)
     private String modelVersion;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,8 +43,17 @@ public class SupplyRequestedEntity {
     @Column(name = "delivered", nullable = false)
     private Boolean delivered;
 
-    @Column(name = "is_geometry_validated", nullable = true)
-    private Boolean isGeometryValidated;
+    @Column(name = "url", length = 1000)
+    private String url;
+
+    @Column(name = "is_valid")
+    private Boolean isValid;
+
+    @Column(name = "log", length = 1000)
+    private String log;
+
+    @Column(name = "extra_file", length = 1000)
+    private String extraFile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supply_requested_state_id", referencedColumnName = "id", nullable = false)
@@ -54,23 +63,20 @@ public class SupplyRequestedEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column(name = "delivered_at", nullable = true)
+    @Column(name = "delivered_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveredAt;
 
-    @Column(name = "delivered_by", nullable = true)
+    @Column(name = "delivered_by")
     private Long deliveredBy;
 
-    @Column(name = "justification", nullable = true, length = 500)
+    @Column(name = "justification", length = 500)
     private String justification;
 
-    @Column(name = "url", nullable = true, length = 1000)
-    private String url;
-
-    @Column(name = "observations", nullable = true, length = 500)
+    @Column(name = "observations", length = 500)
     private String observations;
 
-    @Column(name = "ftp", nullable = true, length = 500)
+    @Column(name = "ftp", length = 500)
     private String ftp;
 
     public SupplyRequestedEntity() {
@@ -197,11 +203,27 @@ public class SupplyRequestedEntity {
         this.errors = errors;
     }
 
-    public Boolean getGeometryValidated() {
-        return isGeometryValidated;
+    public Boolean getValid() {
+        return isValid;
     }
 
-    public void setGeometryValidated(Boolean geometryValidated) {
-        isGeometryValidated = geometryValidated;
+    public void setValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public String getExtraFile() {
+        return extraFile;
+    }
+
+    public void setExtraFile(String extraFile) {
+        this.extraFile = extraFile;
     }
 }

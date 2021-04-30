@@ -189,7 +189,8 @@ public class RequestV1Controller {
 
             responseDto = requestBusiness.updateSupplyRequested(requestId, supplyRequestedId, stateId,
                     updateSupply.getJustification(), updateSupply.getDeliveryBy(), updateSupply.getUrl(),
-                    updateSupply.getObservations(), updateSupply.isValidated(), updateSupply.getErrors(), updateSupply.getFtp());
+                    updateSupply.getObservations(), updateSupply.isValidated(), updateSupply.getLog(), updateSupply.getExtraFile(),
+                    updateSupply.getErrors(), updateSupply.getFtp());
             httpStatus = HttpStatus.OK;
 
         } catch (InputValidationException e) {

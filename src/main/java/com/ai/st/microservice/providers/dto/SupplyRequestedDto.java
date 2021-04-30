@@ -56,8 +56,14 @@ public class SupplyRequestedDto implements Serializable {
     @ApiModelProperty(required = true, notes = "FTP")
     private String ftp;
 
-    @ApiModelProperty(required = true, notes = "is geometry validated?")
-    private Boolean isGeometryValidated;
+    @ApiModelProperty(required = true, notes = "is valid")
+    private Boolean isValid;
+
+    @ApiModelProperty(required = true, notes = "log file")
+    private String log;
+
+    @ApiModelProperty(required = true, notes = "extra file")
+    private String extraFile;
 
     public SupplyRequestedDto() {
 
@@ -183,11 +189,27 @@ public class SupplyRequestedDto implements Serializable {
         this.errors = errors;
     }
 
-    public Boolean getGeometryValidated() {
-        return isGeometryValidated;
+    public Boolean getValid() {
+        return isValid;
     }
 
-    public void setGeometryValidated(Boolean geometryValidated) {
-        isGeometryValidated = geometryValidated;
+    public void setValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public String getExtraFile() {
+        return extraFile;
+    }
+
+    public void setExtraFile(String extraFile) {
+        this.extraFile = extraFile;
     }
 }
