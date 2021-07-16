@@ -233,7 +233,6 @@ public class RequestBusiness {
                 supplyRequested.setValid(isValidated);
             }
 
-            log.info("Update request # " + urlExtraFile);
             if (urlExtraFile != null) {
                 supplyRequested.setExtraFile(urlExtraFile);
             }
@@ -254,9 +253,14 @@ public class RequestBusiness {
             if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
                 supplyRequested.setDeliveredAt(new Date());
                 supplyRequested.setJustification("");
-            } else if (stateRequestedSupply.getId()
-                    .equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
+            } else if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
                 supplyRequested.setJustification(justification);
+            }
+
+            if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING_REVIEW)) {
+                // update field 'sent_to_review_at' from request
+                requestEntity.setSentReviewAt(new Date());
+                requestService.updateRequest(requestEntity);
             }
 
             supplyRequestedService.updateSupplyRequested(supplyRequested);

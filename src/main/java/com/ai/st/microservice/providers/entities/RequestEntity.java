@@ -31,25 +31,29 @@ public class RequestEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deadline;
 
-	@Column(name = "observations", nullable = true, length = 255)
+	@Column(name = "observations")
 	private String observations;
 
-	@Column(name = "package", nullable = false, length = 255)
+	@Column(name = "package", nullable = false)
 	private String packageLabel;
 
 	@Column(name = "municipality_code", nullable = false, length = 10)
 	private String municipalityCode;
 
-	@Column(name = "closed_by", nullable = true)
+	@Column(name = "closed_by")
 	private Long closedBy;
 
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
-	@Column(name = "closed_at", nullable = true)
+	@Column(name = "closed_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date closedAt;
+
+	@Column(name = "sent_review_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date sentReviewAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
@@ -60,10 +64,10 @@ public class RequestEntity {
 	private RequestStateEntity requestState;
 
 	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-	private List<SupplyRequestedEntity> supplies = new ArrayList<SupplyRequestedEntity>();
+	private List<SupplyRequestedEntity> supplies = new ArrayList<>();
 
 	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-	private List<EmitterEntity> emitters = new ArrayList<EmitterEntity>();
+	private List<EmitterEntity> emitters = new ArrayList<>();
 
 	public RequestEntity() {
 
@@ -163,6 +167,14 @@ public class RequestEntity {
 
 	public void setClosedBy(Long closedBy) {
 		this.closedBy = closedBy;
+	}
+
+	public Date getSentReviewAt() {
+		return sentReviewAt;
+	}
+
+	public void setSentReviewAt(Date sentReviewAt) {
+		this.sentReviewAt = sentReviewAt;
 	}
 
 }

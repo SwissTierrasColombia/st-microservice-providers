@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.st.microservice.common.business.RoleBusiness;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
-import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.controllers.v1.ProviderV1Controller;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
@@ -67,7 +67,7 @@ public class StGetAdministratorsByProviderTests {
 		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
 				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		roleDirector = roleService.getRoleById(RoleBusiness.ROLE_DIRECTOR);
+		roleDirector = roleService.getRoleById(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
 
 		providerEntity = new ProviderEntity();
 		providerEntity.setName(RandomStringUtils.random(10, true, false));

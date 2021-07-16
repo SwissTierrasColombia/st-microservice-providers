@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.st.microservice.common.business.RoleBusiness;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
-import com.ai.st.microservice.providers.business.RoleBusiness;
 import com.ai.st.microservice.providers.controllers.v1.ProviderAdministratorV1Controller;
 import com.ai.st.microservice.providers.dto.RoleDto;
 import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
@@ -73,7 +73,7 @@ public class StGetRolesByUserTests {
 		providerEntity.setProviderCategory(providerCategoryCadastral);
 		providerEntity = providerService.createProvider(providerEntity);
 
-		RoleEntity roleEntity = roleService.getRoleById(RoleBusiness.ROLE_DIRECTOR);
+		RoleEntity roleEntity = roleService.getRoleById(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
 		ProviderAdministratorEntity providerAdmin = new ProviderAdministratorEntity();
 		providerAdmin.setCreatedAt(new Date());
 		providerAdmin.setProvider(providerEntity);
