@@ -1,6 +1,6 @@
 package com.ai.st.microservice.providers.services;
 
-import com.ai.st.microservice.providers.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestStateEntity;
 
 public interface IRequestStateService {
 

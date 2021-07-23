@@ -21,8 +21,8 @@ import org.junit.jupiter.api.BeforeAll;
 
 import com.ai.st.microservice.providers.business.ProviderCategoryBusiness;
 import com.ai.st.microservice.providers.controllers.v1.ProviderV1Controller;
-import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderCategoryEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderService;
 

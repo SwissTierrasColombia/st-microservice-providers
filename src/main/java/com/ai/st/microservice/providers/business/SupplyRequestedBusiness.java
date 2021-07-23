@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ai.st.microservice.providers.dto.*;
-import com.ai.st.microservice.providers.entities.*;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -11,17 +11,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
-import com.ai.st.microservice.providers.entities.RequestEntity;
-import com.ai.st.microservice.providers.entities.RequestStateEntity;
-import com.ai.st.microservice.providers.repositories.RequestRepository;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.EmitterTypeEnum;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.repositories.RequestJPARepository;
 
 @Service
 public class RequestService implements IRequestService {
 
     @Autowired
-    private RequestRepository requestRepository;
+    private RequestJPARepository requestRepository;
 
     @Override
     @Transactional

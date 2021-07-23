@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import com.ai.st.microservice.providers.dto.ProviderCategoryDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 import com.ai.st.microservice.providers.dto.RoleDto;
-import com.ai.st.microservice.providers.entities.ProviderAdministratorEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
-import com.ai.st.microservice.providers.entities.RoleEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderAdministratorEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RoleEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 

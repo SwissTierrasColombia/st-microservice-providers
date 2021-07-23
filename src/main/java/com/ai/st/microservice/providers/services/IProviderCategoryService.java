@@ -2,7 +2,7 @@ package com.ai.st.microservice.providers.services;
 
 import java.util.List;
 
-import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderCategoryEntity;
 
 public interface IProviderCategoryService {
 

@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.ai.st.microservice.providers.entities.ProviderCategoryEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderCategoryEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
 
 public interface ProviderRepository extends CrudRepository<ProviderEntity, Long> {
 

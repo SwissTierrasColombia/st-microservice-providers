@@ -9,9 +9,9 @@ import com.ai.st.microservice.common.dto.reports.MicroserviceRequestReportSNRDto
 import com.ai.st.microservice.common.dto.reports.MicroserviceRequestReportSNRSuppliesDto;
 import com.ai.st.microservice.common.dto.workspaces.MicroserviceMunicipalityDto;
 import com.ai.st.microservice.common.exceptions.BusinessException;
-import com.ai.st.microservice.providers.entities.EmitterEntity;
-import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
-import com.ai.st.microservice.providers.entities.RequestEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.EmitterEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.EmitterTypeEnum;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestEntity;
 import com.ai.st.microservice.providers.services.IRequestService;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +40,6 @@ public final class ReportBusiness {
     public String generateSuppliesDeliveredReportSNR(Date from, Date to) throws BusinessException {
 
         List<RequestEntity> requests = requestService.getRequestForReportSNR(from, to);
-
-        System.out.println("solicitudes: " + requests.size());
 
         if (requests.size() == 0) {
             throw new BusinessException("No se han encontrado solicitudes para el período de tiempo seleccionado.");

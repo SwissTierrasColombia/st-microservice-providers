@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.SupplyRevisionDto;
-import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
-import com.ai.st.microservice.providers.entities.SupplyRevisionEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.SupplyRequestedEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.SupplyRevisionEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.ISupplyRequestedService;
 import com.ai.st.microservice.providers.services.ISupplyRevisionService;

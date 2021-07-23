@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
-import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.SupplyRequestedEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.TypeSupplyEntity;
 
 public interface SupplyRequestedRepository extends CrudRepository<SupplyRequestedEntity, Long> {
 

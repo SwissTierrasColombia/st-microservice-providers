@@ -1,6 +1,6 @@
 package com.ai.st.microservice.providers.services;
 
-import com.ai.st.microservice.providers.entities.RoleEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RoleEntity;
 
 public interface IRoleService {
 

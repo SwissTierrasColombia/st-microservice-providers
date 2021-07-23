@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.ai.st.microservice.providers.entities.ProviderEntity;
-import com.ai.st.microservice.providers.entities.RequestEntity;
-import com.ai.st.microservice.providers.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestStateEntity;
 
 public interface IRequestService {
 
