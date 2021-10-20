@@ -2,11 +2,11 @@ package com.ai.st.microservice.providers.modules.shared.domain;
 
 import java.util.Objects;
 
-public abstract class LongObjectValue {
+public abstract class LongValueObject {
 
     private final Long value;
 
-    public LongObjectValue(Long value) {
+    public LongValueObject(Long value) {
         this.value = value;
     }
 
@@ -19,10 +19,10 @@ public abstract class LongObjectValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof LongObjectValue)) {
+        if (!(o instanceof LongValueObject)) {
             return false;
         }
-        LongObjectValue that = (LongObjectValue) o;
+        LongValueObject that = (LongValueObject) o;
         return Objects.equals(value, that.value);
     }
 

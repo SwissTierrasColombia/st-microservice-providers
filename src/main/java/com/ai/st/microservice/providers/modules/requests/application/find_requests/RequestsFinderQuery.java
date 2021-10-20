@@ -11,8 +11,9 @@ public final class RequestsFinderQuery implements Query {
     private final String municipality;
     private final String orderNumber;
     private final Long manager;
+    private final Long user;
 
-    public RequestsFinderQuery(int page, int limit, Long provider, Long status, String municipality, String orderNumber, Long manager) {
+    public RequestsFinderQuery(int page, int limit, Long provider, Long status, String municipality, String orderNumber, Long manager, Long user) {
         this.page = page;
         this.limit = limit;
         this.provider = provider;
@@ -20,6 +21,7 @@ public final class RequestsFinderQuery implements Query {
         this.municipality = municipality;
         this.orderNumber = orderNumber;
         this.manager = manager;
+        this.user = user;
     }
 
     public int page() {
@@ -48,5 +50,9 @@ public final class RequestsFinderQuery implements Query {
 
     public Long manager() {
         return manager;
+    }
+
+    public Long user() {
+        return user;
     }
 }

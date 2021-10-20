@@ -65,7 +65,7 @@ public final class RequestGetController extends ApiController {
 
             responseDto = requestsFinder.handle(
                     new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.REQUESTED, municipality, orderNumber, manager
+                            page, limit, session.entityCode(), RequestStatusId.REQUESTED, municipality, orderNumber, manager, session.userCode()
                     )
             );
 
@@ -111,7 +111,7 @@ public final class RequestGetController extends ApiController {
 
             responseDto = requestsFinder.handle(
                     new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.DELIVERED, municipality, orderNumber, manager
+                            page, limit, session.entityCode(), RequestStatusId.DELIVERED, municipality, orderNumber, manager, session.userCode()
                     )
             );
 

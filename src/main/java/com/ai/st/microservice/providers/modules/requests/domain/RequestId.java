@@ -1,8 +1,8 @@
 package com.ai.st.microservice.providers.modules.requests.domain;
 
-import com.ai.st.microservice.providers.modules.shared.domain.LongObjectValue;
+import com.ai.st.microservice.providers.modules.shared.domain.LongValueObject;
 
-public final class RequestId extends LongObjectValue {
+public final class RequestId extends LongValueObject {
 
     public RequestId(Long value) {
         super(value);

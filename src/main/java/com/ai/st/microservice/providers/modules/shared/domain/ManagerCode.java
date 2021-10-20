@@ -2,7 +2,7 @@ package com.ai.st.microservice.providers.modules.shared.domain;
 
 import com.ai.st.microservice.providers.modules.shared.domain.exceptions.ManagerCodeInvalid;
 
-public final class ManagerCode extends LongObjectValue {
+public final class ManagerCode extends LongValueObject {
 
     private ManagerCode(Long value) {
         super(value);

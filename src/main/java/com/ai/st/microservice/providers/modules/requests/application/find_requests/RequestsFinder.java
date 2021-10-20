@@ -1,7 +1,11 @@
 package com.ai.st.microservice.providers.modules.requests.application.find_requests;
 
+import com.ai.st.microservice.providers.modules.areas.application.AreaResponse;
+import com.ai.st.microservice.providers.modules.areas.application.get_areas_from_user.AreasFinder;
+import com.ai.st.microservice.providers.modules.areas.application.get_areas_from_user.AreasFinderQuery;
 import com.ai.st.microservice.providers.modules.requests.application.RequestResponse;
 import com.ai.st.microservice.providers.modules.requests.domain.Request;
+import com.ai.st.microservice.providers.modules.shared.application.ListResponse;
 import com.ai.st.microservice.providers.modules.shared.domain.FederationCode;
 import com.ai.st.microservice.providers.modules.requests.domain.RequestOrderNumber;
 import com.ai.st.microservice.providers.modules.requests.domain.contracts.RequestRepository;
@@ -19,12 +23,14 @@ import java.util.stream.Collectors;
 public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, PageableResponse<RequestResponse>> {
 
     private final RequestRepository requestRepository;
+    private final AreasFinder areasFinder;
 
     private final static int PAGE_DEFAULT = 1;
     private final static int LIMIT_DEFAULT = 10;
 
-    public RequestsFinder(RequestRepository requestRepository) {
+    public RequestsFinder(RequestRepository requestRepository, AreasFinder areasFinder) {
         this.requestRepository = requestRepository;
+        this.areasFinder = areasFinder;
     }
 
     @Override
@@ -46,6 +52,8 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
         if (orderNumber != null && !orderNumber.isEmpty()) {
             filters.add(filterByOrderNumber(orderNumber));
         }
+
+        filters.add(filterByArea(searchUserAreas(query.user())));
 
         Criteria criteria = new Criteria(
                 filters,
@@ -85,6 +93,16 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
     private Filter filterByOrderNumber(String orderNumber) {
         FilterField filterField = new FilterField("orderNumber");
         return new Filter(filterField, FilterOperator.LIKE, new FilterValue(RequestOrderNumber.fromValue(orderNumber).value()));
+    }
+
+    private Filter filterByArea(List<Long> areas) {
+        List<FilterValue> filters = areas.stream().map(id -> new FilterValue(id.toString())).collect(Collectors.toList());
+        return new Filter(new FilterField("workArea"), FilterOperator.CONTAINS, filters);
+    }
+
+    private List<Long> searchUserAreas(Long userId) {
+        ListResponse<AreaResponse> areasResponse = areasFinder.handle(new AreasFinderQuery(userId));
+        return areasResponse.list().stream().map(AreaResponse::id).collect(Collectors.toList());
     }
 
     private PageableResponse<RequestResponse> buildResponse(PageableDomain<Request> pageableDomain) {

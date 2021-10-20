@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.util.*;
@@ -39,7 +41,8 @@ public final class PostgresRequestRepository implements RequestRepository {
                     new AbstractMap.SimpleEntry<>("requestStatus", "requestState"),
                     new AbstractMap.SimpleEntry<>("municipality", "municipalityCode"),
                     new AbstractMap.SimpleEntry<>("orderNumber", "packageLabel"),
-                    new AbstractMap.SimpleEntry<>("manager", "emitters")
+                    new AbstractMap.SimpleEntry<>("manager", "emitters"),
+                    new AbstractMap.SimpleEntry<>("workArea", "supplies")
             ));
 
     public PostgresRequestRepository(RequestJPARepository requestJPARepository, ManagerMicroservice managerMicroservice,
@@ -157,6 +160,9 @@ public final class PostgresRequestRepository implements RequestRepository {
         if (root.get(field).getJavaType().isAssignableFrom(RequestStateEntity.class)
                 || root.get(field).getJavaType().isAssignableFrom(ProviderEntity.class)) {
             return root.get(field).get("id");
+        } else if (field.equalsIgnoreCase("supplies")) {
+            Join<RequestEntity, SupplyRequestedEntity> joinOptions = root.join(field, JoinType.LEFT);
+            return joinOptions.get("typeSupply").get("providerProfile").get("id");
         }
 
         return root.get(field);

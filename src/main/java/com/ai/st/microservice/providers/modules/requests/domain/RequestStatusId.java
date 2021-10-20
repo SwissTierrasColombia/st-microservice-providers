@@ -1,9 +1,9 @@
 package com.ai.st.microservice.providers.modules.requests.domain;
 
 import com.ai.st.microservice.providers.modules.requests.domain.exceptions.RequestStatusInvalid;
-import com.ai.st.microservice.providers.modules.shared.domain.LongObjectValue;
+import com.ai.st.microservice.providers.modules.shared.domain.LongValueObject;
 
-public final class RequestStatusId extends LongObjectValue {
+public final class RequestStatusId extends LongValueObject {
 
     public static final Long REQUESTED = (long) 1;
     public static final Long DELIVERED = (long) 2;
