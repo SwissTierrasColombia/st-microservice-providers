@@ -7,9 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ai.st.microservice.providers.entities.PetitionEntity;
-import com.ai.st.microservice.providers.entities.PetitionStateEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.PetitionEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.PetitionStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
 import com.ai.st.microservice.providers.repositories.PetitionRepository;
 
 @Service

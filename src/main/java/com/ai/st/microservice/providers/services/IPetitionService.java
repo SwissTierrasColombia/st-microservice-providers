@@ -2,9 +2,9 @@ package com.ai.st.microservice.providers.services;
 
 import java.util.List;
 
-import com.ai.st.microservice.providers.entities.PetitionEntity;
-import com.ai.st.microservice.providers.entities.PetitionStateEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.PetitionEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.PetitionStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
 
 public interface IPetitionService {
 

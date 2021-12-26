@@ -10,32 +10,38 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
     private static final long serialVersionUID = -1302858811309199472L;
 
-    @ApiModelProperty(required = false, notes = "Delivered")
+    @ApiModelProperty(notes = "Delivered")
     private Boolean delivered;
 
-    @ApiModelProperty(required = false, notes = "Justification")
+    @ApiModelProperty(notes = "Justification")
     private String justification;
 
-    @ApiModelProperty(required = false, notes = "Supply Requested State ID")
+    @ApiModelProperty(notes = "Supply Requested State ID")
     private Long supplyRequestedStateId;
 
-    @ApiModelProperty(required = false, notes = "User Code")
+    @ApiModelProperty(notes = "User Code")
     private Long deliveryBy;
 
-    @ApiModelProperty(required = false, notes = "Url file")
+    @ApiModelProperty(notes = "Url file")
     private String url;
 
-    @ApiModelProperty(required = false, notes = "Observations")
+    @ApiModelProperty(notes = "Observations")
     private String observations;
 
-    @ApiModelProperty(required = false, notes = "Errors")
+    @ApiModelProperty(notes = "Errors")
     private String errors;
 
-    @ApiModelProperty(required = false, notes = "Ftp")
+    @ApiModelProperty(notes = "Ftp")
     private String ftp;
 
-    @ApiModelProperty(required = false, notes = "is validated?")
+    @ApiModelProperty(notes = "is validated?")
     private Boolean validated;
+
+    @ApiModelProperty(notes = "log file path")
+    private String log;
+
+    @ApiModelProperty(notes = "Extra file")
+    private String extraFile;
 
     public Boolean getDelivered() {
         return delivered;
@@ -107,5 +113,21 @@ public class UpdateSupplyRequestedDto implements Serializable {
 
     public void setValidated(Boolean validated) {
         this.validated = validated;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public String getExtraFile() {
+        return extraFile;
+    }
+
+    public void setExtraFile(String extraFile) {
+        this.extraFile = extraFile;
     }
 }

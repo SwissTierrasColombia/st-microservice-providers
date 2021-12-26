@@ -24,15 +24,15 @@ import com.ai.st.microservice.providers.dto.SupplyRequestedDto;
 import com.ai.st.microservice.providers.dto.SupplyRequestedStateDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyDto;
 import com.ai.st.microservice.providers.dto.TypeSupplyRequestedDto;
-import com.ai.st.microservice.providers.entities.EmitterEntity;
-import com.ai.st.microservice.providers.entities.EmitterTypeEnum;
-import com.ai.st.microservice.providers.entities.ExtensionEntity;
-import com.ai.st.microservice.providers.entities.ProviderEntity;
-import com.ai.st.microservice.providers.entities.RequestEntity;
-import com.ai.st.microservice.providers.entities.RequestStateEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedEntity;
-import com.ai.st.microservice.providers.entities.SupplyRequestedStateEntity;
-import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.EmitterEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.EmitterTypeEnum;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ExtensionEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.RequestStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.SupplyRequestedEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.SupplyRequestedStateEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.TypeSupplyEntity;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IRequestService;
@@ -188,7 +188,8 @@ public class RequestBusiness {
     }
 
     public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Long stateId, String justification,
-                                            Long deliveryBy, String url, String observations, Boolean isValidated, String errors, String ftp) throws BusinessException {
+                                            Long deliveryBy, String url, String observations, Boolean isValidated, String logSupply, String urlExtraFile,
+                                            String errors, String ftp) throws BusinessException {
 
         // verify if request exists
         RequestEntity requestEntity = requestService.getRequestById(requestId);
@@ -229,8 +230,14 @@ public class RequestBusiness {
             }
 
             if (isValidated != null) {
-                supplyRequested.setGeometryValidated(isValidated);
+                supplyRequested.setValid(isValidated);
             }
+
+            if (urlExtraFile != null) {
+                supplyRequested.setExtraFile(urlExtraFile);
+            }
+
+            supplyRequested.setLog(logSupply);
 
             int limit = 1000;
             if (errors != null && errors.length() > limit) {
@@ -246,9 +253,14 @@ public class RequestBusiness {
             if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
                 supplyRequested.setDeliveredAt(new Date());
                 supplyRequested.setJustification("");
-            } else if (stateRequestedSupply.getId()
-                    .equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
+            } else if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
                 supplyRequested.setJustification(justification);
+            }
+
+            if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING_REVIEW)) {
+                // update field 'sent_to_review_at' from request
+                requestEntity.setSentReviewAt(new Date());
+                requestService.updateRequest(requestEntity);
             }
 
             supplyRequestedService.updateSupplyRequested(supplyRequested);
@@ -423,7 +435,7 @@ public class RequestBusiness {
         requestDto.setRequestState(new RequestStateDto(requestEntity.getRequestState().getId(),
                 requestEntity.getRequestState().getName()));
 
-        List<SupplyRequestedDto> suppliesDto = new ArrayList<SupplyRequestedDto>();
+        List<SupplyRequestedDto> suppliesDto = new ArrayList<>();
         for (SupplyRequestedEntity supplyRE : requestEntity.getSupplies()) {
 
             SupplyRequestedDto supplyRequested = new SupplyRequestedDto();
@@ -439,7 +451,9 @@ public class RequestBusiness {
             supplyRequested.setObservations(supplyRE.getObservations());
             supplyRequested.setFtp(supplyRE.getFtp());
             supplyRequested.setErrors(supplyRE.getErrors());
-            supplyRequested.setGeometryValidated(supplyRE.getGeometryValidated());
+            supplyRequested.setValid(supplyRE.getValid());
+            supplyRequested.setExtraFile(supplyRE.getExtraFile());
+            supplyRequested.setLog(supplyRE.getLog());
 
             SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
             supplyRequested.setState(
@@ -455,7 +469,7 @@ public class RequestBusiness {
             typeSupplyDto.setModelRequired(tsE.getIsModelRequired());
             typeSupplyDto.setName(tsE.getName());
 
-            List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
+            List<ExtensionDto> listExtensionsDto = new ArrayList<>();
             for (ExtensionEntity extensionEntity : tsE.getExtensions()) {
                 ExtensionDto extensionDto = new ExtensionDto();
                 extensionDto.setId(extensionEntity.getId());
@@ -476,7 +490,7 @@ public class RequestBusiness {
         }
         requestDto.setSuppliesRequested(suppliesDto);
 
-        List<EmitterDto> emittersDto = new ArrayList<EmitterDto>();
+        List<EmitterDto> emittersDto = new ArrayList<>();
         for (EmitterEntity emitterEntity : requestEntity.getEmitters()) {
             EmitterDto emitterDto = new EmitterDto();
             emitterDto.setCreatedAt(emitterEntity.getCreatedAt());

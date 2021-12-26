@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.ai.st.microservice.providers</groupId>
 	<artifactId>st-microservice-providers</artifactId>
-	<version>1.12.5</version>
+	<version>2.2.9</version>
 	<name>st-microservice-providers</name>
 	<description>Microservice Providers</description>
 
@@ -84,6 +84,17 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.ai.st.microservice.common</groupId>
+			<artifactId>st-common</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -104,7 +115,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 
 	<repositories>

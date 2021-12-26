@@ -2,8 +2,8 @@ package com.ai.st.microservice.providers.services;
 
 import java.util.List;
 
-import com.ai.st.microservice.providers.entities.ProviderProfileEntity;
-import com.ai.st.microservice.providers.entities.TypeSupplyEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderProfileEntity;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.TypeSupplyEntity;
 
 public interface ITypeSupplyService {
 

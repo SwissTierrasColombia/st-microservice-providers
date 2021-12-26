@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ai.st.microservice.providers.dto.*;
-import com.ai.st.microservice.providers.entities.*;
+import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -71,7 +71,9 @@ public class SupplyRequestedBusiness {
         supplyRequested.setObservations(supplyRE.getObservations());
         supplyRequested.setFtp(supplyRE.getFtp());
         supplyRequested.setErrors(supplyRE.getErrors());
-        supplyRequested.setGeometryValidated(supplyRE.getGeometryValidated());
+        supplyRequested.setValid(supplyRE.getValid());
+        supplyRequested.setExtraFile(supplyRE.getExtraFile());
+        supplyRequested.setLog(supplyRE.getLog());
 
         SupplyRequestedStateEntity stateSupplyRequested = supplyRE.getState();
         supplyRequested

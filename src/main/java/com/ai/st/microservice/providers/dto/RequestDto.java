@@ -50,8 +50,8 @@ public class RequestDto implements Serializable {
 	private Long closedBy;
 
 	public RequestDto() {
-		suppliesRequested = new ArrayList<SupplyRequestedDto>();
-		emitters = new ArrayList<EmitterDto>();
+		suppliesRequested = new ArrayList<>();
+		emitters = new ArrayList<>();
 	}
 
 	public Long getId() {
