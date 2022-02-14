@@ -218,7 +218,7 @@ public class ProviderBusiness {
     public List<RequestDto> getRequestsByProviderAndUserClosed(Long providerId, Long userCode)
             throws BusinessException {
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -229,7 +229,7 @@ public class ProviderBusiness {
         RequestStateEntity requestState = requestStateService
                 .getRequestStateById(RequestStateBusiness.REQUEST_STATE_DELIVERED);
 
-        List<RequestEntity> listRequestEntity = new ArrayList<RequestEntity>();
+        List<RequestEntity> listRequestEntity;
 
         listRequestEntity = requestService.getRequestByClosedByAndProviderAndRequestState(userCode, providerEntity,
                 requestState);

@@ -21,7 +21,7 @@ public class ProviderUserBusiness {
 	@Autowired
 	private IProviderUserService providerUserService;
 
-	public ProviderDto getProviderByUserCode(Long userCode) throws BusinessException {
+	public ProviderDto getProviderByUserCode(Long userCode) {
 
 		ProviderDto providerDto = null;
 

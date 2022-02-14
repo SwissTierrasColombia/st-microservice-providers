@@ -53,7 +53,9 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
             filters.add(filterByOrderNumber(orderNumber));
         }
 
-        filters.add(filterByArea(searchUserAreas(query.user())));
+        if (!query.skipFilterAreas()) {
+            filters.add(filterByArea(searchUserAreas(query.user())));
+        }
 
         Criteria criteria = new Criteria(
                 filters,

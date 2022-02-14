@@ -42,7 +42,7 @@ public class ProviderAdministratorBusiness {
 		return rolesDto;
 	}
 
-	public ProviderDto getProviderByUserCode(Long userCode) throws BusinessException {
+	public ProviderDto getProviderByUserCode(Long userCode) {
 
 		ProviderDto providerDto = null;
 

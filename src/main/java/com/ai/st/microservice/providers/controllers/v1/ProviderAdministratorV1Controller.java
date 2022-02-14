@@ -144,13 +144,8 @@ public class ProviderAdministratorV1Controller {
 		try {
 
 			responseDto = providerAdministratorBusiness.getProviderByUserCode(userCode);
-			httpStatus = (responseDto instanceof ProviderDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+			httpStatus = (responseDto != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 
-		} catch (BusinessException e) {
-			log.error("Error ProviderAdministratorV1Controller@getProviderByAdministrator#Business ---> "
-					+ e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-			responseDto = new ErrorDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ProviderAdministratorV1Controller@getProviderByAdministrator#General ---> "
 					+ e.getMessage());

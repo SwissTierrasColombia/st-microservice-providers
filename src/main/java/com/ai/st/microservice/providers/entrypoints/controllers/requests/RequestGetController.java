@@ -5,6 +5,7 @@ import com.ai.st.microservice.common.business.ManagerBusiness;
 import com.ai.st.microservice.common.business.OperatorBusiness;
 import com.ai.st.microservice.common.dto.general.BasicResponseDto;
 
+import com.ai.st.microservice.providers.business.ProviderAdministratorBusiness;
 import com.ai.st.microservice.providers.business.ProviderUserBusiness;
 import com.ai.st.microservice.providers.entrypoints.controllers.ApiController;
 import com.ai.st.microservice.providers.exceptions.BusinessException;
@@ -37,8 +38,9 @@ public final class RequestGetController extends ApiController {
     public RequestGetController(AdministrationBusiness administrationBusiness,
                                 ManagerBusiness managerBusiness, OperatorBusiness operatorBusiness,
                                 ProviderUserBusiness providerUserBusiness,
+                                ProviderAdministratorBusiness providerAdministratorBusiness,
                                 RequestsFinder requestsFinder) {
-        super(administrationBusiness, managerBusiness, operatorBusiness, providerUserBusiness);
+        super(administrationBusiness, managerBusiness, operatorBusiness, providerUserBusiness, providerAdministratorBusiness);
         this.requestsFinder = requestsFinder;
     }
 
@@ -65,8 +67,8 @@ public final class RequestGetController extends ApiController {
 
             responseDto = requestsFinder.handle(
                     new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.REQUESTED, municipality, orderNumber, manager, session.userCode()
-                    )
+                            page, limit, session.entityCode(), RequestStatusId.REQUESTED, municipality, orderNumber, manager, session.userCode(),
+                            session.isProviderAdmin())
             );
 
             httpStatus = HttpStatus.OK;
@@ -81,6 +83,7 @@ public final class RequestGetController extends ApiController {
             responseDto = new BasicResponseDto(e.errorMessage(), 2);
         } catch (Exception e) {
             log.error("Error RequestGetController@findPendingRequests#General ---> " + e.getMessage());
+            e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             responseDto = new BasicResponseDto(e.getMessage(), 1);
         }
@@ -111,8 +114,8 @@ public final class RequestGetController extends ApiController {
 
             responseDto = requestsFinder.handle(
                     new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.DELIVERED, municipality, orderNumber, manager, session.userCode()
-                    )
+                            page, limit, session.entityCode(), RequestStatusId.DELIVERED, municipality, orderNumber, manager, session.userCode(),
+                            session.isProviderAdmin())
             );
 
             httpStatus = HttpStatus.OK;
