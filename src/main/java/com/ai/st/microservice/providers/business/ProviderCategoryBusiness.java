@@ -24,7 +24,7 @@ public class ProviderCategoryBusiness {
 
     public List<ProviderCategoryDto> getCategories() throws BusinessException {
 
-        List<ProviderCategoryDto> listCategoriesDto = new ArrayList<ProviderCategoryDto>();
+        List<ProviderCategoryDto> listCategoriesDto = new ArrayList<>();
 
         List<ProviderCategoryEntity> listCategoriesEntity = providerCategoryService.getAllProvidersCategories();
 
