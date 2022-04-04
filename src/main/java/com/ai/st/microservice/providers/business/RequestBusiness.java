@@ -65,7 +65,7 @@ public class RequestBusiness {
     private ISupplyRequestedStateService supplyRequestedStateService;
 
     public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode, String packageLabel,
-            List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
+            List<RequestEmitterDto> requestEmitters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
         // verify that the sea deadline greater than the current date
         if (!deadline.after(new Date())) {
@@ -74,7 +74,7 @@ public class RequestBusiness {
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
@@ -85,7 +85,7 @@ public class RequestBusiness {
 
             // verify the type of input exists
             TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyDto.getTypeSupplyId());
-            if (!(typeSupplyEntity instanceof TypeSupplyEntity)) {
+            if (typeSupplyEntity == null) {
                 throw new BusinessException("El tipo de insumo no existe.");
             }
 
@@ -110,7 +110,7 @@ public class RequestBusiness {
         }
 
         // verify emitters
-        for (RequestEmitterDto requestEmitterDto : requestEmmiters) {
+        for (RequestEmitterDto requestEmitterDto : requestEmitters) {
 
             // verify type emitter
             if (!requestEmitterDto.getEmitterType().equals(EmitterTypeEnum.ENTITY.name())
@@ -155,15 +155,15 @@ public class RequestBusiness {
         // emitters
         List<EmitterEntity> emitterEntities = new ArrayList<EmitterEntity>();
 
-        for (RequestEmitterDto requestEmitterDto : requestEmmiters) {
+        for (RequestEmitterDto requestEmitterDto : requestEmitters) {
             EmitterEntity emitterEntity = new EmitterEntity();
             emitterEntity.setCreatedAt(new Date());
             emitterEntity.setEmitterCode(requestEmitterDto.getEmitterCode());
 
-            EmitterTypeEnum emmitterTypeEnum = (requestEmitterDto.getEmitterType()
-                    .equals(EmitterTypeEnum.ENTITY.name())) ? EmitterTypeEnum.ENTITY : EmitterTypeEnum.USER;
+            EmitterTypeEnum emitterTypeEnum = (requestEmitterDto.getEmitterType().equals(EmitterTypeEnum.ENTITY.name()))
+                    ? EmitterTypeEnum.ENTITY : EmitterTypeEnum.USER;
 
-            emitterEntity.setEmitterType(emmitterTypeEnum);
+            emitterEntity.setEmitterType(emitterTypeEnum);
             emitterEntity.setRequest(requestEntity);
             emitterEntities.add(emitterEntity);
         }
@@ -302,11 +302,11 @@ public class RequestBusiness {
         return this.getRequestById(requestId);
     }
 
-    public List<RequestDto> getRequestByEmmiters(Long emmiterCode, String emmiterType) throws BusinessException {
+    public List<RequestDto> getRequestByEmitters(Long emitterCode, String emitterType) throws BusinessException {
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
 
-        List<RequestEntity> listRequestsEntity = requestService.getRequestsByEmmiter(emmiterCode, emmiterType);
+        List<RequestEntity> listRequestsEntity = requestService.getRequestsByEmmiter(emitterCode, emitterType);
 
         if (listRequestsEntity.size() > 0) {
             for (RequestEntity requestEntity : listRequestsEntity) {
@@ -318,19 +318,19 @@ public class RequestBusiness {
         return listRequestsDto;
     }
 
-    public RequestPaginatedDto getRequestByManagerAndMunicipality(int page, String municipalityCode, Long emmiterCode)
+    public RequestPaginatedDto getRequestByManagerAndMunicipality(int page, String municipalityCode, Long emitterCode)
             throws BusinessException {
 
         if (page <= 0) {
             page = 1;
         }
 
-        Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndMunicipality(emmiterCode,
+        Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndMunicipality(emitterCode,
                 EmitterTypeEnum.ENTITY.name(), municipalityCode, page - 1, 10);
 
         List<RequestEntity> listRequestsEntity = pageEntity.toList();
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
         for (RequestEntity requestEntity : listRequestsEntity) {
             RequestDto requestDto = entityParseDto(requestEntity);
             listRequestsDto.add(requestDto);
@@ -347,19 +347,19 @@ public class RequestBusiness {
         return dataPaginatedDto;
     }
 
-    public RequestPaginatedDto getRequestByManagerAndProvider(int page, Long providerId, Long emmiterCode)
+    public RequestPaginatedDto getRequestByManagerAndProvider(int page, Long providerId, Long emitterCode)
             throws BusinessException {
 
         if (page <= 0) {
             page = 1;
         }
 
-        Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndProvider(emmiterCode,
+        Page<RequestEntity> pageEntity = requestService.getRequestsByManagerAndProvider(emitterCode,
                 EmitterTypeEnum.ENTITY.name(), providerId, page - 1, 10);
 
         List<RequestEntity> listRequestsEntity = pageEntity.toList();
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
         for (RequestEntity requestEntity : listRequestsEntity) {
             RequestDto requestDto = entityParseDto(requestEntity);
             listRequestsDto.add(requestDto);
@@ -376,12 +376,12 @@ public class RequestBusiness {
         return dataPaginatedDto;
     }
 
-    public List<RequestDto> getRequestByManagerAndPackage(Long emmiterCode, String packageLabel)
+    public List<RequestDto> getRequestByManagerAndPackage(Long emitterCode, String packageLabel)
             throws BusinessException {
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
 
-        List<RequestEntity> listRequestsEntity = requestService.getRequestsByManagerAndPackage(emmiterCode,
+        List<RequestEntity> listRequestsEntity = requestService.getRequestsByManagerAndPackage(emitterCode,
                 EmitterTypeEnum.ENTITY.name(), packageLabel);
 
         if (listRequestsEntity.size() > 0) {
@@ -396,7 +396,7 @@ public class RequestBusiness {
 
     public List<RequestDto> getRequestByPackage(String packageLabel) throws BusinessException {
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
 
         List<RequestEntity> listRequestsEntity = requestService.getRequestsByPackage(packageLabel);
 

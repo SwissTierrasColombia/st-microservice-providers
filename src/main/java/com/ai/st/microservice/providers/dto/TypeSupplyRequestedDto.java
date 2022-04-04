@@ -47,4 +47,9 @@ public class TypeSupplyRequestedDto implements Serializable {
         this.modelVersion = modelVersion;
     }
 
+    @Override
+    public String toString() {
+        return "TypeSupplyRequestedDto{" + "typeSupplyId=" + typeSupplyId + ", observation='" + observation + '\''
+                + ", modelVersion='" + modelVersion + '\'' + '}';
+    }
 }

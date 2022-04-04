@@ -83,4 +83,10 @@ public class CreateRequestDto implements Serializable {
         this.packageLabel = packageLabel;
     }
 
+    @Override
+    public String toString() {
+        return "CreateRequestDto{" + "deadline='" + deadline + '\'' + ", providerId=" + providerId
+                + ", municipalityCode='" + municipalityCode + '\'' + ", packageLabel='" + packageLabel + '\''
+                + ", emitters=" + emitters + ", supplies=" + supplies + '}';
+    }
 }

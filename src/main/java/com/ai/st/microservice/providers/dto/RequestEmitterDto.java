@@ -36,4 +36,8 @@ public class RequestEmitterDto implements Serializable {
         this.emitterCode = emitterCode;
     }
 
+    @Override
+    public String toString() {
+        return "RequestEmitterDto{" + "emitterType='" + emitterType + '\'' + ", emitterCode=" + emitterCode + '}';
+    }
 }
