@@ -11,6 +11,8 @@ import com.ai.st.microservice.providers.business.ProviderUserBusiness;
 import com.ai.st.microservice.providers.business.ReportBusiness;
 import com.ai.st.microservice.providers.dto.ProviderDto;
 
+import com.ai.st.microservice.providers.services.tracing.SCMTracing;
+import com.ai.st.microservice.providers.services.tracing.TracingKeyword;
 import com.google.common.io.Files;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,7 +63,7 @@ public final class ReportV1Controller {
     }
 
     @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
+    public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
@@ -72,7 +74,7 @@ public final class ReportV1Controller {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Report generated"),
             @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
-    public ResponseEntity<?> suppliesDelivered(@RequestParam(name = "from") Date from,
+    public ResponseEntity<?> downloadReportSuppliesDelivered(@RequestParam(name = "from") Date from,
             @RequestParam(name = "to") Date to, @RequestHeader("authorization") String headerAuthorization) {
 
         MediaType mediaType;
@@ -81,17 +83,23 @@ public final class ReportV1Controller {
 
         try {
 
-            // user session
+            SCMTracing.setTransactionName("downloadReportSuppliesDelivered");
+            SCMTracing.addCustomParameter(TracingKeyword.AUTHORIZATION_HEADER, headerAuthorization);
+
             MicroserviceUserDto userDtoSession = administrationBusiness.getUserByToken(headerAuthorization);
             if (userDtoSession == null) {
                 throw new DisconnectedMicroserviceException("Ha ocurrido un error consultando el usuario");
             }
+            SCMTracing.addCustomParameter(TracingKeyword.USER_ID, userDtoSession.getId());
+            SCMTracing.addCustomParameter(TracingKeyword.USER_EMAIL, userDtoSession.getEmail());
+            SCMTracing.addCustomParameter(TracingKeyword.USER_NAME, userDtoSession.getUsername());
 
-            // get provider
             ProviderDto providerDto = providerUserBusiness.getProviderByUserCode(userDtoSession.getId());
             if (providerDto == null) {
                 throw new BusinessException("No se ha encontrado el proveedor.");
             }
+            SCMTracing.addCustomParameter(TracingKeyword.PROVIDER_ID, providerDto.getId());
+            SCMTracing.addCustomParameter(TracingKeyword.PROVIDER_NAME, providerDto.getName());
 
             if (!to.after(from)) {
                 throw new InputValidationException("La fecha de inicio debe ser menor que la fecha de finalización.");
@@ -118,17 +126,17 @@ public final class ReportV1Controller {
             resource = new InputStreamResource(new FileInputStream(file));
 
         } catch (DisconnectedMicroserviceException e) {
-            log.error("Error ReportV1Controller@createRequest#Microservice ---> " + e.getMessage());
-            return new ResponseEntity<>(new BasicResponseDto(e.getMessage(), 4), HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error ReportV1Controller@downloadReportSuppliesDelivered#Microservice ---> " + e.getMessage());
+            return new ResponseEntity<>(new BasicResponseDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (InputValidationException e) {
-            log.error("Error ReportV1Controller@suppliesDelivered#Validation ---> " + e.getMessage());
-            return new ResponseEntity<>(new BasicResponseDto(e.getMessage(), 3), HttpStatus.BAD_REQUEST);
+            log.error("Error ReportV1Controller@downloadReportSuppliesDelivered#Validation ---> " + e.getMessage());
+            return new ResponseEntity<>(new BasicResponseDto(e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (BusinessException e) {
-            log.error("Error ReportV1Controller@suppliesDelivered#Business ---> " + e.getMessage());
-            return new ResponseEntity<>(new BasicResponseDto(e.getMessage(), 2), HttpStatus.UNPROCESSABLE_ENTITY);
+            log.error("Error ReportV1Controller@downloadReportSuppliesDelivered#Business ---> " + e.getMessage());
+            return new ResponseEntity<>(new BasicResponseDto(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (Exception e) {
-            log.error("Error ReportV1Controller@suppliesDelivered#General ---> " + e.getMessage());
-            return new ResponseEntity<>(new BasicResponseDto(e.getMessage(), 1), HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error ReportV1Controller@downloadReportSuppliesDelivered#General ---> " + e.getMessage());
+            return new ResponseEntity<>(new BasicResponseDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
