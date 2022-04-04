@@ -20,7 +20,6 @@ import com.ai.st.microservice.providers.dto.CreatePetitionDto;
 import com.ai.st.microservice.providers.dto.CreateProviderDto;
 import com.ai.st.microservice.providers.dto.CreateProviderProfileDto;
 import com.ai.st.microservice.providers.dto.CreateTypeSupplyDto;
-import com.ai.st.microservice.providers.dto.ErrorDto;
 import com.ai.st.microservice.providers.dto.PetitionDto;
 import com.ai.st.microservice.providers.dto.ProviderAdministratorDto;
 import com.ai.st.microservice.providers.dto.ProviderDto;
@@ -508,8 +507,8 @@ public class ProviderV1Controller {
     @ApiOperation(value = "Get profiles by provider")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Get profiles by provider", response = ProviderProfileDto.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Provider not found.", response = ErrorDto.class),
-            @ApiResponse(code = 500, message = "Error Server", response = ErrorDto.class) })
+            @ApiResponse(code = 404, message = "Provider not found.", response = BasicResponseDto.class),
+            @ApiResponse(code = 500, message = "Error Server", response = BasicResponseDto.class) })
     @ResponseBody
     public ResponseEntity<?> getAreasByProvider(@PathVariable Long providerId) {
 

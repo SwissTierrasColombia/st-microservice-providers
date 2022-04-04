@@ -24,7 +24,7 @@ public final class HTTPWorkspaceMicroservice implements WorkspaceMicroservice {
                 .findMunicipalityByCode(federationCode.value());
 
         if (municipalityDto == null) {
-            throw new FederationNotFound();
+            throw new FederationNotFound(federationCode.value());
         }
 
         return Federation.fromPrimitives(municipalityDto.getCode(), municipalityDto.getName(),

@@ -23,7 +23,7 @@ public final class HTTPManagerMicroservice implements ManagerMicroservice {
     public Manager getManager(ManagerCode managerCode) {
         MicroserviceManagerDto managerDto = managerFeignClient.findById(managerCode.value());
         if (managerDto == null) {
-            throw new ManagerNotFound();
+            throw new ManagerNotFound(managerCode.value());
         }
         return Manager.fromPrimitives(managerDto.getId(), managerDto.getName(), managerDto.getAlias());
     }
