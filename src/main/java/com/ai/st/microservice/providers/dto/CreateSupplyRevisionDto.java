@@ -91,4 +91,10 @@ public class CreateSupplyRevisionDto implements Serializable {
         this.startBy = startBy;
     }
 
+    @Override
+    public String toString() {
+        return "CreateSupplyRevisionDto{" + "database='" + database + '\'' + ", hostname='" + hostname + '\''
+                + ", port='" + port + '\'' + ", schema='" + schema + '\'' + ", username='" + username + '\''
+                + ", password='" + password + '\'' + ", startBy=" + startBy + '}';
+    }
 }

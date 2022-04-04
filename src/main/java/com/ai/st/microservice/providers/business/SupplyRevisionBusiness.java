@@ -29,13 +29,13 @@ public class SupplyRevisionBusiness {
             String schema, String port, String username, String password, Long startedBy) throws BusinessException {
 
         SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);
-        if (!(supplyRequestedEntity instanceof SupplyRequestedEntity)) {
+        if (supplyRequestedEntity == null) {
             throw new BusinessException("El insumo solicitado no existe.");
         }
 
         SupplyRevisionEntity foundSupplyRevisionEntity = supplyRevisionService
                 .getSupplyRevisionBySupplyRequested(supplyRequestedEntity);
-        if (foundSupplyRevisionEntity instanceof SupplyRevisionEntity) {
+        if (foundSupplyRevisionEntity != null) {
             throw new BusinessException("El insumo solicitado ya cuenta con una revisión.");
         }
 
@@ -52,20 +52,19 @@ public class SupplyRevisionBusiness {
 
         supplyRevisionEntity = supplyRevisionService.createSupplyRevision(supplyRevisionEntity);
 
-        SupplyRevisionDto supplyRevisionDto = entityParseToDto(supplyRevisionEntity);
-        return supplyRevisionDto;
+        return entityParseToDto(supplyRevisionEntity);
     }
 
     public SupplyRevisionDto updateSupplyRevision(Long supplyRequestedId, Long revisionId, Long finishedBy)
             throws BusinessException {
 
         SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);
-        if (!(supplyRequestedEntity instanceof SupplyRequestedEntity)) {
+        if (supplyRequestedEntity == null) {
             throw new BusinessException("El insumo solicitado no existe.");
         }
 
         SupplyRevisionEntity supplyRevisionEntity = supplyRevisionService.getSupplyRevisionById(revisionId);
-        if (!(supplyRevisionEntity instanceof SupplyRevisionEntity)) {
+        if (supplyRevisionEntity == null) {
             throw new BusinessException("La revisión no existe.");
         }
 
@@ -87,12 +86,12 @@ public class SupplyRevisionBusiness {
     public void deleteRevision(Long supplyRequestedId, Long supplyRevisionId) throws BusinessException {
 
         SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);
-        if (!(supplyRequestedEntity instanceof SupplyRequestedEntity)) {
+        if (supplyRequestedEntity == null) {
             throw new BusinessException("El insumo solicitado no existe.");
         }
 
         SupplyRevisionEntity supplyRevisionEntity = supplyRevisionService.getSupplyRevisionById(supplyRevisionId);
-        if (!(supplyRevisionEntity instanceof SupplyRevisionEntity)) {
+        if (supplyRevisionEntity == null) {
             throw new BusinessException("La revisión no existe.");
         }
 
@@ -107,18 +106,17 @@ public class SupplyRevisionBusiness {
     public SupplyRevisionDto getSupplyRevisionFromSupplyRequested(Long supplyRequestedId) throws BusinessException {
 
         SupplyRequestedEntity supplyRequestedEntity = supplyRequestedService.getSupplyRequestedById(supplyRequestedId);
-        if (!(supplyRequestedEntity instanceof SupplyRequestedEntity)) {
+        if (supplyRequestedEntity == null) {
             throw new BusinessException("El insumo solicitado no existe.");
         }
 
         SupplyRevisionEntity foundSupplyRevisionEntity = supplyRevisionService
                 .getSupplyRevisionBySupplyRequested(supplyRequestedEntity);
-        if (!(foundSupplyRevisionEntity instanceof SupplyRevisionEntity)) {
+        if (foundSupplyRevisionEntity == null) {
             throw new BusinessException("El insumo solicitado no cuenta con una revisión.");
         }
 
         return entityParseToDto(foundSupplyRevisionEntity);
-
     }
 
     public SupplyRevisionDto entityParseToDto(SupplyRevisionEntity supplyRevisionEntity) {

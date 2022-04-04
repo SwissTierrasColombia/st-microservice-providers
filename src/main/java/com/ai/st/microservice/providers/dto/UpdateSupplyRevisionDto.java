@@ -25,4 +25,8 @@ public class UpdateSupplyRevisionDto implements Serializable {
         this.finishedBy = finishedBy;
     }
 
+    @Override
+    public String toString() {
+        return "UpdateSupplyRevisionDto{" + "finishedBy=" + finishedBy + '}';
+    }
 }
