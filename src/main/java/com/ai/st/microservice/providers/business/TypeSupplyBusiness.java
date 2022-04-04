@@ -28,7 +28,7 @@ public class TypeSupplyBusiness {
         TypeSupplyDto typeSupplyDto = null;
 
         TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-        if (typeSupplyEntity instanceof TypeSupplyEntity) {
+        if (typeSupplyEntity != null) {
             typeSupplyDto = entityParseDto(typeSupplyEntity);
         }
 
