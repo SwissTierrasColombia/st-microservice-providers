@@ -15,6 +15,8 @@ import com.ai.st.microservice.providers.modules.requests.application.find_reques
 import com.ai.st.microservice.providers.modules.requests.domain.RequestStatusId;
 import com.ai.st.microservice.providers.modules.shared.domain.DomainError;
 
+import com.ai.st.microservice.providers.services.tracing.SCMTracing;
+import com.ai.st.microservice.providers.services.tracing.TracingKeyword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -60,6 +62,9 @@ public final class RequestGetController extends ApiController {
 
         try {
 
+            SCMTracing.setTransactionName("findPendingRequests");
+            SCMTracing.addCustomParameter(TracingKeyword.AUTHORIZATION_HEADER, headerAuthorization);
+
             InformationSession session = this.getInformationSession(headerAuthorization);
 
             responseDto = requestsFinder
@@ -71,16 +76,18 @@ public final class RequestGetController extends ApiController {
         } catch (BusinessException e) {
             log.error("Error RequestGetController@findPendingRequests#Business ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.getMessage(), 2);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (DomainError e) {
             log.error("Error RequestGetController@findPendingRequests#Domain ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.errorMessage(), 2);
+            responseDto = new BasicResponseDto(e.errorMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (Exception e) {
             log.error("Error RequestGetController@findPendingRequests#General ---> " + e.getMessage());
-            e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseDto = new BasicResponseDto(e.getMessage(), 1);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         }
 
         return new ResponseEntity<>(responseDto, httpStatus);
@@ -103,6 +110,9 @@ public final class RequestGetController extends ApiController {
 
         try {
 
+            SCMTracing.setTransactionName("findAttendedRequests");
+            SCMTracing.addCustomParameter(TracingKeyword.AUTHORIZATION_HEADER, headerAuthorization);
+
             InformationSession session = this.getInformationSession(headerAuthorization);
 
             responseDto = requestsFinder
@@ -114,15 +124,18 @@ public final class RequestGetController extends ApiController {
         } catch (BusinessException e) {
             log.error("Error RequestGetController@findAttendedRequests#Business ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.getMessage(), 2);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (DomainError e) {
             log.error("Error RequestGetController@findAttendedRequests#Domain ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.errorMessage(), 2);
+            responseDto = new BasicResponseDto(e.errorMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (Exception e) {
             log.error("Error RequestGetController@findAttendedRequests#General ---> " + e.getMessage());
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseDto = new BasicResponseDto(e.getMessage(), 1);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         }
 
         return new ResponseEntity<>(responseDto, httpStatus);
