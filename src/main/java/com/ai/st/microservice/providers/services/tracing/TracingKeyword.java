@@ -1,11 +1,8 @@
 package com.ai.st.microservice.providers.services.tracing;
 
 public enum TracingKeyword {
-    USER_ID("userId"), USER_NAME("username"), USER_EMAIL("userEmail"), MANAGER_ID("managerId"),
-    MANAGER_NAME("managerName"), AUTHORIZATION_HEADER("authorizationHeader"), DEPARTMENT_ID("departmentId"),
-    IS_SUPER_ADMIN("isSuperAdmin"), IS_ADMIN("isAdmin"), IS_MANAGER("isManager"), IS_PROVIDER("isProvider"),
-    IS_OPERATOR("isOperator"), BODY_REQUEST("bodyRequest"), PROVIDER_ID("providerId"), PROVIDER_NAME("providerName"),
-    OPERATOR_ID("operatorId"), OPERATOR_NAME("operatorName");
+    USER_ID("userId"), USER_NAME("username"), USER_EMAIL("userEmail"), AUTHORIZATION_HEADER("authorizationHeader"),
+    BODY_REQUEST("bodyRequest"), PROVIDER_ID("providerId"), PROVIDER_NAME("providerName");
 
     private final String value;
 
