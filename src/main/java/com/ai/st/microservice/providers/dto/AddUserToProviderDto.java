@@ -47,4 +47,9 @@ public class AddUserToProviderDto implements Serializable {
         this.profileId = profileId;
     }
 
+    @Override
+    public String toString() {
+        return "AddUserToProviderDto{" + "userCode=" + userCode + ", providerId=" + providerId + ", profileId="
+                + profileId + '}';
+    }
 }

@@ -46,7 +46,7 @@ public class ProviderUserBusiness {
 
     public List<ProviderProfileDto> getProfilesByUser(Long userCode) throws BusinessException {
 
-        List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+        List<ProviderProfileDto> profilesDto = new ArrayList<>();
 
         List<ProviderUserEntity> listUsers = providerUserService.getProvidersUsersByCodeUser(userCode);
 

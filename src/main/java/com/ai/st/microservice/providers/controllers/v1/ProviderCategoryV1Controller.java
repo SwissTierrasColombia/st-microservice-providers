@@ -21,8 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "Manage Providers Categories", description = "Manage Providers Categories", tags = {
-        "Providers Categories" })
+@Api(value = "Manage Providers Categories", tags = { "Providers Categories" })
 @RestController
 @RequestMapping("api/providers-supplies/v1/categories")
 public class ProviderCategoryV1Controller {
