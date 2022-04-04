@@ -9,7 +9,6 @@ import com.ai.st.microservice.providers.services.tracing.SCMTracing;
 import com.ai.st.microservice.providers.services.tracing.TracingKeyword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +31,13 @@ public class ProviderUserV1Controller {
 
     private final Logger log = LoggerFactory.getLogger(ProviderUserV1Controller.class);
 
-    @Autowired
-    private ProviderUserBusiness providerUserBusiness;
+    private final ProviderUserBusiness providerUserBusiness;
+    private final ProviderBusiness providerBusiness;
 
-    @Autowired
-    private ProviderBusiness providerBusiness;
+    public ProviderUserV1Controller(ProviderUserBusiness providerUserBusiness, ProviderBusiness providerBusiness) {
+        this.providerUserBusiness = providerUserBusiness;
+        this.providerBusiness = providerBusiness;
+    }
 
     @GetMapping(value = "/{userCode}/providers", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Get provider by user")

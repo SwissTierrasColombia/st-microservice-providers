@@ -58,4 +58,10 @@ public class CreateProviderDto implements Serializable {
         this.alias = alias;
     }
 
+    @Override
+    public String toString() {
+        return "CreateProviderDto{" + "name='" + name + '\'' + ", alias='" + alias + '\''
+                + ", taxIdentificationNumber='" + taxIdentificationNumber + '\'' + ", providerCategoryId="
+                + providerCategoryId + '}';
+    }
 }

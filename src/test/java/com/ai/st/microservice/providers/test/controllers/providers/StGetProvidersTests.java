@@ -8,9 +8,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +26,8 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 import com.ai.st.microservice.providers.modules.shared.infrastructure.persistence.entities.ProviderEntity;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -67,14 +66,14 @@ public class StGetProvidersTests {
     @Test
     @Transactional
     public void validateGetProviders() {
-        ResponseEntity<Object> data = providerController.getProviders(false);
+        ResponseEntity<?> data = providerController.getProviders(false);
 
         @SuppressWarnings("unchecked")
         List<ProviderDto> providers = (List<ProviderDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(providers, "La respuesta no puede ser nula.");
-        assertTrue(providers.get(0) instanceof ProviderDto);
+        Assert.notNull(providers, "La respuesta no puede ser null.");
+        assertNotNull(providers.get(0));
     }
 
 }

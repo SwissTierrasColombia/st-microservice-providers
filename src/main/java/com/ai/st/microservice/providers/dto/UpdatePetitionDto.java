@@ -36,4 +36,9 @@ public class UpdatePetitionDto implements Serializable {
         this.justitication = justitication;
     }
 
+    @Override
+    public String toString() {
+        return "UpdatePetitionDto{" + "petitionStateId=" + petitionStateId + ", justitication='" + justitication + '\''
+                + '}';
+    }
 }

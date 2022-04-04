@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +30,8 @@ import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IRequestService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -91,34 +90,34 @@ public class StGetRequestsByProviderTests {
     @Transactional
     public void validateGetRequestByProviderAndState() {
 
-        ResponseEntity<Object> data = providerController.getRequestsByProvider(providerEntity.getId(),
+        ResponseEntity<?> data = providerController.getRequestsByProvider(providerEntity.getId(),
                 RequestStateBusiness.REQUEST_STATE_REQUESTED);
 
         @SuppressWarnings("unchecked")
         List<RequestDto> requests = (List<RequestDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(requests, "La respuesta no puede ser nula.");
-        assertTrue(requests.get(0) instanceof RequestDto);
+        Assert.notNull(requests, "La respuesta no puede ser null.");
+        assertNotNull(requests.get(0));
     }
 
     @Test
     @Transactional
     public void validateGetRequestByProvider() {
-        ResponseEntity<Object> data = providerController.getRequestsByProvider(providerEntity.getId(), null);
+        ResponseEntity<?> data = providerController.getRequestsByProvider(providerEntity.getId(), null);
 
         @SuppressWarnings("unchecked")
         List<RequestDto> requests = (List<RequestDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(requests, "La respuesta no puede ser nula.");
-        assertTrue(requests.get(0) instanceof RequestDto);
+        Assert.notNull(requests, "La respuesta no puede ser null.");
+        assertNotNull(requests.get(0));
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExits() {
-        ResponseEntity<Object> data = providerController.getRequestsByProvider((long) 150, null);
+        ResponseEntity<?> data = providerController.getRequestsByProvider((long) 150, null);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
     }

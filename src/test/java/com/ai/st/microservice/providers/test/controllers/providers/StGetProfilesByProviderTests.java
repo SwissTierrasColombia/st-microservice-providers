@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +27,8 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -78,20 +77,20 @@ public class StGetProfilesByProviderTests {
     @Transactional
     public void validateGetProfilesByProvider() {
 
-        ResponseEntity<Object> data = providerController.getProfilesByProvider(providerEntity.getId());
+        ResponseEntity<?> data = providerController.getAreasByProvider(providerEntity.getId());
 
         @SuppressWarnings("unchecked")
         List<ProviderProfileDto> profiles = (List<ProviderProfileDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(profiles, "La respuesta no puede ser nula.");
-        assertTrue(profiles.get(0) instanceof ProviderProfileDto);
+        Assert.notNull(profiles, "La respuesta no puede ser null.");
+        assertNotNull(profiles.get(0));
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExits() {
-        ResponseEntity<Object> data = providerController.getProfilesByProvider((long) 50);
+        ResponseEntity<?> data = providerController.getAreasByProvider((long) 50);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
     }

@@ -72,13 +72,12 @@ public class StCreateProviderProfileTests {
         createProfileDto.setName(RandomStringUtils.random(10, true, false));
         createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-                createProfileDto);
+        ResponseEntity<?> data = providerController.createProviderArea(providerEntity.getId(), createProfileDto);
         ProviderProfileDto profileDto = (ProviderProfileDto) data.getBody();
 
         Assert.notNull(profileDto, "La respuesta no puede ser nula.");
         assertEquals(HttpStatus.CREATED, data.getStatusCode());
-        assertTrue(profileDto instanceof ProviderProfileDto);
+        assertTrue(true);
     }
 
     @Test
@@ -89,8 +88,7 @@ public class StCreateProviderProfileTests {
 
         createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-                createProfileDto);
+        ResponseEntity<?> data = providerController.createProviderArea(providerEntity.getId(), createProfileDto);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el perfil porque no se ha enviado el nombre.");
@@ -104,8 +102,7 @@ public class StCreateProviderProfileTests {
 
         createProfileDto.setName(RandomStringUtils.random(10, true, false));
 
-        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-                createProfileDto);
+        ResponseEntity<?> data = providerController.createProviderArea(providerEntity.getId(), createProfileDto);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el perfil porque no se ha enviado la descripción.");
@@ -120,7 +117,7 @@ public class StCreateProviderProfileTests {
         createProfileDto.setName(RandomStringUtils.random(10, true, false));
         createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-        ResponseEntity<Object> data = providerController.createProviderProfile((long) 50, createProfileDto);
+        ResponseEntity<?> data = providerController.createProviderArea((long) 50, createProfileDto);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería crear el perfil porque el proveedor no existe.");
     }

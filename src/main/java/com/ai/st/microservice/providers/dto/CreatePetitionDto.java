@@ -36,4 +36,8 @@ public class CreatePetitionDto implements Serializable {
         this.managerCode = managerCode;
     }
 
+    @Override
+    public String toString() {
+        return "CreatePetitionDto{" + "observations='" + observations + '\'' + ", managerCode=" + managerCode + '}';
+    }
 }

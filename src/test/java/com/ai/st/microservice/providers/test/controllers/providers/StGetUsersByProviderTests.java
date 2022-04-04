@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +30,8 @@ import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IProviderUserService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -93,14 +92,14 @@ public class StGetUsersByProviderTests {
     @Transactional
     public void validateGetUsersByProvider() {
 
-        ResponseEntity<Object> data = providerController.getUsersByProvider(providerEntity.getId(), null);
+        ResponseEntity<?> data = providerController.getUsersByProvider(providerEntity.getId(), null);
 
         @SuppressWarnings("unchecked")
         List<ProviderUserDto> response = (List<ProviderUserDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
         Assert.notNull(response, "La respuesta no puede ser nula.");
-        assertTrue(response.get(0) instanceof ProviderUserDto);
+        assertNotNull(response.get(0));
     }
 
     @Test
@@ -110,22 +109,22 @@ public class StGetUsersByProviderTests {
         List<Long> profiles = new ArrayList<Long>();
         profiles.add(providerProfile.getId());
 
-        ResponseEntity<Object> data = providerController.getUsersByProvider(providerEntity.getId(), profiles);
+        ResponseEntity<?> data = providerController.getUsersByProvider(providerEntity.getId(), profiles);
 
         @SuppressWarnings("unchecked")
         List<ProviderUserDto> response = (List<ProviderUserDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(response, "La respuesta no puede ser nula.");
-        assertTrue(response.get(0) instanceof ProviderUserDto);
+        Assert.notNull(response, "La respuesta no puede ser null.");
+        assertNotNull(response.get(0));
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExits() {
-        ResponseEntity<Object> data = providerController.getUsersByProvider((long) 150, null);
+        ResponseEntity<?> data = providerController.getUsersByProvider((long) 150, null);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-                "No deberia obtener los usuarios porque el proveedor no existe.");
+                "No debería obtener los usuarios porque el proveedor no existe.");
     }
 
 }

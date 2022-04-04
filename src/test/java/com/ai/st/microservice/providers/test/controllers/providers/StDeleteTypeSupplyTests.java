@@ -119,7 +119,7 @@ public class StDeleteTypeSupplyTests {
         typeSupply2.setProviderProfile(profileEntity);
         typeSupply2 = typeSupplyService.createTypeSupply(typeSupply2);
 
-        ResponseEntity<Object> data = providerController.deleteTypeSupply(providerEntity.getId(), typeSupply2.getId());
+        ResponseEntity<?> data = providerController.deleteTypeSupply(providerEntity.getId(), typeSupply2.getId());
         assertEquals(HttpStatus.NO_CONTENT, data.getStatusCode());
     }
 
@@ -127,7 +127,7 @@ public class StDeleteTypeSupplyTests {
     @Transactional
     public void shouldErrorWhenProviderDoesNotExists() {
 
-        ResponseEntity<Object> data = providerController.deleteTypeSupply((long) 150, typeSupply.getId());
+        ResponseEntity<?> data = providerController.deleteTypeSupply((long) 150, typeSupply.getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el tipo de insumo porque el proveedor no existe.");
     }
@@ -136,7 +136,7 @@ public class StDeleteTypeSupplyTests {
     @Transactional
     public void shouldErrorWhenTypeSupplyDoesNotExists() {
 
-        ResponseEntity<Object> data = providerController.deleteTypeSupply(providerEntity.getId(), (long) 150);
+        ResponseEntity<?> data = providerController.deleteTypeSupply(providerEntity.getId(), (long) 150);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el tipo de insumo porque el insumo no existe.");
     }
@@ -170,7 +170,7 @@ public class StDeleteTypeSupplyTests {
         typeSupply2.setProviderProfile(profileEntity2);
         typeSupply2 = typeSupplyService.createTypeSupply(typeSupply2);
 
-        ResponseEntity<Object> data = providerController.deleteTypeSupply(providerEntity.getId(), typeSupply2.getId());
+        ResponseEntity<?> data = providerController.deleteTypeSupply(providerEntity.getId(), typeSupply2.getId());
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el tipo de insumo porque el insumo no pertenece al proveedor.");
@@ -235,7 +235,7 @@ public class StDeleteTypeSupplyTests {
 
         requestEntity = requestService.createRequest(requestEntity);
 
-        ResponseEntity<Object> data = providerController.deleteTypeSupply(providerEntity2.getId(), typeSupply2.getId());
+        ResponseEntity<?> data = providerController.deleteTypeSupply(providerEntity2.getId(), typeSupply2.getId());
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el tipo de insumo porque el insumo ya pertenece a una solicitud.");

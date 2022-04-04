@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +31,8 @@ import com.ai.st.microservice.providers.services.IProviderAdministratorService;
 import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IRoleService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -89,14 +88,14 @@ public class StGetAdministratorsByProviderTests {
     @Test
     @Transactional
     public void validateGetAdministratorsByProvider() {
-        ResponseEntity<Object> data = providerController.getAdministratorsByProvider(providerEntity.getId(), null);
+        ResponseEntity<?> data = providerController.getUsersAdministratorsByProvider(providerEntity.getId(), null);
 
         @SuppressWarnings("unchecked")
         List<ProviderAdministratorDto> response = (List<ProviderAdministratorDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(response, "La respuesta no puede ser nula.");
-        assertTrue(response.get(0) instanceof ProviderAdministratorDto);
+        Assert.notNull(response, "La respuesta no puede ser null.");
+        assertNotNull(response.get(0));
     }
 
     @Test
@@ -106,20 +105,20 @@ public class StGetAdministratorsByProviderTests {
         List<Long> roles = new ArrayList<>();
         roles.add(roleDirector.getId());
 
-        ResponseEntity<Object> data = providerController.getAdministratorsByProvider(providerEntity.getId(), roles);
+        ResponseEntity<?> data = providerController.getUsersAdministratorsByProvider(providerEntity.getId(), roles);
 
         @SuppressWarnings("unchecked")
         List<ProviderAdministratorDto> response = (List<ProviderAdministratorDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        Assert.notNull(response, "La respuesta no puede ser nula.");
-        assertTrue(response.get(0) instanceof ProviderAdministratorDto);
+        Assert.notNull(response, "La respuesta no puede ser null.");
+        assertNotNull(response.get(0));
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExits() {
-        ResponseEntity<Object> data = providerController.getAdministratorsByProvider((long) 50, null);
+        ResponseEntity<?> data = providerController.getUsersAdministratorsByProvider((long) 50, null);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
     }

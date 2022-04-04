@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +29,8 @@ import com.ai.st.microservice.providers.services.IProviderCategoryService;
 import com.ai.st.microservice.providers.services.IProviderProfileService;
 import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.ITypeSupplyService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -92,20 +91,20 @@ public class StGetTypeSuppliesByProviderTests {
     @Transactional
     public void validateGetTypesSuppliesByProvider() {
 
-        ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider(providerEntity.getId(), false);
+        ResponseEntity<?> data = providerController.getTypeSuppliesByProvider(providerEntity.getId(), false);
 
         @SuppressWarnings("unchecked")
         List<TypeSupplyDto> typeSupplies = (List<TypeSupplyDto>) data.getBody();
 
         assertEquals(HttpStatus.OK, data.getStatusCode());
         Assert.notNull(typeSupplies, "La respuesta no puede ser nula.");
-        assertTrue(typeSupplies.get(0) instanceof TypeSupplyDto);
+        assertNotNull(typeSupplies.get(0));
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExists() {
-        ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider((long) 150, false);
+        ResponseEntity<?> data = providerController.getTypeSuppliesByProvider((long) 150, false);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "Debe arrojar un estado http con código 422");
     }

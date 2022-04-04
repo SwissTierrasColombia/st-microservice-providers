@@ -34,7 +34,7 @@ public class PetitionBusiness {
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
@@ -56,11 +56,11 @@ public class PetitionBusiness {
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
-        List<PetitionStateEntity> statesEntity = new ArrayList<PetitionStateEntity>();
+        List<PetitionStateEntity> statesEntity = new ArrayList<>();
         for (Long stateId : states) {
             PetitionStateEntity stateEntity = petitionStateService.getPetitionStateById(stateId);
             if (stateEntity == null) {
@@ -85,7 +85,7 @@ public class PetitionBusiness {
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
@@ -121,7 +121,7 @@ public class PetitionBusiness {
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 

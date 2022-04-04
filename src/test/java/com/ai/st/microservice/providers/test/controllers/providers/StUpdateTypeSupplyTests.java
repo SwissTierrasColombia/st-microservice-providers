@@ -109,14 +109,14 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         TypeSupplyDto typeSupply = (TypeSupplyDto) data.getBody();
 
-        Assert.notNull(typeSupply, "La respuesta no puede ser nula.");
+        Assert.notNull(typeSupply, "La respuesta no puede ser null.");
         assertEquals(HttpStatus.OK, data.getStatusCode());
-        assertTrue(typeSupply instanceof TypeSupplyDto);
+        assertTrue(true);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setModelRequired(false);
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -154,7 +154,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -175,7 +175,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setModelRequired(false);
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -193,7 +193,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -214,7 +214,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -235,7 +235,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
@@ -257,8 +257,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply((long) 150, typeSupply.getId(),
-                createTypeSupply);
+        ResponseEntity<?> data = providerController.updateTypeSupply((long) 150, typeSupply.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería actualizar el insumo porque el proveedor no existe.");
@@ -279,7 +278,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId((long) 150);
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
@@ -301,7 +300,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId((long) 150);
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), (long) 150,
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), (long) 150,
                 createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
@@ -339,7 +338,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity2.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
@@ -386,7 +385,7 @@ public class StUpdateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity2.getId());
 
-        ResponseEntity<Object> data = providerController.updateTypeSupply(providerEntity2.getId(), typeSupply.getId(),
+        ResponseEntity<?> data = providerController.updateTypeSupply(providerEntity2.getId(), typeSupply.getId(),
                 createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),

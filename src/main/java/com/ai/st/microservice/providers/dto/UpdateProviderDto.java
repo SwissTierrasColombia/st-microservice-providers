@@ -69,4 +69,10 @@ public class UpdateProviderDto implements Serializable {
         this.alias = alias;
     }
 
+    @Override
+    public String toString() {
+        return "UpdateProviderDto{" + "id=" + id + ", name='" + name + '\'' + ", alias='" + alias + '\''
+                + ", taxIdentificationNumber='" + taxIdentificationNumber + '\'' + ", providerCategoryId="
+                + providerCategoryId + '}';
+    }
 }

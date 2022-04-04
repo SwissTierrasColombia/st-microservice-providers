@@ -13,7 +13,7 @@ public class CreateProviderProfileDto implements Serializable {
     @ApiModelProperty(required = true, notes = "Provider name")
     private String name;
 
-    @ApiModelProperty(required = false, notes = "Provider description")
+    @ApiModelProperty(notes = "Provider description")
     private String description;
 
     public CreateProviderProfileDto() {
@@ -36,4 +36,8 @@ public class CreateProviderProfileDto implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "CreateProviderProfileDto{" + "name='" + name + '\'' + ", description='" + description + '\'' + '}';
+    }
 }

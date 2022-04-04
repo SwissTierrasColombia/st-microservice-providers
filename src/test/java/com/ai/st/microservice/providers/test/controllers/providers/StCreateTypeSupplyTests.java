@@ -93,13 +93,13 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         TypeSupplyDto typeSupply = (TypeSupplyDto) data.getBody();
 
-        Assert.notNull(typeSupply, "La respuesta no puede ser nula.");
+        Assert.notNull(typeSupply, "La respuesta no puede ser null.");
         assertEquals(HttpStatus.CREATED, data.getStatusCode());
-        assertTrue(typeSupply instanceof TypeSupplyDto);
+        assertTrue(true);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setModelRequired(false);
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado el nombre.");
@@ -136,7 +136,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado la descripción.");
@@ -156,7 +156,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setModelRequired(false);
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado el perfil.");
@@ -173,7 +173,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado las extensiones.");
@@ -193,7 +193,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado la metadata.");
@@ -213,7 +213,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería crear el insumo porque no se ha enviado el modelo.");
@@ -234,7 +234,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply((long) 150, createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply((long) 150, createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería crear el insumo porque el proveedor no existe.");
@@ -255,7 +255,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId((long) 150);
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería crear el insumo porque el perfil no existe.");
@@ -292,7 +292,7 @@ public class StCreateTypeSupplyTests {
         createTypeSupply.setName(RandomStringUtils.random(10, true, false));
         createTypeSupply.setProviderProfileId(profileEntity2.getId());
 
-        ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería crear el insumo porque el perfil no pertenece al proveedor.");

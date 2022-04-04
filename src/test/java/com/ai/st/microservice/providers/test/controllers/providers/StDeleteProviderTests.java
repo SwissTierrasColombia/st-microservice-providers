@@ -63,14 +63,14 @@ public class StDeleteProviderTests {
     @Test
     @Transactional
     public void validateDeleteProvider() {
-        ResponseEntity<Object> data = providerController.deleteProvider(providerEntity.getId());
+        ResponseEntity<?> data = providerController.deleteProvider(providerEntity.getId());
         assertEquals(HttpStatus.NO_CONTENT, data.getStatusCode());
     }
 
     @Test
     @Transactional
     public void shouldErrorWhenProviderDoesNotExists() {
-        ResponseEntity<Object> data = providerController.deleteProvider((long) 50);
+        ResponseEntity<?> data = providerController.deleteProvider((long) 50);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el proveedor porque el proveedor no existe.");
     }

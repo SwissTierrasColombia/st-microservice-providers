@@ -84,7 +84,7 @@ public class ProviderBusiness {
         List<ProviderEntity> listProvidersEntity;
 
         if (onlyActive) {
-            listProvidersEntity = providerService.getAllProvidersActive(onlyActive);
+            listProvidersEntity = providerService.getAllProvidersActive(true);
         } else {
             listProvidersEntity = providerService.getAllProviders();
         }
@@ -248,7 +248,7 @@ public class ProviderBusiness {
 
     public List<ProviderUserDto> getUsersByProvider(Long providerId, List<Long> profiles) throws BusinessException {
 
-        List<ProviderUserDto> users = new ArrayList<ProviderUserDto>();
+        List<ProviderUserDto> users = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -276,7 +276,7 @@ public class ProviderBusiness {
                     ProviderUserDto providerUserDto = new ProviderUserDto();
                     providerUserDto.setUserCode(userCode);
 
-                    List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+                    List<ProviderProfileDto> profilesDto = new ArrayList<>();
                     for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
                         if (providerUserEntity2.getUserCode().equals(userCode)) {
 
@@ -664,7 +664,7 @@ public class ProviderBusiness {
     public List<ProviderAdministratorDto> getAdministratorsByProvider(Long providerId, List<Long> roles)
             throws BusinessException {
 
-        List<ProviderAdministratorDto> administrators = new ArrayList<ProviderAdministratorDto>();
+        List<ProviderAdministratorDto> administrators = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -693,7 +693,7 @@ public class ProviderBusiness {
                     ProviderAdministratorDto providerAdministratorDto = new ProviderAdministratorDto();
                     providerAdministratorDto.setUserCode(userCode);
 
-                    List<RoleDto> rolesDto = new ArrayList<RoleDto>();
+                    List<RoleDto> rolesDto = new ArrayList<>();
                     for (ProviderAdministratorEntity providerAdministratorEntity2 : providerEntity
                             .getAdministrators()) {
                         if (providerAdministratorEntity2.getUserCode().equals(userCode)) {

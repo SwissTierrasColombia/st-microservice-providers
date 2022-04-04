@@ -85,7 +85,7 @@ public class StDeleteProviderProfileTests {
         providerProfileEntity.setProvider(providerEntity);
         providerProfileEntity = providerProfileService.createProviderProfile(providerProfileEntity);
 
-        ResponseEntity<Object> data = providerController.deleteProviderProfile(providerEntity.getId(),
+        ResponseEntity<?> data = providerController.deleteProviderArea(providerEntity.getId(),
                 providerProfileEntity.getId());
         assertEquals(HttpStatus.NO_CONTENT, data.getStatusCode());
     }
@@ -100,8 +100,7 @@ public class StDeleteProviderProfileTests {
         providerProfileEntity.setProvider(providerEntity);
         providerProfileEntity = providerProfileService.createProviderProfile(providerProfileEntity);
 
-        ResponseEntity<Object> data = providerController.deleteProviderProfile((long) 50,
-                providerProfileEntity.getId());
+        ResponseEntity<?> data = providerController.deleteProviderArea((long) 50, providerProfileEntity.getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el perfil porque el proveedor no existe.");
     }
@@ -109,7 +108,7 @@ public class StDeleteProviderProfileTests {
     @Test
     @Transactional
     public void shouldErrorWhenProfileDoesNotExists() {
-        ResponseEntity<Object> data = providerController.deleteProviderProfile(providerEntity.getId(), (long) 50);
+        ResponseEntity<?> data = providerController.deleteProviderArea(providerEntity.getId(), (long) 50);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el perfil porque el perfil no existe.");
     }
@@ -134,7 +133,7 @@ public class StDeleteProviderProfileTests {
         providerProfileEntity.setProvider(providerEntity2);
         providerProfileEntity = providerProfileService.createProviderProfile(providerProfileEntity);
 
-        ResponseEntity<Object> data = providerController.deleteProviderProfile(providerEntity.getId(),
+        ResponseEntity<?> data = providerController.deleteProviderArea(providerEntity.getId(),
                 providerProfileEntity.getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el perfil porque el perfil no pertenece al proveedor.");
@@ -159,7 +158,7 @@ public class StDeleteProviderProfileTests {
         typeSupply.setProviderProfile(providerProfileEntity);
         typeSupply = typeSupplyService.createTypeSupply(typeSupply);
 
-        ResponseEntity<Object> data = providerController.deleteProviderProfile(providerEntity.getId(),
+        ResponseEntity<?> data = providerController.deleteProviderArea(providerEntity.getId(),
                 providerProfileEntity.getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el perfil porque el perfil esta asociado a tipos de insumo.");
@@ -182,7 +181,7 @@ public class StDeleteProviderProfileTests {
         user.setUserCode((long) 100);
         providerUserService.createProviderUser(user);
 
-        ResponseEntity<Object> data = providerController.deleteProviderProfile(providerEntity.getId(),
+        ResponseEntity<?> data = providerController.deleteProviderArea(providerEntity.getId(),
                 providerProfileEntity.getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería eliminar el perfil porque el perfil esta asociado a usuarios.");
