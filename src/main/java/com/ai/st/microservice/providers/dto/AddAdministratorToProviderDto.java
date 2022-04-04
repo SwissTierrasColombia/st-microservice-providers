@@ -47,4 +47,9 @@ public class AddAdministratorToProviderDto implements Serializable {
         this.roleId = roleId;
     }
 
+    @Override
+    public String toString() {
+        return "AddAdministratorToProviderDto{" + "userCode=" + userCode + ", providerId=" + providerId + ", roleId="
+                + roleId + '}';
+    }
 }

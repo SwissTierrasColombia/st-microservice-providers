@@ -68,8 +68,8 @@ public class ProviderV1Controller {
     public ResponseEntity<Object> getProviders(
             @RequestParam(name = "onlyActive", required = false, defaultValue = "false") Boolean onlyActive) {
 
-        HttpStatus httpStatus = null;
-        List<ProviderDto> listProviders = new ArrayList<ProviderDto>();
+        HttpStatus httpStatus;
+        List<ProviderDto> listProviders;
 
         try {
 

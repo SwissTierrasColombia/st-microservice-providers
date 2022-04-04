@@ -23,7 +23,7 @@ public class ProviderAdministratorBusiness {
 
     public List<RoleDto> getRolesByUser(Long userCode) throws BusinessException {
 
-        List<RoleDto> rolesDto = new ArrayList<RoleDto>();
+        List<RoleDto> rolesDto = new ArrayList<>();
 
         List<ProviderAdministratorEntity> listAdministrators = providerAdministratorService
                 .getProviderAdministratorsByUserCode(userCode);

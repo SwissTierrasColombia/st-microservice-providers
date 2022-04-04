@@ -88,7 +88,7 @@ public class StGetRolesByUserTests {
     @Transactional
     public void validateGetRolesByUser() {
 
-        ResponseEntity<Object> data = administratorController.getRolesByUser(userCode);
+        ResponseEntity<?> data = administratorController.getRolesByUser(userCode);
         @SuppressWarnings("unchecked")
         List<RoleDto> listRoleDto = (List<RoleDto>) data.getBody();
 
