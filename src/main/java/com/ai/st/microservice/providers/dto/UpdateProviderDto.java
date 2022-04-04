@@ -8,65 +8,65 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "UpdateProviderDto")
 public class UpdateProviderDto implements Serializable {
 
-	private static final long serialVersionUID = 6515735489433109160L;
-	
-	@ApiModelProperty(required = true, notes = "Provider ID")
-	private Long id;
+    private static final long serialVersionUID = 6515735489433109160L;
 
-	@ApiModelProperty(required = true, notes = "Provider name")
-	private String name;
-	
-	@ApiModelProperty(required = false, notes = "Provider alias")
-	private String alias;
+    @ApiModelProperty(required = true, notes = "Provider ID")
+    private Long id;
 
-	@ApiModelProperty(required = true, notes = "Provider tax identification number")
-	private String taxIdentificationNumber;
+    @ApiModelProperty(required = true, notes = "Provider name")
+    private String name;
 
-	@ApiModelProperty(required = true, notes = "Provider Category ID")
-	private Long providerCategoryId;
+    @ApiModelProperty(required = false, notes = "Provider alias")
+    private String alias;
 
-	public UpdateProviderDto() {
+    @ApiModelProperty(required = true, notes = "Provider tax identification number")
+    private String taxIdentificationNumber;
 
-	}
+    @ApiModelProperty(required = true, notes = "Provider Category ID")
+    private Long providerCategoryId;
 
-	public Long getId() {
-		return id;
-	}
+    public UpdateProviderDto() {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getTaxIdentificationNumber() {
-		return taxIdentificationNumber;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-		this.taxIdentificationNumber = taxIdentificationNumber;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Long getProviderCategoryId() {
-		return providerCategoryId;
-	}
+    public String getTaxIdentificationNumber() {
+        return taxIdentificationNumber;
+    }
 
-	public void setProviderCategoryId(Long providerCategoryId) {
-		this.providerCategoryId = providerCategoryId;
-	}
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
 
-	public String getAlias() {
-		return alias;
-	}
+    public Long getProviderCategoryId() {
+        return providerCategoryId;
+    }
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+    public void setProviderCategoryId(Long providerCategoryId) {
+        this.providerCategoryId = providerCategoryId;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
 }

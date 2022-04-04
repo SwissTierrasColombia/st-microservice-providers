@@ -20,12 +20,14 @@ public final class HTTPWorkspaceMicroservice implements WorkspaceMicroservice {
     @Override
     public Federation getFederation(FederationCode federationCode) {
 
-        MicroserviceMunicipalityDto municipalityDto = workspaceFeignClient.findMunicipalityByCode(federationCode.value());
+        MicroserviceMunicipalityDto municipalityDto = workspaceFeignClient
+                .findMunicipalityByCode(federationCode.value());
 
         if (municipalityDto == null) {
             throw new FederationNotFound();
         }
 
-        return Federation.fromPrimitives(municipalityDto.getCode(), municipalityDto.getName(), municipalityDto.getDepartment().getName());
+        return Federation.fromPrimitives(municipalityDto.getCode(), municipalityDto.getName(),
+                municipalityDto.getDepartment().getName());
     }
 }

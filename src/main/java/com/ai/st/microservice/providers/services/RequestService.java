@@ -58,13 +58,13 @@ public class RequestService implements IRequestService {
 
     @Override
     public List<RequestEntity> getRequestByClosedByAndProviderAndRequestState(Long closedBy, ProviderEntity provider,
-                                                                              RequestStateEntity requestState) {
+            RequestStateEntity requestState) {
         return requestRepository.findByClosedByAndProviderAndRequestState(closedBy, provider, requestState);
     }
 
     @Override
     public Page<RequestEntity> getRequestsByManagerAndMunicipality(Long emmiterCode, String emmiterType,
-                                                                   String municipalityCode, int page, int numberItems) {
+            String municipalityCode, int page, int numberItems) {
 
         Pageable pageable = PageRequest.of(page, numberItems);
 
@@ -80,7 +80,7 @@ public class RequestService implements IRequestService {
 
     @Override
     public Page<RequestEntity> getRequestsByManagerAndProvider(Long emmiterCode, String emmiterType, Long providerId,
-                                                               int page, int numberItems) {
+            int page, int numberItems) {
 
         Pageable pageable = PageRequest.of(page, numberItems);
 
@@ -96,7 +96,7 @@ public class RequestService implements IRequestService {
 
     @Override
     public List<RequestEntity> getRequestsByManagerAndPackage(Long emmiterCode, String emmiterType,
-                                                              String packageLabel) {
+            String packageLabel) {
 
         EmitterTypeEnum emmitterTypeEnum = null;
         if (EmitterTypeEnum.ENTITY.name().equals(emmiterType)) {

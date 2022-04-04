@@ -31,48 +31,48 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StDeleteProviderTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StDeleteProviderTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StDeleteProviderTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		log.info("configured environment (StDeleteProviderTests)");
-	}
+        log.info("configured environment (StDeleteProviderTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateDeleteProvider() {
-		ResponseEntity<Object> data = providerController.deleteProvider(providerEntity.getId());
-		assertEquals(HttpStatus.NO_CONTENT, data.getStatusCode());
-	}
+    @Test
+    @Transactional
+    public void validateDeleteProvider() {
+        ResponseEntity<Object> data = providerController.deleteProvider(providerEntity.getId());
+        assertEquals(HttpStatus.NO_CONTENT, data.getStatusCode());
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesNotExists() {
-		ResponseEntity<Object> data = providerController.deleteProvider((long) 50);
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería eliminar el proveedor porque el proveedor no existe.");
-	}
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesNotExists() {
+        ResponseEntity<Object> data = providerController.deleteProvider((long) 50);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería eliminar el proveedor porque el proveedor no existe.");
+    }
 
 }

@@ -10,7 +10,8 @@ public final class SupplyRequestedName extends StringValueObject {
     }
 
     private static void ensureName(String value) {
-        if (value == null || value.isEmpty()) throw new SupplyRequestedNameInvalid();
+        if (value == null || value.isEmpty())
+            throw new SupplyRequestedNameInvalid();
     }
 
     public static SupplyRequestedName fromValue(String value) {

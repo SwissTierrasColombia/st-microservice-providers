@@ -11,10 +11,9 @@ import org.springframework.context.annotation.FilterType;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients(basePackages = {"com.ai.st.microservice.common.clients"})
-@ComponentScan(value = {"com.ai.st.microservice.common.business", "com.ai.st.microservice.providers"},
-        includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Service.class)
-)
+@EnableFeignClients(basePackages = { "com.ai.st.microservice.common.clients" })
+@ComponentScan(value = { "com.ai.st.microservice.common.business",
+        "com.ai.st.microservice.providers" }, includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Service.class))
 public class StMicroserviceProvidersApplication {
 
     public static void main(String[] args) {

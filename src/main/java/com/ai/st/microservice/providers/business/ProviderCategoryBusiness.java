@@ -14,25 +14,25 @@ import com.ai.st.microservice.providers.services.IProviderCategoryService;
 @Component
 public class ProviderCategoryBusiness {
 
-	public static final Long PROVIDER_CATEGORY_CADASTRAL = (long) 1;
-	public static final Long PROVIDER_CATEGORY_REGISTRY = (long) 2;
-	public static final Long PROVIDER_CATEGORY_LAND = (long) 3;
-	public static final Long PROVIDER_CATEGORY_GENERAL = (long) 4;
+    public static final Long PROVIDER_CATEGORY_CADASTRAL = (long) 1;
+    public static final Long PROVIDER_CATEGORY_REGISTRY = (long) 2;
+    public static final Long PROVIDER_CATEGORY_LAND = (long) 3;
+    public static final Long PROVIDER_CATEGORY_GENERAL = (long) 4;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	public List<ProviderCategoryDto> getCategories() throws BusinessException {
+    public List<ProviderCategoryDto> getCategories() throws BusinessException {
 
-		List<ProviderCategoryDto> listCategoriesDto = new ArrayList<ProviderCategoryDto>();
+        List<ProviderCategoryDto> listCategoriesDto = new ArrayList<ProviderCategoryDto>();
 
-		List<ProviderCategoryEntity> listCategoriesEntity = providerCategoryService.getAllProvidersCategories();
+        List<ProviderCategoryEntity> listCategoriesEntity = providerCategoryService.getAllProvidersCategories();
 
-		for (ProviderCategoryEntity categoryEntity : listCategoriesEntity) {
-			listCategoriesDto.add(new ProviderCategoryDto(categoryEntity.getId(), categoryEntity.getName()));
-		}
+        for (ProviderCategoryEntity categoryEntity : listCategoriesEntity) {
+            listCategoriesDto.add(new ProviderCategoryDto(categoryEntity.getId(), categoryEntity.getName()));
+        }
 
-		return listCategoriesDto;
-	}
+        return listCategoriesDto;
+    }
 
 }

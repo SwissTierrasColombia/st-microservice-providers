@@ -11,28 +11,28 @@ import com.ai.st.microservice.providers.repositories.ProviderProfileRepository;
 @Service
 public class ProviderProfileService implements IProviderProfileService {
 
-	@Autowired
-	private ProviderProfileRepository providerProfileRepository;
+    @Autowired
+    private ProviderProfileRepository providerProfileRepository;
 
-	@Override
-	@Transactional
-	public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile) {
-		return providerProfileRepository.save(providerProfile);
-	}
+    @Override
+    @Transactional
+    public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile) {
+        return providerProfileRepository.save(providerProfile);
+    }
 
-	@Override
-	public ProviderProfileEntity getProviderProfileById(Long id) {
-		return providerProfileRepository.findById(id).orElse(null);
-	}
+    @Override
+    public ProviderProfileEntity getProviderProfileById(Long id) {
+        return providerProfileRepository.findById(id).orElse(null);
+    }
 
-	@Override
-	public ProviderProfileEntity getProviderProfileByName(String name) {
-		return providerProfileRepository.findByName(name);
-	}
+    @Override
+    public ProviderProfileEntity getProviderProfileByName(String name) {
+        return providerProfileRepository.findByName(name);
+    }
 
-	@Override
-	public void deleteProviderProfileById(Long id) {
-		providerProfileRepository.deleteById(id);
-	}
+    @Override
+    public void deleteProviderProfileById(Long id) {
+        providerProfileRepository.deleteById(id);
+    }
 
 }

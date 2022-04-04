@@ -9,7 +9,8 @@ public final class ManagerCode extends LongValueObject {
     }
 
     private static void ensureCode(Long value) {
-        if (value == null || value <= 0) throw new ManagerCodeInvalid();
+        if (value == null || value <= 0)
+            throw new ManagerCodeInvalid();
     }
 
     public static ManagerCode fromValue(Long value) {

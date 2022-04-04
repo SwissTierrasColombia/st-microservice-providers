@@ -10,9 +10,9 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ProviderAdministratorRepository extends CrudRepository<ProviderAdministratorEntity, Long> {
 
-	ProviderAdministratorEntity findByProviderAndRoleAndUserCode(ProviderEntity provider, RoleEntity role,
-			Long userCode);
+    ProviderAdministratorEntity findByProviderAndRoleAndUserCode(ProviderEntity provider, RoleEntity role,
+            Long userCode);
 
-	List<ProviderAdministratorEntity> findByUserCode(Long userCode);
+    List<ProviderAdministratorEntity> findByUserCode(Long userCode);
 
 }

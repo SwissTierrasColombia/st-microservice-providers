@@ -11,19 +11,19 @@ import com.ai.st.microservice.providers.repositories.ExtensionRepository;
 @Service
 public class ExtensionService implements IExtensionService {
 
-	@Autowired
-	private ExtensionRepository extensionRepository;
+    @Autowired
+    private ExtensionRepository extensionRepository;
 
-	@Override
-	@Transactional
-	public ExtensionEntity createExtension(ExtensionEntity extension) {
-		return extensionRepository.save(extension);
-	}
+    @Override
+    @Transactional
+    public ExtensionEntity createExtension(ExtensionEntity extension) {
+        return extensionRepository.save(extension);
+    }
 
-	@Override
-	@Transactional
-	public void deleteExtensionById(Long id) {
-		extensionRepository.deleteById(id);
-	}
+    @Override
+    @Transactional
+    public void deleteExtensionById(Long id) {
+        extensionRepository.deleteById(id);
+    }
 
 }

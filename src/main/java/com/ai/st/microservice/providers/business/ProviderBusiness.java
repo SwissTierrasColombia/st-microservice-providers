@@ -113,7 +113,7 @@ public class ProviderBusiness {
     }
 
     public ProviderDto createProvider(String name, String taxIdentificationNumber, Long providerCategoryId,
-                                      String alias) throws BusinessException {
+            String alias) throws BusinessException {
 
         name = name.toUpperCase();
 
@@ -481,7 +481,7 @@ public class ProviderBusiness {
     }
 
     public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-                                          Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
+            Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
 
         name = name.toUpperCase();
 
@@ -534,7 +534,7 @@ public class ProviderBusiness {
     }
 
     public TypeSupplyDto updateTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-                                          Long providerProfileId, boolean modelRequired, List<String> extensions, Long typeSupplyId)
+            Long providerProfileId, boolean modelRequired, List<String> extensions, Long typeSupplyId)
             throws BusinessException {
 
         name = name.toUpperCase();
@@ -734,7 +734,7 @@ public class ProviderBusiness {
     }
 
     public ProviderDto updateProvider(Long id, String name, String taxIdentificationNumber, Long providerCategoryId,
-                                      String alias) throws BusinessException {
+            String alias) throws BusinessException {
 
         name = name.toUpperCase();
 

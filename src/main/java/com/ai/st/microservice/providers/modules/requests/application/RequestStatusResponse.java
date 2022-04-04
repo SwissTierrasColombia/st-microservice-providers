@@ -14,9 +14,7 @@ public final class RequestStatusResponse implements Response {
     }
 
     public static RequestStatusResponse fromAggregate(RequestStatus status) {
-        return new RequestStatusResponse(
-                status.id().value(), status.name().value()
-        );
+        return new RequestStatusResponse(status.id().value(), status.name().value());
     }
 
     public Long id() {

@@ -4,10 +4,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IRequestStateService {
 
-	public RequestStateEntity createRequestState(RequestStateEntity requestState);
+    public RequestStateEntity createRequestState(RequestStateEntity requestState);
 
-	public Long getCount();
+    public Long getCount();
 
-	public RequestStateEntity getRequestStateById(Long id);
+    public RequestStateEntity getRequestStateById(Long id);
 
 }

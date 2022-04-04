@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-@Api(value = "Reports", tags = {"Reports"})
+@Api(value = "Reports", tags = { "Reports" })
 @RestController
 @RequestMapping("api/providers-supplies/v1/reports")
 public final class ReportV1Controller {
@@ -53,7 +53,7 @@ public final class ReportV1Controller {
     private final ServletContext servletContext;
 
     public ReportV1Controller(AdministrationBusiness administrationBusiness, ProviderUserBusiness providerUserBusiness,
-                              ReportBusiness reportBusiness, ServletContext servletContext) {
+            ReportBusiness reportBusiness, ServletContext servletContext) {
         this.administrationBusiness = administrationBusiness;
         this.providerUserBusiness = providerUserBusiness;
         this.reportBusiness = reportBusiness;
@@ -69,14 +69,11 @@ public final class ReportV1Controller {
 
     @GetMapping(value = "/supplies-delivered-snr", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Generate report with supplies delivered")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Report generated"),
-            @ApiResponse(code = 500, message = "Error Server", response = String.class)})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Report generated"),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
-    public ResponseEntity<?> suppliesDelivered(
-            @RequestParam(name = "from") Date from,
-            @RequestParam(name = "to") Date to,
-            @RequestHeader("authorization") String headerAuthorization) {
+    public ResponseEntity<?> suppliesDelivered(@RequestParam(name = "from") Date from,
+            @RequestParam(name = "to") Date to, @RequestHeader("authorization") String headerAuthorization) {
 
         MediaType mediaType;
         File file;

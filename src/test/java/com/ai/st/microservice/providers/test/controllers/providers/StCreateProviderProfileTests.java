@@ -34,95 +34,95 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StCreateProviderProfileTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StCreateProviderProfileTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StCreateProviderProfileTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		log.info("configured environment (StCreateProviderProfileTests)");
-	}
+        log.info("configured environment (StCreateProviderProfileTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateCreateProfile() {
+    @Test
+    @Transactional
+    public void validateCreateProfile() {
 
-		CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
 
-		createProfileDto.setName(RandomStringUtils.random(10, true, false));
-		createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        createProfileDto.setName(RandomStringUtils.random(10, true, false));
+        createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-				createProfileDto);
-		ProviderProfileDto profileDto = (ProviderProfileDto) data.getBody();
+        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
+                createProfileDto);
+        ProviderProfileDto profileDto = (ProviderProfileDto) data.getBody();
 
-		Assert.notNull(profileDto, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.CREATED, data.getStatusCode());
-		assertTrue(profileDto instanceof ProviderProfileDto);
-	}
+        Assert.notNull(profileDto, "La respuesta no puede ser nula.");
+        assertEquals(HttpStatus.CREATED, data.getStatusCode());
+        assertTrue(profileDto instanceof ProviderProfileDto);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenNameIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenNameIsEmpty() {
 
-		CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
 
-		createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-				createProfileDto);
+        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
+                createProfileDto);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el perfil porque no se ha enviado el nombre.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el perfil porque no se ha enviado el nombre.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenDescriptionIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenDescriptionIsEmpty() {
 
-		CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
 
-		createProfileDto.setName(RandomStringUtils.random(10, true, false));
+        createProfileDto.setName(RandomStringUtils.random(10, true, false));
 
-		ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
-				createProfileDto);
+        ResponseEntity<Object> data = providerController.createProviderProfile(providerEntity.getId(),
+                createProfileDto);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el perfil porque no se ha enviado la descripción.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el perfil porque no se ha enviado la descripción.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesExists() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesExists() {
 
-		CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto createProfileDto = new CreateProviderProfileDto();
 
-		createProfileDto.setName(RandomStringUtils.random(10, true, false));
-		createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        createProfileDto.setName(RandomStringUtils.random(10, true, false));
+        createProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.createProviderProfile((long) 50, createProfileDto);
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería crear el perfil porque el proveedor no existe.");
-	}
+        ResponseEntity<Object> data = providerController.createProviderProfile((long) 50, createProfileDto);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería crear el perfil porque el proveedor no existe.");
+    }
 
 }

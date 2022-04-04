@@ -65,7 +65,7 @@ public class RequestBusiness {
     private ISupplyRequestedStateService supplyRequestedStateService;
 
     public RequestDto createRequest(Date deadline, Long providerId, String municipalityCode, String packageLabel,
-                                    List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
+            List<RequestEmitterDto> requestEmmiters, List<TypeSupplyRequestedDto> supplies) throws BusinessException {
 
         // verify that the sea deadline greater than the current date
         if (!deadline.after(new Date())) {
@@ -188,8 +188,8 @@ public class RequestBusiness {
     }
 
     public RequestDto updateSupplyRequested(Long requestId, Long supplyRequestedId, Long stateId, String justification,
-                                            Long deliveryBy, String url, String observations, Boolean isValidated, String logSupply, String urlExtraFile,
-                                            String errors, String ftp) throws BusinessException {
+            Long deliveryBy, String url, String observations, Boolean isValidated, String logSupply,
+            String urlExtraFile, String errors, String ftp) throws BusinessException {
 
         // verify if request exists
         RequestEntity requestEntity = requestService.getRequestById(requestId);
@@ -253,11 +253,13 @@ public class RequestBusiness {
             if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_ACCEPTED)) {
                 supplyRequested.setDeliveredAt(new Date());
                 supplyRequested.setJustification("");
-            } else if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
+            } else if (stateRequestedSupply.getId()
+                    .equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_UNDELIVERED)) {
                 supplyRequested.setJustification(justification);
             }
 
-            if (stateRequestedSupply.getId().equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING_REVIEW)) {
+            if (stateRequestedSupply.getId()
+                    .equals(SupplyRequestedStateBusiness.SUPPLY_REQUESTED_STATE_PENDING_REVIEW)) {
                 // update field 'sent_to_review_at' from request
                 requestEntity.setSentReviewAt(new Date());
                 requestService.updateRequest(requestEntity);

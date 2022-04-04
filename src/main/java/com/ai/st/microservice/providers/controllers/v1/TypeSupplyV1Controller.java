@@ -27,93 +27,93 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("api/providers-supplies/v1/types-supplies")
 public class TypeSupplyV1Controller {
 
-	private final Logger log = LoggerFactory.getLogger(TypeSupplyV1Controller.class);
+    private final Logger log = LoggerFactory.getLogger(TypeSupplyV1Controller.class);
 
-	@Autowired
-	private TypeSupplyBusiness typeSupplyBusiness;
+    @Autowired
+    private TypeSupplyBusiness typeSupplyBusiness;
 
-	@RequestMapping(value = "{typeSupplyId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Get type supply")
-	@ApiResponses(value = { @ApiResponse(code = 201, message = "Get type supply", response = TypeSupplyDto.class),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<?> getTypeSupplyById(@PathVariable Long typeSupplyId) {
+    @RequestMapping(value = "{typeSupplyId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Get type supply")
+    @ApiResponses(value = { @ApiResponse(code = 201, message = "Get type supply", response = TypeSupplyDto.class),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<?> getTypeSupplyById(@PathVariable Long typeSupplyId) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+        HttpStatus httpStatus = null;
+        Object responseDto = null;
 
-		try {
+        try {
 
-			responseDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyId);
-			httpStatus = (responseDto instanceof TypeSupplyDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+            responseDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyId);
+            httpStatus = (responseDto instanceof TypeSupplyDto) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 
-		} catch (BusinessException e) {
-			log.error("Error TypeSupplyV1Controller@getTypeSupplyById#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-			responseDto = new ErrorDto(e.getMessage(), 2);
-		} catch (Exception e) {
-			log.error("Error TypeSupplyV1Controller@getTypeSupplyById#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			responseDto = new ErrorDto(e.getMessage(), 3);
-		}
+        } catch (BusinessException e) {
+            log.error("Error TypeSupplyV1Controller@getTypeSupplyById#Business ---> " + e.getMessage());
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+            responseDto = new ErrorDto(e.getMessage(), 2);
+        } catch (Exception e) {
+            log.error("Error TypeSupplyV1Controller@getTypeSupplyById#General ---> " + e.getMessage());
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseDto = new ErrorDto(e.getMessage(), 3);
+        }
 
-		return new ResponseEntity<>(responseDto, httpStatus);
-	}
+        return new ResponseEntity<>(responseDto, httpStatus);
+    }
 
-	@RequestMapping(value = "{typeSupplyId}/enable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Enable supply")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Supply enabled", response = TypeSupplyDto.class),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<?> enableSupply(@PathVariable Long typeSupplyId) {
+    @RequestMapping(value = "{typeSupplyId}/enable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Enable supply")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Supply enabled", response = TypeSupplyDto.class),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<?> enableSupply(@PathVariable Long typeSupplyId) {
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+        HttpStatus httpStatus = null;
+        Object responseDto = null;
 
-		try {
+        try {
 
-			responseDto = typeSupplyBusiness.enableTypeSupply(typeSupplyId);
-			httpStatus = HttpStatus.OK;
+            responseDto = typeSupplyBusiness.enableTypeSupply(typeSupplyId);
+            httpStatus = HttpStatus.OK;
 
-		} catch (BusinessException e) {
-			log.error("Error TypeSupplyV1Controller@enableSupply#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-			responseDto = new ErrorDto(e.getMessage(), 2);
-		} catch (Exception e) {
-			log.error("Error TypeSupplyV1Controller@enableSupply#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			responseDto = new ErrorDto(e.getMessage(), 3);
-		}
+        } catch (BusinessException e) {
+            log.error("Error TypeSupplyV1Controller@enableSupply#Business ---> " + e.getMessage());
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+            responseDto = new ErrorDto(e.getMessage(), 2);
+        } catch (Exception e) {
+            log.error("Error TypeSupplyV1Controller@enableSupply#General ---> " + e.getMessage());
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseDto = new ErrorDto(e.getMessage(), 3);
+        }
 
-		return new ResponseEntity<>(responseDto, httpStatus);
-	}
-	
-	@RequestMapping(value = "{typeSupplyId}/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Disable supply")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Supply disabled", response = TypeSupplyDto.class),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<?> disableSupply(@PathVariable Long typeSupplyId) {
+        return new ResponseEntity<>(responseDto, httpStatus);
+    }
 
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
+    @RequestMapping(value = "{typeSupplyId}/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Disable supply")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Supply disabled", response = TypeSupplyDto.class),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<?> disableSupply(@PathVariable Long typeSupplyId) {
 
-		try {
+        HttpStatus httpStatus = null;
+        Object responseDto = null;
 
-			responseDto = typeSupplyBusiness.disableTypeSupply(typeSupplyId);
-			httpStatus = HttpStatus.OK;
+        try {
 
-		} catch (BusinessException e) {
-			log.error("Error TypeSupplyV1Controller@disableSupply#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-			responseDto = new ErrorDto(e.getMessage(), 2);
-		} catch (Exception e) {
-			log.error("Error TypeSupplyV1Controller@disableSupply#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			responseDto = new ErrorDto(e.getMessage(), 3);
-		}
+            responseDto = typeSupplyBusiness.disableTypeSupply(typeSupplyId);
+            httpStatus = HttpStatus.OK;
 
-		return new ResponseEntity<>(responseDto, httpStatus);
-	}
+        } catch (BusinessException e) {
+            log.error("Error TypeSupplyV1Controller@disableSupply#Business ---> " + e.getMessage());
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+            responseDto = new ErrorDto(e.getMessage(), 2);
+        } catch (Exception e) {
+            log.error("Error TypeSupplyV1Controller@disableSupply#General ---> " + e.getMessage());
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseDto = new ErrorDto(e.getMessage(), 3);
+        }
+
+        return new ResponseEntity<>(responseDto, httpStatus);
+    }
 
 }

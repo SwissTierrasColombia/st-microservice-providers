@@ -37,11 +37,7 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
     public PageableResponse<RequestResponse> handle(RequestsFinderQuery query) {
 
         List<Filter> filters = new ArrayList<>(
-                Arrays.asList(
-                        filterByProvider(query.provider()),
-                        filterByStatus(query.status())
-                )
-        );
+                Arrays.asList(filterByProvider(query.provider()), filterByStatus(query.status())));
 
         String municipality = query.municipality();
         if (municipality != null && !municipality.isEmpty()) {
@@ -57,12 +53,8 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
             filters.add(filterByArea(searchUserAreas(query.user())));
         }
 
-        Criteria criteria = new Criteria(
-                filters,
-                Order.fromValues(Optional.of("requestDate"), Optional.of("DESC")),
-                Optional.of(verifyPage(query.page())),
-                Optional.of(verifyLimit(query.limit()))
-        );
+        Criteria criteria = new Criteria(filters, Order.fromValues(Optional.of("requestDate"), Optional.of("DESC")),
+                Optional.of(verifyPage(query.page())), Optional.of(verifyLimit(query.limit())));
 
         PageableDomain<Request> pageableDomain = requestRepository.matching(criteria);
 
@@ -89,16 +81,19 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
 
     private Filter filterByMunicipality(String municipality) {
         FilterField filterField = new FilterField("municipality");
-        return new Filter(filterField, FilterOperator.EQUAL, new FilterValue(FederationCode.fromValue(municipality).value()));
+        return new Filter(filterField, FilterOperator.EQUAL,
+                new FilterValue(FederationCode.fromValue(municipality).value()));
     }
 
     private Filter filterByOrderNumber(String orderNumber) {
         FilterField filterField = new FilterField("orderNumber");
-        return new Filter(filterField, FilterOperator.LIKE, new FilterValue(RequestOrderNumber.fromValue(orderNumber).value()));
+        return new Filter(filterField, FilterOperator.LIKE,
+                new FilterValue(RequestOrderNumber.fromValue(orderNumber).value()));
     }
 
     private Filter filterByArea(List<Long> areas) {
-        List<FilterValue> filters = areas.stream().map(id -> new FilterValue(id.toString())).collect(Collectors.toList());
+        List<FilterValue> filters = areas.stream().map(id -> new FilterValue(id.toString()))
+                .collect(Collectors.toList());
         return new Filter(new FilterField("workArea"), FilterOperator.CONTAINS, filters);
     }
 
@@ -115,17 +110,12 @@ public final class RequestsFinder implements QueryUseCase<RequestsFinderQuery, P
             throw new ErrorFromInfrastructure();
         }
 
-        List<RequestResponse> requestResponses = pageableDomain.items()
-                .stream().map(RequestResponse::fromAggregate).collect(Collectors.toList());
+        List<RequestResponse> requestResponses = pageableDomain.items().stream().map(RequestResponse::fromAggregate)
+                .collect(Collectors.toList());
 
-        return new PageableResponse<>(
-                requestResponses,
-                pageableDomain.currentPage().get(),
-                pageableDomain.numberOfElements().get(),
-                pageableDomain.totalElements().get(),
-                pageableDomain.totalPages().get(),
-                pageableDomain.size().get()
-        );
+        return new PageableResponse<>(requestResponses, pageableDomain.currentPage().get(),
+                pageableDomain.numberOfElements().get(), pageableDomain.totalElements().get(),
+                pageableDomain.totalPages().get(), pageableDomain.size().get());
     }
 
 }

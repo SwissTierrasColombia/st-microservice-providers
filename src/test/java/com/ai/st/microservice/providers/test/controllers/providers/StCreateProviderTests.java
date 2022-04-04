@@ -28,102 +28,102 @@ import com.ai.st.microservice.providers.dto.ProviderDto;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StCreateProviderTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StCreateProviderProfileTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StCreateProviderProfileTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		log.info("configured environment (StCreateProviderTests)");
-	}
+        log.info("configured environment (StCreateProviderTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateCreateProvider() {
+    @Test
+    @Transactional
+    public void validateCreateProvider() {
 
-		CreateProviderDto createProviderDto = new CreateProviderDto();
+        CreateProviderDto createProviderDto = new CreateProviderDto();
 
-		createProviderDto.setName(RandomStringUtils.random(10, true, false));
-		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        createProviderDto.setName(RandomStringUtils.random(10, true, false));
+        createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = (ProviderDto) data.getBody();
+        ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+        ProviderDto providerDto = (ProviderDto) data.getBody();
 
-		Assert.notNull(providerDto, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.CREATED, data.getStatusCode());
-		assertTrue(providerDto instanceof ProviderDto);
-	}
+        Assert.notNull(providerDto, "La respuesta no puede ser nula.");
+        assertEquals(HttpStatus.CREATED, data.getStatusCode());
+        assertTrue(providerDto instanceof ProviderDto);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenNameIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenNameIsEmpty() {
 
-		CreateProviderDto createProviderDto = new CreateProviderDto();
+        CreateProviderDto createProviderDto = new CreateProviderDto();
 
-		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = (ProviderDto) data.getBody();
+        ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+        ProviderDto providerDto = (ProviderDto) data.getBody();
 
-		Assert.isNull(providerDto, "La respuesta debe ser null.");
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el proveedor ya que no se ha enviado el nombre del proveedor.");
-	}
+        Assert.isNull(providerDto, "La respuesta debe ser null.");
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el proveedor ya que no se ha enviado el nombre del proveedor.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenTinIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenTinIsEmpty() {
 
-		CreateProviderDto createProviderDto = new CreateProviderDto();
+        CreateProviderDto createProviderDto = new CreateProviderDto();
 
-		createProviderDto.setName(RandomStringUtils.random(10, true, false));
-		createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        createProviderDto.setName(RandomStringUtils.random(10, true, false));
+        createProviderDto.setProviderCategoryId(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = (ProviderDto) data.getBody();
+        ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+        ProviderDto providerDto = (ProviderDto) data.getBody();
 
-		Assert.isNull(providerDto, "La respuesta debe ser null.");
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el proveedor ya que no se ha enviado el nit del proveedor.");
-	}
+        Assert.isNull(providerDto, "La respuesta debe ser null.");
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el proveedor ya que no se ha enviado el nit del proveedor.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenCategoryIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenCategoryIsEmpty() {
 
-		CreateProviderDto createProviderDto = new CreateProviderDto();
+        CreateProviderDto createProviderDto = new CreateProviderDto();
 
-		createProviderDto.setName(RandomStringUtils.random(10, true, false));
-		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        createProviderDto.setName(RandomStringUtils.random(10, true, false));
+        createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
 
-		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = (ProviderDto) data.getBody();
+        ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+        ProviderDto providerDto = (ProviderDto) data.getBody();
 
-		Assert.isNull(providerDto, "La respuesta debe ser null.");
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el proveedor ya que no se ha enviado la categoría del proveedor.");
-	}
+        Assert.isNull(providerDto, "La respuesta debe ser null.");
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el proveedor ya que no se ha enviado la categoría del proveedor.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenCategoryDoesNotExists() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenCategoryDoesNotExists() {
 
-		CreateProviderDto createProviderDto = new CreateProviderDto();
+        CreateProviderDto createProviderDto = new CreateProviderDto();
 
-		createProviderDto.setName(RandomStringUtils.random(10, true, false));
-		createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		createProviderDto.setProviderCategoryId((long) 50);
+        createProviderDto.setName(RandomStringUtils.random(10, true, false));
+        createProviderDto.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        createProviderDto.setProviderCategoryId((long) 50);
 
-		ResponseEntity<?> data = providerController.createProvider(createProviderDto);
-		ProviderDto providerDto = (ProviderDto) data.getBody();
+        ResponseEntity<?> data = providerController.createProvider(createProviderDto);
+        ProviderDto providerDto = (ProviderDto) data.getBody();
 
-		Assert.isNull(providerDto, "La respuesta debe ser null.");
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería crear el proveedor ya que la categoría que se envía no existe.");
-	}
+        Assert.isNull(providerDto, "La respuesta debe ser null.");
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería crear el proveedor ya que la categoría que se envía no existe.");
+    }
 
 }

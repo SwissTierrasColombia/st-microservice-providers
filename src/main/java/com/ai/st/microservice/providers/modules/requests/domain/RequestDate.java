@@ -17,7 +17,8 @@ public final class RequestDate extends DateObjectValue {
     }
 
     private static void ensureDate(Date value) {
-        if (value == null) throw new RequestDateInvalid();
+        if (value == null)
+            throw new RequestDateInvalid();
     }
 
 }

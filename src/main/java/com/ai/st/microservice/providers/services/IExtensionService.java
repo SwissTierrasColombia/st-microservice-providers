@@ -4,8 +4,8 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IExtensionService {
 
-	public ExtensionEntity createExtension(ExtensionEntity extension);
+    public ExtensionEntity createExtension(ExtensionEntity extension);
 
-	public void deleteExtensionById(Long id);
+    public void deleteExtensionById(Long id);
 
 }

@@ -22,159 +22,159 @@ import javax.persistence.TemporalType;
 @Table(name = "requests", schema = "providers")
 public class RequestEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "deadline", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date deadline;
+    @Column(name = "deadline", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deadline;
 
-	@Column(name = "observations")
-	private String observations;
+    @Column(name = "observations")
+    private String observations;
 
-	@Column(name = "package", nullable = false)
-	private String packageLabel;
+    @Column(name = "package", nullable = false)
+    private String packageLabel;
 
-	@Column(name = "municipality_code", nullable = false, length = 10)
-	private String municipalityCode;
+    @Column(name = "municipality_code", nullable = false, length = 10)
+    private String municipalityCode;
 
-	@Column(name = "closed_by")
-	private Long closedBy;
+    @Column(name = "closed_by")
+    private Long closedBy;
 
-	@Column(name = "created_at", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@Column(name = "closed_at")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date closedAt;
+    @Column(name = "closed_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date closedAt;
 
-	@Column(name = "sent_review_at")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date sentReviewAt;
+    @Column(name = "sent_review_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sentReviewAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
-	private ProviderEntity provider;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
+    private ProviderEntity provider;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "request_state_id", referencedColumnName = "id", nullable = false)
-	private RequestStateEntity requestState;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_state_id", referencedColumnName = "id", nullable = false)
+    private RequestStateEntity requestState;
 
-	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-	private List<SupplyRequestedEntity> supplies = new ArrayList<>();
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    private List<SupplyRequestedEntity> supplies = new ArrayList<>();
 
-	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-	private List<EmitterEntity> emitters = new ArrayList<>();
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    private List<EmitterEntity> emitters = new ArrayList<>();
 
-	public RequestEntity() {
+    public RequestEntity() {
 
-	}
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Date getDeadline() {
-		return deadline;
-	}
+    public Date getDeadline() {
+        return deadline;
+    }
 
-	public void setDeadline(Date deadline) {
-		this.deadline = deadline;
-	}
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
 
-	public String getObservations() {
-		return observations;
-	}
+    public String getObservations() {
+        return observations;
+    }
 
-	public void setObservations(String observations) {
-		this.observations = observations;
-	}
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
-	public RequestStateEntity getRequestState() {
-		return requestState;
-	}
+    public RequestStateEntity getRequestState() {
+        return requestState;
+    }
 
-	public void setRequestState(RequestStateEntity requestState) {
-		this.requestState = requestState;
-	}
+    public void setRequestState(RequestStateEntity requestState) {
+        this.requestState = requestState;
+    }
 
-	public List<SupplyRequestedEntity> getSupplies() {
-		return supplies;
-	}
+    public List<SupplyRequestedEntity> getSupplies() {
+        return supplies;
+    }
 
-	public void setSupplies(List<SupplyRequestedEntity> supplies) {
-		this.supplies = supplies;
-	}
+    public void setSupplies(List<SupplyRequestedEntity> supplies) {
+        this.supplies = supplies;
+    }
 
-	public List<EmitterEntity> getEmitters() {
-		return emitters;
-	}
+    public List<EmitterEntity> getEmitters() {
+        return emitters;
+    }
 
-	public void setEmitters(List<EmitterEntity> emitters) {
-		this.emitters = emitters;
-	}
+    public void setEmitters(List<EmitterEntity> emitters) {
+        this.emitters = emitters;
+    }
 
-	public String getMunicipalityCode() {
-		return municipalityCode;
-	}
+    public String getMunicipalityCode() {
+        return municipalityCode;
+    }
 
-	public void setMunicipalityCode(String municipalityCode) {
-		this.municipalityCode = municipalityCode;
-	}
+    public void setMunicipalityCode(String municipalityCode) {
+        this.municipalityCode = municipalityCode;
+    }
 
-	public String getPackageLabel() {
-		return packageLabel;
-	}
+    public String getPackageLabel() {
+        return packageLabel;
+    }
 
-	public void setPackageLabel(String packageLabel) {
-		this.packageLabel = packageLabel;
-	}
+    public void setPackageLabel(String packageLabel) {
+        this.packageLabel = packageLabel;
+    }
 
-	public Date getClosedAt() {
-		return closedAt;
-	}
+    public Date getClosedAt() {
+        return closedAt;
+    }
 
-	public void setClosedAt(Date closedAt) {
-		this.closedAt = closedAt;
-	}
+    public void setClosedAt(Date closedAt) {
+        this.closedAt = closedAt;
+    }
 
-	public Long getClosedBy() {
-		return closedBy;
-	}
+    public Long getClosedBy() {
+        return closedBy;
+    }
 
-	public void setClosedBy(Long closedBy) {
-		this.closedBy = closedBy;
-	}
+    public void setClosedBy(Long closedBy) {
+        this.closedBy = closedBy;
+    }
 
-	public Date getSentReviewAt() {
-		return sentReviewAt;
-	}
+    public Date getSentReviewAt() {
+        return sentReviewAt;
+    }
 
-	public void setSentReviewAt(Date sentReviewAt) {
-		this.sentReviewAt = sentReviewAt;
-	}
+    public void setSentReviewAt(Date sentReviewAt) {
+        this.sentReviewAt = sentReviewAt;
+    }
 
 }

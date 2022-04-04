@@ -14,63 +14,63 @@ import com.ai.st.microservice.providers.repositories.ProviderRepository;
 @Service
 public class ProviderService implements IProviderService {
 
-	@Autowired
-	private ProviderRepository providerRepository;
+    @Autowired
+    private ProviderRepository providerRepository;
 
-	@Override
-	@Transactional
-	public ProviderEntity createProvider(ProviderEntity provider) {
-		return providerRepository.save(provider);
-	}
+    @Override
+    @Transactional
+    public ProviderEntity createProvider(ProviderEntity provider) {
+        return providerRepository.save(provider);
+    }
 
-	@Override
-	public Long getCount() {
-		return providerRepository.count();
-	}
+    @Override
+    public Long getCount() {
+        return providerRepository.count();
+    }
 
-	@Override
-	public List<ProviderEntity> getAllProviders() {
-		return providerRepository.findAll();
-	}
+    @Override
+    public List<ProviderEntity> getAllProviders() {
+        return providerRepository.findAll();
+    }
 
-	@Override
-	public List<ProviderEntity> getProvidersByCategoryId(Long providerCategoryId) {
-		return providerRepository.getProvidersByCategoryId(providerCategoryId);
-	}
+    @Override
+    public List<ProviderEntity> getProvidersByCategoryId(Long providerCategoryId) {
+        return providerRepository.getProvidersByCategoryId(providerCategoryId);
+    }
 
-	@Override
-	public ProviderEntity getProviderByNameAndProviderCategory(String name, ProviderCategoryEntity category) {
-		return providerRepository.findByNameAndProviderCategory(name, category);
-	}
+    @Override
+    public ProviderEntity getProviderByNameAndProviderCategory(String name, ProviderCategoryEntity category) {
+        return providerRepository.findByNameAndProviderCategory(name, category);
+    }
 
-	@Override
-	public ProviderEntity getProviderById(Long id) {
-		return providerRepository.findById(id).orElse(null);
-	}
+    @Override
+    public ProviderEntity getProviderById(Long id) {
+        return providerRepository.findById(id).orElse(null);
+    }
 
-	@Override
-	public ProviderEntity saveProvider(ProviderEntity providerEntity) {
-		return providerRepository.save(providerEntity);
-	}
+    @Override
+    public ProviderEntity saveProvider(ProviderEntity providerEntity) {
+        return providerRepository.save(providerEntity);
+    }
 
-	@Override
-	public void deleteProvider(ProviderEntity providerEntity) {
-		providerRepository.delete(providerEntity);
-	}
+    @Override
+    public void deleteProvider(ProviderEntity providerEntity) {
+        providerRepository.delete(providerEntity);
+    }
 
-	@Override
-	public List<ProviderEntity> getAllProvidersActive(Boolean active) {
-		return providerRepository.findByActive(active);
-	}
+    @Override
+    public List<ProviderEntity> getAllProvidersActive(Boolean active) {
+        return providerRepository.findByActive(active);
+    }
 
-	@Override
-	public Long setValueSequence(Long value) {
-		return providerRepository.setValSequence(value);
-	}
+    @Override
+    public Long setValueSequence(Long value) {
+        return providerRepository.setValSequence(value);
+    }
 
-	@Override
-	public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode) {
-		return providerRepository.getProvidersWhereManagerRequested(managerCode);
-	}
+    @Override
+    public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode) {
+        return providerRepository.getProvidersWhereManagerRequested(managerCode);
+    }
 
 }

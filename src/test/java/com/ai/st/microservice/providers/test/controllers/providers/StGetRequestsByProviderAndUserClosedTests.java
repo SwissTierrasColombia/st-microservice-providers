@@ -39,81 +39,81 @@ import com.ai.st.microservice.providers.services.IRequestStateService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetRequestsByProviderAndUserClosedTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetRequestsByProviderAndUserClosedTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetRequestsByProviderAndUserClosedTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IRequestStateService requestStateService;
+    @Autowired
+    private IRequestStateService requestStateService;
 
-	@Autowired
-	private IRequestService requestService;
+    @Autowired
+    private IRequestService requestService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	private Long userCode;
+    private Long userCode;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		RequestStateEntity stateDelivery = requestStateService
-				.getRequestStateById(RequestStateBusiness.REQUEST_STATE_DELIVERED);
+        RequestStateEntity stateDelivery = requestStateService
+                .getRequestStateById(RequestStateBusiness.REQUEST_STATE_DELIVERED);
 
-		userCode = (long) 5;
+        userCode = (long) 5;
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		RequestEntity requestEntity = new RequestEntity();
-		requestEntity.setClosedAt(new Date());
-		requestEntity.setClosedBy(userCode);
-		requestEntity.setCreatedAt(new Date());
-		requestEntity.setDeadline(new Date());
-		requestEntity.setMunicipalityCode("70001");
-		requestEntity.setObservations(RandomStringUtils.random(20, true, false));
-		requestEntity.setPackageLabel(RandomStringUtils.random(10, false, true));
-		requestEntity.setProvider(providerEntity);
-		requestEntity.setRequestState(stateDelivery);
-		requestService.createRequest(requestEntity);
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setClosedAt(new Date());
+        requestEntity.setClosedBy(userCode);
+        requestEntity.setCreatedAt(new Date());
+        requestEntity.setDeadline(new Date());
+        requestEntity.setMunicipalityCode("70001");
+        requestEntity.setObservations(RandomStringUtils.random(20, true, false));
+        requestEntity.setPackageLabel(RandomStringUtils.random(10, false, true));
+        requestEntity.setProvider(providerEntity);
+        requestEntity.setRequestState(stateDelivery);
+        requestService.createRequest(requestEntity);
 
-		log.info("configured environment (StGetRequestsByProviderAndUserClosedTests)");
-	}
+        log.info("configured environment (StGetRequestsByProviderAndUserClosedTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetRequestsByProviderAndUserClosed() {
+    @Test
+    @Transactional
+    public void validateGetRequestsByProviderAndUserClosed() {
 
-		ResponseEntity<Object> data = providerController.getRequestsByProviderAndUserClosed(providerEntity.getId(),
-				userCode);
+        ResponseEntity<Object> data = providerController.getRequestsByProviderAndUserClosed(providerEntity.getId(),
+                userCode);
 
-		@SuppressWarnings("unchecked")
-		List<RequestDto> requests = (List<RequestDto>) data.getBody();
+        @SuppressWarnings("unchecked")
+        List<RequestDto> requests = (List<RequestDto>) data.getBody();
 
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		Assert.notNull(requests, "La respuesta no puede ser nula.");
-		assertTrue(requests.get(0) instanceof RequestDto);
-	}
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        Assert.notNull(requests, "La respuesta no puede ser nula.");
+        assertTrue(requests.get(0) instanceof RequestDto);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesNotExits() {
-		ResponseEntity<Object> data = providerController.getRequestsByProviderAndUserClosed((long) 150, userCode);
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
-	}
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesNotExits() {
+        ResponseEntity<Object> data = providerController.getRequestsByProviderAndUserClosed((long) 150, userCode);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
+    }
 
 }

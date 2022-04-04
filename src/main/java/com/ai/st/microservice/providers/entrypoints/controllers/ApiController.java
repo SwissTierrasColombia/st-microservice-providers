@@ -32,8 +32,8 @@ public abstract class ApiController {
     protected final ProviderAdministratorBusiness providerAdministratorBusiness;
 
     public ApiController(AdministrationBusiness administrationBusiness, ManagerBusiness managerBusiness,
-                         OperatorBusiness operatorBusiness, ProviderUserBusiness providerUserBusiness,
-                         ProviderAdministratorBusiness providerAdministratorBusiness) {
+            OperatorBusiness operatorBusiness, ProviderUserBusiness providerUserBusiness,
+            ProviderAdministratorBusiness providerAdministratorBusiness) {
         this.administrationBusiness = administrationBusiness;
         this.managerBusiness = managerBusiness;
         this.operatorBusiness = operatorBusiness;
@@ -41,8 +41,7 @@ public abstract class ApiController {
         this.providerAdministratorBusiness = providerAdministratorBusiness;
     }
 
-    protected MicroserviceUserDto getUserSession(String headerAuthorization)
-            throws DisconnectedMicroserviceException {
+    protected MicroserviceUserDto getUserSession(String headerAuthorization) throws DisconnectedMicroserviceException {
         MicroserviceUserDto userDtoSession = administrationBusiness.getUserByToken(headerAuthorization);
         if (userDtoSession == null) {
             throw new DisconnectedMicroserviceException("Ha ocurrido un error consultando el usuario");
@@ -50,14 +49,17 @@ public abstract class ApiController {
         return userDtoSession;
     }
 
-    protected InformationSession getInformationSession(String headerAuthorization) throws DisconnectedMicroserviceException, BusinessException {
+    protected InformationSession getInformationSession(String headerAuthorization)
+            throws DisconnectedMicroserviceException, BusinessException {
         MicroserviceUserDto userDtoSession = this.getUserSession(headerAuthorization);
         if (administrationBusiness.isManager(userDtoSession)) {
             MicroserviceManagerDto managerDto = managerBusiness.getManagerByUserCode(userDtoSession.getId());
-            return new InformationSession(Roles.MANAGER, managerDto.getId(), userDtoSession.getId(), managerDto.getName(), false);
+            return new InformationSession(Roles.MANAGER, managerDto.getId(), userDtoSession.getId(),
+                    managerDto.getName(), false);
         } else if (administrationBusiness.isOperator(userDtoSession)) {
             MicroserviceOperatorDto operatorDto = operatorBusiness.getOperatorByUserCode(userDtoSession.getId());
-            return new InformationSession(Roles.OPERATOR, operatorDto.getId(), userDtoSession.getId(), operatorDto.getName(), false);
+            return new InformationSession(Roles.OPERATOR, operatorDto.getId(), userDtoSession.getId(),
+                    operatorDto.getName(), false);
         } else if (administrationBusiness.isProvider(userDtoSession)) {
             boolean isProviderAdmin = false;
             ProviderDto providerDto = providerUserBusiness.getProviderByUserCode(userDtoSession.getId());
@@ -65,18 +67,16 @@ public abstract class ApiController {
                 isProviderAdmin = true;
                 providerDto = providerAdministratorBusiness.getProviderByUserCode(userDtoSession.getId());
             }
-            return new InformationSession(Roles.PROVIDER, providerDto.getId(), userDtoSession.getId(), providerDto.getName(), isProviderAdmin);
+            return new InformationSession(Roles.PROVIDER, providerDto.getId(), userDtoSession.getId(),
+                    providerDto.getName(), isProviderAdmin);
         }
         throw new RuntimeException("User information not found");
     }
 
     protected ResponseEntity<?> responseFile(File file, MediaType mediaType, InputStreamResource resource) {
         String extension = Files.getFileExtension(file.getName());
-        return ResponseEntity.ok().header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment;filename=" + file.getName())
-                .contentType(mediaType).contentLength(file.length())
-                .header("extension", extension)
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                .contentType(mediaType).contentLength(file.length()).header("extension", extension)
                 .header("filename", file.getName() + extension).body(resource);
     }
 
@@ -88,7 +88,8 @@ public abstract class ApiController {
         private final String entityName;
         private final boolean isProviderAdmin;
 
-        public InformationSession(Roles role, Long entityCode, Long userCode, String entityName, boolean isProviderAdmin) {
+        public InformationSession(Roles role, Long entityCode, Long userCode, String entityName,
+                boolean isProviderAdmin) {
             this.role = role;
             this.entityCode = entityCode;
             this.userCode = userCode;

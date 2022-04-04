@@ -11,23 +11,23 @@ import com.ai.st.microservice.providers.repositories.RoleRepository;
 @Service
 public class RoleService implements IRoleService {
 
-	@Autowired
-	private RoleRepository roleRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-	@Override
-	public Long getCount() {
-		return roleRepository.count();
-	}
+    @Override
+    public Long getCount() {
+        return roleRepository.count();
+    }
 
-	@Override
-	@Transactional
-	public RoleEntity createRole(RoleEntity roleEntity) {
-		return roleRepository.save(roleEntity);
-	}
+    @Override
+    @Transactional
+    public RoleEntity createRole(RoleEntity roleEntity) {
+        return roleRepository.save(roleEntity);
+    }
 
-	@Override
-	public RoleEntity getRoleById(Long roleId) {
-		return roleRepository.findById(roleId).orElse(null);
-	}
+    @Override
+    public RoleEntity getRoleById(Long roleId) {
+        return roleRepository.findById(roleId).orElse(null);
+    }
 
 }

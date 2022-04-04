@@ -35,46 +35,46 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetProvidersTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetProvidersTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetProvidersTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		log.info("configured environment (StGetProvidersTests)");
-	}
+        log.info("configured environment (StGetProvidersTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetProviders() {
-		ResponseEntity<Object> data = providerController.getProviders(false);
+    @Test
+    @Transactional
+    public void validateGetProviders() {
+        ResponseEntity<Object> data = providerController.getProviders(false);
 
-		@SuppressWarnings("unchecked")
-		List<ProviderDto> providers = (List<ProviderDto>) data.getBody();
+        @SuppressWarnings("unchecked")
+        List<ProviderDto> providers = (List<ProviderDto>) data.getBody();
 
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		Assert.notNull(providers, "La respuesta no puede ser nula.");
-		assertTrue(providers.get(0) instanceof ProviderDto);
-	}
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        Assert.notNull(providers, "La respuesta no puede ser nula.");
+        assertTrue(providers.get(0) instanceof ProviderDto);
+    }
 
 }

@@ -38,76 +38,76 @@ import com.ai.st.microservice.providers.services.ITypeSupplyService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetTypeSuppliesByProviderTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetTypeSuppliesByProviderTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetTypeSuppliesByProviderTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IProviderProfileService providerProfileService;
+    @Autowired
+    private IProviderProfileService providerProfileService;
 
-	@Autowired
-	private ITypeSupplyService typeSupplyService;
+    @Autowired
+    private ITypeSupplyService typeSupplyService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		ProviderProfileEntity providerProfile = new ProviderProfileEntity();
-		providerProfile.setName(RandomStringUtils.random(10, true, false));
-		providerProfile.setDescription(RandomStringUtils.random(10, true, false));
-		providerProfile.setProvider(providerEntity);
-		providerProfile = providerProfileService.createProviderProfile(providerProfile);
+        ProviderProfileEntity providerProfile = new ProviderProfileEntity();
+        providerProfile.setName(RandomStringUtils.random(10, true, false));
+        providerProfile.setDescription(RandomStringUtils.random(10, true, false));
+        providerProfile.setProvider(providerEntity);
+        providerProfile = providerProfileService.createProviderProfile(providerProfile);
 
-		TypeSupplyEntity typeSupply = new TypeSupplyEntity();
-		typeSupply.setName(RandomStringUtils.random(10, true, false));
-		typeSupply.setIsMetadataRequired(false);
-		typeSupply.setIsModelRequired(false);
-		typeSupply.setCreatedAt(new Date());
-		typeSupply.setProvider(providerEntity);
-		typeSupply.setProviderProfile(providerProfile);
-		typeSupply = typeSupplyService.createTypeSupply(typeSupply);
+        TypeSupplyEntity typeSupply = new TypeSupplyEntity();
+        typeSupply.setName(RandomStringUtils.random(10, true, false));
+        typeSupply.setIsMetadataRequired(false);
+        typeSupply.setIsModelRequired(false);
+        typeSupply.setCreatedAt(new Date());
+        typeSupply.setProvider(providerEntity);
+        typeSupply.setProviderProfile(providerProfile);
+        typeSupply = typeSupplyService.createTypeSupply(typeSupply);
 
-		log.info("configured environment (StGetTypeSuppliesByProviderTests)");
-	}
+        log.info("configured environment (StGetTypeSuppliesByProviderTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetTypesSuppliesByProvider() {
+    @Test
+    @Transactional
+    public void validateGetTypesSuppliesByProvider() {
 
-		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider(providerEntity.getId(), false);
+        ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider(providerEntity.getId(), false);
 
-		@SuppressWarnings("unchecked")
-		List<TypeSupplyDto> typeSupplies = (List<TypeSupplyDto>) data.getBody();
+        @SuppressWarnings("unchecked")
+        List<TypeSupplyDto> typeSupplies = (List<TypeSupplyDto>) data.getBody();
 
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		Assert.notNull(typeSupplies, "La respuesta no puede ser nula.");
-		assertTrue(typeSupplies.get(0) instanceof TypeSupplyDto);
-	}
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        Assert.notNull(typeSupplies, "La respuesta no puede ser nula.");
+        assertTrue(typeSupplies.get(0) instanceof TypeSupplyDto);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesNotExists() {
-		ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider((long) 150, false);
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"Debe arrojar un estado http con código 422");
-	}
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesNotExists() {
+        ResponseEntity<Object> data = providerController.getTypeSuppliesByProvider((long) 150, false);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "Debe arrojar un estado http con código 422");
+    }
 
 }

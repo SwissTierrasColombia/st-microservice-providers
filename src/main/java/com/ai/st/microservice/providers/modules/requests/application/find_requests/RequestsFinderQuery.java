@@ -15,7 +15,7 @@ public final class RequestsFinderQuery implements Query {
     private final boolean skipFilterAreas;
 
     public RequestsFinderQuery(int page, int limit, Long provider, Long status, String municipality, String orderNumber,
-                               Long manager, Long user, boolean skipFilterAreas) {
+            Long manager, Long user, boolean skipFilterAreas) {
         this.page = page;
         this.limit = limit;
         this.provider = provider;

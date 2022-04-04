@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "Manage Users", tags = {"Providers Users"})
+@Api(value = "Manage Users", tags = { "Providers Users" })
 @RestController
 @RequestMapping("api/providers-supplies/v1/users")
 public class ProviderUserV1Controller {
@@ -46,8 +46,8 @@ public class ProviderUserV1Controller {
 
     @RequestMapping(value = "/{userCode}/providers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Get provider by user")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Get provider by user", response = ProviderDto.class),
-            @ApiResponse(code = 500, message = "Error Server", response = String.class)})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Get provider by user", response = ProviderDto.class),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
     public ResponseEntity<Object> getProviderByUser(@PathVariable Long userCode) {
 
@@ -70,7 +70,7 @@ public class ProviderUserV1Controller {
     @ApiOperation(value = "Add user to provider")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Add user to provider", response = ProviderUserDto.class, responseContainer = "List"),
-            @ApiResponse(code = 500, message = "Error Server", response = String.class)})
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
     public ResponseEntity<Object> addUserToProvider(@RequestBody AddUserToProviderDto requestAddUser) {
 
@@ -123,7 +123,7 @@ public class ProviderUserV1Controller {
     @ApiOperation(value = "Remove user to provider")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Remove user to provider", response = ProviderUserDto.class, responseContainer = "List"),
-            @ApiResponse(code = 500, message = "Error Server", response = String.class)})
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
     public ResponseEntity<Object> removeUserToProvider(@RequestBody AddUserToProviderDto requestAddUser) {
 
@@ -176,7 +176,7 @@ public class ProviderUserV1Controller {
     @ApiOperation(value = "Get profiles by user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Get profiles by user", response = ProviderAdministratorDto.class),
-            @ApiResponse(code = 500, message = "Error Server", response = String.class)})
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
     @ResponseBody
     public ResponseEntity<?> getProfilesByUser(@PathVariable Long userCode) {
 

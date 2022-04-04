@@ -9,7 +9,8 @@ public final class ManagerAlias extends StringValueObject {
     }
 
     private static void ensureAlias(String value) {
-        if (value == null || value.isEmpty()) throw new ManagerAliasInvalid();
+        if (value == null || value.isEmpty())
+            throw new ManagerAliasInvalid();
     }
 
     public static ManagerAlias fromValue(String value) {

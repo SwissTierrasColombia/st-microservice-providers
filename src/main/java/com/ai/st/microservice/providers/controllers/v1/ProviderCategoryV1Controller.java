@@ -27,76 +27,76 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Api(value = "Manage Providers Categories", description = "Manage Providers Categories", tags = {
-		"Providers Categories" })
+        "Providers Categories" })
 @RestController
 @RequestMapping("api/providers-supplies/v1/categories")
 public class ProviderCategoryV1Controller {
 
-	private final Logger log = LoggerFactory.getLogger(ProviderCategoryV1Controller.class);
+    private final Logger log = LoggerFactory.getLogger(ProviderCategoryV1Controller.class);
 
-	@Autowired
-	private ProviderCategoryBusiness providerCategoryBusiness;
+    @Autowired
+    private ProviderCategoryBusiness providerCategoryBusiness;
 
-	@Autowired
-	private ProviderBusiness providerBusiness;
+    @Autowired
+    private ProviderBusiness providerBusiness;
 
-	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Get providers categories")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Get providers categories", response = ProviderCategoryDto.class, responseContainer = "List"),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<List<ProviderCategoryDto>> getCategories() {
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Get providers categories")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Get providers categories", response = ProviderCategoryDto.class, responseContainer = "List"),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<List<ProviderCategoryDto>> getCategories() {
 
-		HttpStatus httpStatus = null;
-		List<ProviderCategoryDto> listCategories = new ArrayList<ProviderCategoryDto>();
+        HttpStatus httpStatus = null;
+        List<ProviderCategoryDto> listCategories = new ArrayList<ProviderCategoryDto>();
 
-		try {
+        try {
 
-			listCategories = providerCategoryBusiness.getCategories();
+            listCategories = providerCategoryBusiness.getCategories();
 
-			httpStatus = HttpStatus.OK;
-		} catch (BusinessException e) {
-			listCategories = null;
-			log.error("Error ProviderCategoryV1Controller@getCategories#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-		} catch (Exception e) {
-			listCategories = null;
-			log.error("Error ProviderCategoryV1Controller@getCategories#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+            httpStatus = HttpStatus.OK;
+        } catch (BusinessException e) {
+            listCategories = null;
+            log.error("Error ProviderCategoryV1Controller@getCategories#Business ---> " + e.getMessage());
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+        } catch (Exception e) {
+            listCategories = null;
+            log.error("Error ProviderCategoryV1Controller@getCategories#General ---> " + e.getMessage());
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
 
-		return new ResponseEntity<>(listCategories, httpStatus);
-	}
+        return new ResponseEntity<>(listCategories, httpStatus);
+    }
 
-	@RequestMapping(value = "/{categoryId}/providers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Get providers by category")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Get providers by category", response = ProviderDto.class, responseContainer = "List"),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<List<ProviderDto>> getProvidersByCategory(
-			@PathVariable(name = "categoryId", required = true) Long categoryId) {
+    @RequestMapping(value = "/{categoryId}/providers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Get providers by category")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Get providers by category", response = ProviderDto.class, responseContainer = "List"),
+            @ApiResponse(code = 500, message = "Error Server", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<List<ProviderDto>> getProvidersByCategory(
+            @PathVariable(name = "categoryId", required = true) Long categoryId) {
 
-		HttpStatus httpStatus = null;
-		List<ProviderDto> listProviders = new ArrayList<ProviderDto>();
+        HttpStatus httpStatus = null;
+        List<ProviderDto> listProviders = new ArrayList<ProviderDto>();
 
-		try {
+        try {
 
-			listProviders = providerBusiness.getProvidersByCategoryId(categoryId);
+            listProviders = providerBusiness.getProvidersByCategoryId(categoryId);
 
-			httpStatus = HttpStatus.OK;
-		} catch (BusinessException e) {
-			listProviders = null;
-			log.error("Error ProviderCategoryV1Controller@getProvidersByCategory#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-		} catch (Exception e) {
-			listProviders = null;
-			log.error("Error ProviderCategoryV1Controller@getProvidersByCategory#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+            httpStatus = HttpStatus.OK;
+        } catch (BusinessException e) {
+            listProviders = null;
+            log.error("Error ProviderCategoryV1Controller@getProvidersByCategory#Business ---> " + e.getMessage());
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+        } catch (Exception e) {
+            listProviders = null;
+            log.error("Error ProviderCategoryV1Controller@getProvidersByCategory#General ---> " + e.getMessage());
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
 
-		return new ResponseEntity<>(listProviders, httpStatus);
-	}
+        return new ResponseEntity<>(listProviders, httpStatus);
+    }
 
 }
