@@ -18,68 +18,68 @@ import javax.persistence.TemporalType;
 @Table(name = "providers_administrators", schema = "providers")
 public class ProviderAdministratorEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "user_code", nullable = false)
-	private Long userCode;
+    @Column(name = "user_code", nullable = false)
+    private Long userCode;
 
-	@Column(name = "created_at", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
-	private ProviderEntity provider;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
+    private ProviderEntity provider;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
-	private RoleEntity role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    private RoleEntity role;
 
-	public ProviderAdministratorEntity() {
+    public ProviderAdministratorEntity() {
 
-	}
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getUserCode() {
-		return userCode;
-	}
+    public Long getUserCode() {
+        return userCode;
+    }
 
-	public void setUserCode(Long userCode) {
-		this.userCode = userCode;
-	}
+    public void setUserCode(Long userCode) {
+        this.userCode = userCode;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
-	public RoleEntity getRole() {
-		return role;
-	}
+    public RoleEntity getRole() {
+        return role;
+    }
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
-	}
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }
 
 }

@@ -8,54 +8,54 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "ProviderProfileDto", description = "Profile Profile Dto")
 public class ProviderProfileDto implements Serializable {
 
-	private static final long serialVersionUID = -557539358130899883L;
+    private static final long serialVersionUID = -557539358130899883L;
 
-	@ApiModelProperty(required = true, notes = "Provider Profile ID")
-	private Long id;
+    @ApiModelProperty(required = true, notes = "Provider Profile ID")
+    private Long id;
 
-	@ApiModelProperty(required = true, notes = "Description")
-	private String description;
+    @ApiModelProperty(required = true, notes = "Description")
+    private String description;
 
-	@ApiModelProperty(required = true, notes = "Name")
-	private String name;
+    @ApiModelProperty(required = true, notes = "Name")
+    private String name;
 
-	@ApiModelProperty(required = true, notes = "Provider")
-	private ProviderDto provider;
+    @ApiModelProperty(required = true, notes = "Provider")
+    private ProviderDto provider;
 
-	public ProviderProfileDto() {
+    public ProviderProfileDto() {
 
-	}
-	
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public ProviderDto getProvider() {
-		return provider;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setProvider(ProviderDto provider) {
-		this.provider = provider;
-	}
+    public ProviderDto getProvider() {
+        return provider;
+    }
+
+    public void setProvider(ProviderDto provider) {
+        this.provider = provider;
+    }
 
 }

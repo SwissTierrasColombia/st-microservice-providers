@@ -7,26 +7,26 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IProviderService {
 
-	public ProviderEntity createProvider(ProviderEntity provider);
+    public ProviderEntity createProvider(ProviderEntity provider);
 
-	public Long getCount();
+    public Long getCount();
 
-	public List<ProviderEntity> getAllProviders();
+    public List<ProviderEntity> getAllProviders();
 
-	public List<ProviderEntity> getProvidersByCategoryId(Long providerCategoryId);
+    public List<ProviderEntity> getProvidersByCategoryId(Long providerCategoryId);
 
-	public ProviderEntity getProviderByNameAndProviderCategory(String name, ProviderCategoryEntity category);
+    public ProviderEntity getProviderByNameAndProviderCategory(String name, ProviderCategoryEntity category);
 
-	public ProviderEntity getProviderById(Long id);
+    public ProviderEntity getProviderById(Long id);
 
-	public ProviderEntity saveProvider(ProviderEntity providerEntity);
+    public ProviderEntity saveProvider(ProviderEntity providerEntity);
 
-	public void deleteProvider(ProviderEntity providerEntity);
+    public void deleteProvider(ProviderEntity providerEntity);
 
-	public List<ProviderEntity> getAllProvidersActive(Boolean active);
+    public List<ProviderEntity> getAllProvidersActive(Boolean active);
 
-	public Long setValueSequence(Long value);
+    public Long setValueSequence(Long value);
 
-	public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode);
+    public List<ProviderEntity> getProvidersWhereManagerRequested(Long managerCode);
 
 }

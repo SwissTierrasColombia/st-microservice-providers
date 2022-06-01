@@ -9,7 +9,8 @@ public final class FederationMunicipality extends StringValueObject {
     }
 
     private static void ensureName(String value) {
-        if (value == null || value.isEmpty()) throw new FederationMunicipalityNameInvalid();
+        if (value == null || value.isEmpty())
+            throw new FederationMunicipalityNameInvalid();
     }
 
     public static FederationMunicipality fromValue(String value) {

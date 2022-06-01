@@ -11,119 +11,119 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "TypeSupplyDto", description = "Type Supply Dto")
 public class TypeSupplyDto implements Serializable {
 
-	private static final long serialVersionUID = 3977770440374512592L;
+    private static final long serialVersionUID = 3977770440374512592L;
 
-	@ApiModelProperty(required = true, notes = "Type Supply ID")
-	private Long id;
+    @ApiModelProperty(required = true, notes = "Type Supply ID")
+    private Long id;
 
-	@ApiModelProperty(required = true, notes = "Date creation")
-	private Date createdAt;
-	
-	@ApiModelProperty(required = true, notes = "Active")
-	private Boolean active;
+    @ApiModelProperty(required = true, notes = "Date creation")
+    private Date createdAt;
 
-	@ApiModelProperty(required = true, notes = "Description")
-	private String description;
+    @ApiModelProperty(required = true, notes = "Active")
+    private Boolean active;
 
-	@ApiModelProperty(required = true, notes = "Metadata is required ?")
-	private Boolean metadataRequired;
+    @ApiModelProperty(required = true, notes = "Description")
+    private String description;
 
-	@ApiModelProperty(required = true, notes = "Model is required ?")
-	private Boolean modelRequired;
+    @ApiModelProperty(required = true, notes = "Metadata is required ?")
+    private Boolean metadataRequired;
 
-	@ApiModelProperty(required = true, notes = "Type supply name")
-	private String name;
+    @ApiModelProperty(required = true, notes = "Model is required ?")
+    private Boolean modelRequired;
 
-	@ApiModelProperty(required = true, notes = "Provider")
-	private ProviderDto provider;
+    @ApiModelProperty(required = true, notes = "Type supply name")
+    private String name;
 
-	@ApiModelProperty(required = true, notes = "Provider profile")
-	private ProviderProfileDto providerProfile;
+    @ApiModelProperty(required = true, notes = "Provider")
+    private ProviderDto provider;
 
-	private List<ExtensionDto> extensions;
+    @ApiModelProperty(required = true, notes = "Provider profile")
+    private ProviderProfileDto providerProfile;
 
-	public TypeSupplyDto() {
-		this.extensions = new ArrayList<ExtensionDto>();
-	}
+    private List<ExtensionDto> extensions;
 
-	public Long getId() {
-		return id;
-	}
+    public TypeSupplyDto() {
+        this.extensions = new ArrayList<ExtensionDto>();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Boolean getMetadataRequired() {
-		return metadataRequired;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setMetadataRequired(Boolean metadataRequired) {
-		this.metadataRequired = metadataRequired;
-	}
+    public Boolean getMetadataRequired() {
+        return metadataRequired;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setMetadataRequired(Boolean metadataRequired) {
+        this.metadataRequired = metadataRequired;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public ProviderDto getProvider() {
-		return provider;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setProvider(ProviderDto provider) {
-		this.provider = provider;
-	}
+    public ProviderDto getProvider() {
+        return provider;
+    }
 
-	public ProviderProfileDto getProviderProfile() {
-		return providerProfile;
-	}
+    public void setProvider(ProviderDto provider) {
+        this.provider = provider;
+    }
 
-	public void setProviderProfile(ProviderProfileDto providerProfile) {
-		this.providerProfile = providerProfile;
-	}
+    public ProviderProfileDto getProviderProfile() {
+        return providerProfile;
+    }
 
-	public List<ExtensionDto> getExtensions() {
-		return extensions;
-	}
+    public void setProviderProfile(ProviderProfileDto providerProfile) {
+        this.providerProfile = providerProfile;
+    }
 
-	public void setExtensions(List<ExtensionDto> extensions) {
-		this.extensions = extensions;
-	}
+    public List<ExtensionDto> getExtensions() {
+        return extensions;
+    }
 
-	public Boolean getModelRequired() {
-		return modelRequired;
-	}
+    public void setExtensions(List<ExtensionDto> extensions) {
+        this.extensions = extensions;
+    }
 
-	public void setModelRequired(Boolean modelRequired) {
-		this.modelRequired = modelRequired;
-	}
+    public Boolean getModelRequired() {
+        return modelRequired;
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public void setModelRequired(Boolean modelRequired) {
+        this.modelRequired = modelRequired;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
 }

@@ -4,10 +4,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IRoleService {
 
-	public Long getCount();
+    public Long getCount();
 
-	public RoleEntity createRole(RoleEntity roleEntity);
+    public RoleEntity createRole(RoleEntity roleEntity);
 
-	public RoleEntity getRoleById(Long roleId);
+    public RoleEntity getRoleById(Long roleId);
 
 }

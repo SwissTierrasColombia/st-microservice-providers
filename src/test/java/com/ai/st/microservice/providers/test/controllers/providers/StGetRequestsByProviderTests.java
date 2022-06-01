@@ -1,8 +1,5 @@
 package com.ai.st.microservice.providers.test.controllers.providers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,93 +31,95 @@ import com.ai.st.microservice.providers.services.IProviderService;
 import com.ai.st.microservice.providers.services.IRequestService;
 import com.ai.st.microservice.providers.services.IRequestStateService;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetRequestsByProviderTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetRequestsByProviderTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetRequestsByProviderTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IRequestStateService requestStateService;
+    @Autowired
+    private IRequestStateService requestStateService;
 
-	@Autowired
-	private IRequestService requestService;
+    @Autowired
+    private IRequestService requestService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		RequestStateEntity state = requestStateService
-				.getRequestStateById(RequestStateBusiness.REQUEST_STATE_REQUESTED);
+        RequestStateEntity state = requestStateService
+                .getRequestStateById(RequestStateBusiness.REQUEST_STATE_REQUESTED);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		RequestEntity requestEntity = new RequestEntity();
-		requestEntity.setCreatedAt(new Date());
-		requestEntity.setDeadline(new Date());
-		requestEntity.setMunicipalityCode("70001");
-		requestEntity.setObservations(RandomStringUtils.random(20, true, false));
-		requestEntity.setPackageLabel(RandomStringUtils.random(10, false, true));
-		requestEntity.setProvider(providerEntity);
-		requestEntity.setRequestState(state);
-		requestService.createRequest(requestEntity);
+        RequestEntity requestEntity = new RequestEntity();
+        requestEntity.setCreatedAt(new Date());
+        requestEntity.setDeadline(new Date());
+        requestEntity.setMunicipalityCode("70001");
+        requestEntity.setObservations(RandomStringUtils.random(20, true, false));
+        requestEntity.setPackageLabel(RandomStringUtils.random(10, false, true));
+        requestEntity.setProvider(providerEntity);
+        requestEntity.setRequestState(state);
+        requestService.createRequest(requestEntity);
 
-		log.info("configured environment (StGetRequestsByProviderTests)");
-	}
+        log.info("configured environment (StGetRequestsByProviderTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetRequestByProviderAndState() {
+    @Test
+    @Transactional
+    public void validateGetRequestByProviderAndState() {
 
-		ResponseEntity<Object> data = providerController.getRequestsByProvider(providerEntity.getId(),
-				RequestStateBusiness.REQUEST_STATE_REQUESTED);
+        ResponseEntity<?> data = providerController.getRequestsByProvider(providerEntity.getId(),
+                RequestStateBusiness.REQUEST_STATE_REQUESTED);
 
-		@SuppressWarnings("unchecked")
-		List<RequestDto> requests = (List<RequestDto>) data.getBody();
+        @SuppressWarnings("unchecked")
+        List<RequestDto> requests = (List<RequestDto>) data.getBody();
 
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		Assert.notNull(requests, "La respuesta no puede ser nula.");
-		assertTrue(requests.get(0) instanceof RequestDto);
-	}
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        Assert.notNull(requests, "La respuesta no puede ser null.");
+        assertNotNull(requests.get(0));
+    }
 
-	@Test
-	@Transactional
-	public void validateGetRequestByProvider() {
-		ResponseEntity<Object> data = providerController.getRequestsByProvider(providerEntity.getId(), null);
+    @Test
+    @Transactional
+    public void validateGetRequestByProvider() {
+        ResponseEntity<?> data = providerController.getRequestsByProvider(providerEntity.getId(), null);
 
-		@SuppressWarnings("unchecked")
-		List<RequestDto> requests = (List<RequestDto>) data.getBody();
+        @SuppressWarnings("unchecked")
+        List<RequestDto> requests = (List<RequestDto>) data.getBody();
 
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		Assert.notNull(requests, "La respuesta no puede ser nula.");
-		assertTrue(requests.get(0) instanceof RequestDto);
-	}
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        Assert.notNull(requests, "La respuesta no puede ser null.");
+        assertNotNull(requests.get(0));
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesNotExits() {
-		ResponseEntity<Object> data = providerController.getRequestsByProvider((long) 150, null);
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
-	}
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesNotExits() {
+        ResponseEntity<?> data = providerController.getRequestsByProvider((long) 150, null);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "Debe arrojar un estado http con código 422 ya que el proveedor no existe.");
+    }
 
 }

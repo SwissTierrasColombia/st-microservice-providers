@@ -11,11 +11,11 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface TypeSupplyRepository extends CrudRepository<TypeSupplyEntity, Long> {
 
-	TypeSupplyEntity findByName(String name);
+    TypeSupplyEntity findByName(String name);
 
-	List<TypeSupplyEntity> findByProviderProfile(ProviderProfileEntity providerProfile);
-	
-	@Query(value = "SELECT setval('providers.types_supplies_id_seq', :value, true);", nativeQuery = true)
-	Long setValSequence(@Param("value") Long value);
+    List<TypeSupplyEntity> findByProviderProfile(ProviderProfileEntity providerProfile);
+
+    @Query(value = "SELECT setval('providers.types_supplies_id_seq', :value, true);", nativeQuery = true)
+    Long setValSequence(@Param("value") Long value);
 
 }

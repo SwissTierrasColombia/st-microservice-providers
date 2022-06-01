@@ -2,13 +2,7 @@ package com.ai.st.microservice.providers.modules.shared.domain.criteria;
 
 public enum FilterOperator {
 
-    EQUAL("="),
-    NOT_EQUAL("!="),
-    GT(">"),
-    LT("<"),
-    CONTAINS("CONTAINS"),
-    NOT_CONTAINS("NOT_CONTAINS"),
-    LIKE("LIKE");
+    EQUAL("="), NOT_EQUAL("!="), GT(">"), LT("<"), CONTAINS("CONTAINS"), NOT_CONTAINS("NOT_CONTAINS"), LIKE("LIKE");
 
     private final String operator;
 
@@ -18,22 +12,22 @@ public enum FilterOperator {
 
     public static FilterOperator fromValue(String value) {
         switch (value) {
-            case "=":
-                return FilterOperator.EQUAL;
-            case "!=":
-                return FilterOperator.NOT_EQUAL;
-            case ">":
-                return FilterOperator.GT;
-            case "<":
-                return FilterOperator.LT;
-            case "CONTAINS":
-                return FilterOperator.CONTAINS;
-            case "NOT_CONTAINS":
-                return FilterOperator.NOT_CONTAINS;
-            case "LIKE":
-                return FilterOperator.LIKE;
-            default:
-                return null;
+        case "=":
+            return FilterOperator.EQUAL;
+        case "!=":
+            return FilterOperator.NOT_EQUAL;
+        case ">":
+            return FilterOperator.GT;
+        case "<":
+            return FilterOperator.LT;
+        case "CONTAINS":
+            return FilterOperator.CONTAINS;
+        case "NOT_CONTAINS":
+            return FilterOperator.NOT_CONTAINS;
+        case "LIKE":
+            return FilterOperator.LIKE;
+        default:
+            return null;
         }
     }
 

@@ -34,52 +34,52 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetProviderByIdTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetProviderByIdTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetProviderByIdTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		log.info("configured environment (StGetProviderByIdTests)");
-	}
+        log.info("configured environment (StGetProviderByIdTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetProviderById() {
+    @Test
+    @Transactional
+    public void validateGetProviderById() {
 
-		ResponseEntity<ProviderDto> data = providerController.getProviderById(providerEntity.getId());
-		ProviderDto providerDto = data.getBody();
+        ResponseEntity<ProviderDto> data = providerController.getProviderById(providerEntity.getId());
+        ProviderDto providerDto = data.getBody();
 
-		Assert.notNull(providerDto, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		assertTrue(providerDto instanceof ProviderDto);
-	}
+        Assert.notNull(providerDto, "La respuesta no puede ser nula.");
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        assertTrue(providerDto instanceof ProviderDto);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesExists() {
-		ResponseEntity<ProviderDto> data = providerController.getProviderById((long) 50);
-		assertEquals(HttpStatus.NOT_FOUND, data.getStatusCode(), "Debe arrojar un estado http con código 404");
-	}
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesExists() {
+        ResponseEntity<ProviderDto> data = providerController.getProviderById((long) 50);
+        assertEquals(HttpStatus.NOT_FOUND, data.getStatusCode(), "Debe arrojar un estado http con código 404");
+    }
 
 }

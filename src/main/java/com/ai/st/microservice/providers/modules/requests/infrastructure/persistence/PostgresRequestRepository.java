@@ -1,6 +1,5 @@
 package com.ai.st.microservice.providers.modules.requests.infrastructure.persistence;
 
-
 import com.ai.st.microservice.providers.modules.requests.domain.*;
 import com.ai.st.microservice.providers.modules.requests.domain.contracts.RequestRepository;
 import com.ai.st.microservice.providers.modules.shared.domain.*;
@@ -35,18 +34,16 @@ public final class PostgresRequestRepository implements RequestRepository {
     private final WorkspaceMicroservice workspaceMicroservice;
 
     public static final Map<String, String> MAPPING_FIELDS = new HashMap<>(
-            Map.ofEntries(
-                    new AbstractMap.SimpleEntry<>("requestDate", "createdAt"),
+            Map.ofEntries(new AbstractMap.SimpleEntry<>("requestDate", "createdAt"),
                     new AbstractMap.SimpleEntry<>("provider", "provider"),
                     new AbstractMap.SimpleEntry<>("requestStatus", "requestState"),
                     new AbstractMap.SimpleEntry<>("municipality", "municipalityCode"),
                     new AbstractMap.SimpleEntry<>("orderNumber", "packageLabel"),
                     new AbstractMap.SimpleEntry<>("manager", "emitters"),
-                    new AbstractMap.SimpleEntry<>("workArea", "supplies")
-            ));
+                    new AbstractMap.SimpleEntry<>("workArea", "supplies")));
 
     public PostgresRequestRepository(RequestJPARepository requestJPARepository, ManagerMicroservice managerMicroservice,
-                                     WorkspaceMicroservice workspaceMicroservice) {
+            WorkspaceMicroservice workspaceMicroservice) {
         this.requestJPARepository = requestJPARepository;
         this.managerMicroservice = managerMicroservice;
         this.workspaceMicroservice = workspaceMicroservice;
@@ -93,14 +90,11 @@ public final class PostgresRequestRepository implements RequestRepository {
 
         List<Request> requests = requestEntities.stream().map(this::mapping).collect(Collectors.toList());
 
-        return new PageableDomain<>(
-                requests,
-                page != null ? Optional.of(page.getNumber() + 1) : Optional.empty(),
+        return new PageableDomain<>(requests, page != null ? Optional.of(page.getNumber() + 1) : Optional.empty(),
                 page != null ? Optional.of(page.getNumberOfElements()) : Optional.empty(),
                 page != null ? Optional.of(page.getTotalElements()) : Optional.empty(),
                 page != null ? Optional.of(page.getTotalPages()) : Optional.empty(),
-                page != null ? Optional.of(page.getSize()) : Optional.empty()
-        );
+                page != null ? Optional.of(page.getSize()) : Optional.empty());
     }
 
     private Specification<RequestEntity> addFilters(List<Filter> filters) {
@@ -132,22 +126,22 @@ public final class PostgresRequestRepository implements RequestRepository {
     private Specification<RequestEntity> createSpecification(Filter filter) {
         try {
             switch (filter.operator()) {
-                case EQUAL:
-                    return (root, query, criteriaBuilder) ->
-                            criteriaBuilder.equal(buildPath(root, filter.field().value()), filter.value().value());
-                case NOT_EQUAL:
-                    return (root, query, criteriaBuilder) ->
-                            criteriaBuilder.notEqual(buildPath(root, filter.field().value()), filter.value().value());
-                case LIKE:
-                    return (root, query, criteriaBuilder) ->
-                            criteriaBuilder.like(root.get(mappingField(filter.field().value())), "%" + filter.value().value() + "%");
-                case CONTAINS:
-                    return (root, query, criteriaBuilder) -> {
-                        List<String> list = filter.values().stream().map(FilterValue::value).collect(Collectors.toList());
-                        return buildPath(root, filter.field().value()).in(list);
-                    };
-                default:
-                    throw new OperatorUnsupported();
+            case EQUAL:
+                return (root, query, criteriaBuilder) -> criteriaBuilder.equal(buildPath(root, filter.field().value()),
+                        filter.value().value());
+            case NOT_EQUAL:
+                return (root, query, criteriaBuilder) -> criteriaBuilder
+                        .notEqual(buildPath(root, filter.field().value()), filter.value().value());
+            case LIKE:
+                return (root, query, criteriaBuilder) -> criteriaBuilder
+                        .like(root.get(mappingField(filter.field().value())), "%" + filter.value().value() + "%");
+            case CONTAINS:
+                return (root, query, criteriaBuilder) -> {
+                    List<String> list = filter.values().stream().map(FilterValue::value).collect(Collectors.toList());
+                    return buildPath(root, filter.field().value()).in(list);
+                };
+            default:
+                throw new OperatorUnsupported();
             }
         } catch (Exception e) {
             throw new FieldUnsupported();
@@ -175,21 +169,21 @@ public final class PostgresRequestRepository implements RequestRepository {
     private Request mapping(RequestEntity requestEntity) {
 
         EmitterEntity emitterManager = requestEntity.getEmitters().stream()
-                .filter(e -> e.getEmitterType().equals(EmitterTypeEnum.ENTITY))
-                .findFirst().orElseThrow(ManagerNotFound::new);
+                .filter(e -> e.getEmitterType().equals(EmitterTypeEnum.ENTITY)).findFirst()
+                .orElseThrow(ManagerNotFound::new);
         Manager manager = managerMicroservice.getManager(ManagerCode.fromValue(emitterManager.getEmitterCode()));
 
-        Federation federation = workspaceMicroservice.getFederation(FederationCode.fromValue(requestEntity.getMunicipalityCode()));
+        Federation federation = workspaceMicroservice
+                .getFederation(FederationCode.fromValue(requestEntity.getMunicipalityCode()));
 
         RequestStateEntity requestStatusEntity = requestEntity.getRequestState();
 
-        List<SupplyRequested> suppliesRequested = requestEntity.getSupplies().stream()
-                .map(supply -> SupplyRequested.fromPrimitives(
-                        supply.getId(), supply.getTypeSupply().getName(), supply.getTypeSupply().getProviderProfile().getName()))
+        List<SupplyRequested> suppliesRequested = requestEntity
+                .getSupplies().stream().map(supply -> SupplyRequested.fromPrimitives(supply.getId(),
+                        supply.getTypeSupply().getName(), supply.getTypeSupply().getProviderProfile().getName()))
                 .collect(Collectors.toList());
 
-        return new Request(
-                RequestId.fromValue(requestEntity.getId()),
+        return new Request(RequestId.fromValue(requestEntity.getId()),
                 RequestClosedAt.fromValue(requestEntity.getClosedAt()),
                 RequestClosedBy.fromValue(requestEntity.getClosedBy()),
                 RequestDate.fromValue(requestEntity.getCreatedAt()),
@@ -197,11 +191,8 @@ public final class PostgresRequestRepository implements RequestRepository {
                 RequestObservations.fromValue(requestEntity.getObservations()),
                 RequestOrderNumber.fromValue(requestEntity.getPackageLabel()),
                 RequestSentReviewAt.fromValue(requestEntity.getSentReviewAt()),
-                RequestStatus.fromPrimivites(requestStatusEntity.getId(), requestStatusEntity.getName()),
-                manager,
-                federation,
-                suppliesRequested
-        );
+                RequestStatus.fromPrimivites(requestStatusEntity.getId(), requestStatusEntity.getName()), manager,
+                federation, suppliesRequested);
     }
 
 }

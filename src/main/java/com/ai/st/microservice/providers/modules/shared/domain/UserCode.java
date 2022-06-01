@@ -9,7 +9,8 @@ public final class UserCode extends LongValueObject {
     }
 
     private static void ensureCode(Long value) {
-        if (value == null || value <= 0) throw new UserCodeInvalid(value);
+        if (value == null || value <= 0)
+            throw new UserCodeInvalid(value);
     }
 
     public static UserCode fromValue(Long value) {

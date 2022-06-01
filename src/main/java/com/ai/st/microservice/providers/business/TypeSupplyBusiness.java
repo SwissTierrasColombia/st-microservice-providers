@@ -20,86 +20,86 @@ import com.ai.st.microservice.providers.services.ITypeSupplyService;
 @Component
 public class TypeSupplyBusiness {
 
-	@Autowired
-	private ITypeSupplyService typeSupplyService;
+    @Autowired
+    private ITypeSupplyService typeSupplyService;
 
-	public TypeSupplyDto getTypeSupplyById(Long typeSupplyId) throws BusinessException {
+    public TypeSupplyDto getTypeSupplyById(Long typeSupplyId) throws BusinessException {
 
-		TypeSupplyDto typeSupplyDto = null;
+        TypeSupplyDto typeSupplyDto = null;
 
-		TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-		if (typeSupplyEntity instanceof TypeSupplyEntity) {
-			typeSupplyDto = entityParseDto(typeSupplyEntity);
-		}
+        TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
+        if (typeSupplyEntity != null) {
+            typeSupplyDto = entityParseDto(typeSupplyEntity);
+        }
 
-		return typeSupplyDto;
-	}
+        return typeSupplyDto;
+    }
 
-	public TypeSupplyDto enableTypeSupply(Long typeSupplyId) throws BusinessException {
+    public TypeSupplyDto enableTypeSupply(Long typeSupplyId) throws BusinessException {
 
-		TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-		if (typeSupplyEntity == null) {
-			throw new BusinessException("El tipo de insumo no existe.");
-		}
+        TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
+        if (typeSupplyEntity == null) {
+            throw new BusinessException("El tipo de insumo no existe.");
+        }
 
-		typeSupplyEntity.setActive(true);
-		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
+        typeSupplyEntity.setActive(true);
+        typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
-		return entityParseDto(typeSupplyEntity);
-	}
-	
-	public TypeSupplyDto disableTypeSupply(Long typeSupplyId) throws BusinessException {
+        return entityParseDto(typeSupplyEntity);
+    }
 
-		TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-		if (typeSupplyEntity == null) {
-			throw new BusinessException("El tipo de insumo no existe.");
-		}
+    public TypeSupplyDto disableTypeSupply(Long typeSupplyId) throws BusinessException {
 
-		typeSupplyEntity.setActive(false);
-		typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
+        TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
+        if (typeSupplyEntity == null) {
+            throw new BusinessException("El tipo de insumo no existe.");
+        }
 
-		return entityParseDto(typeSupplyEntity);
-	}
+        typeSupplyEntity.setActive(false);
+        typeSupplyEntity = typeSupplyService.createTypeSupply(typeSupplyEntity);
 
-	public TypeSupplyDto entityParseDto(TypeSupplyEntity typeSupplyEntity) {
+        return entityParseDto(typeSupplyEntity);
+    }
 
-		TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
-		typeSupplyDto.setCreatedAt(typeSupplyEntity.getCreatedAt());
-		typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
-		typeSupplyDto.setId(typeSupplyEntity.getId());
-		typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
-		typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
-		typeSupplyDto.setName(typeSupplyEntity.getName());
-		typeSupplyDto.setActive(typeSupplyEntity.getActive());
+    public TypeSupplyDto entityParseDto(TypeSupplyEntity typeSupplyEntity) {
 
-		ProviderEntity providerEntity = typeSupplyEntity.getProvider();
-		ProviderDto providerDto = new ProviderDto();
-		providerDto.setCreatedAt(providerEntity.getCreatedAt());
-		providerDto.setId(providerEntity.getId());
-		providerDto.setName(providerEntity.getName());
-		providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
-		ProviderCategoryDto providerCategoryDto = new ProviderCategoryDto();
-		providerCategoryDto.setId(providerEntity.getProviderCategory().getId());
-		providerCategoryDto.setName(providerEntity.getProviderCategory().getName());
-		providerDto.setProviderCategory(providerCategoryDto);
-		typeSupplyDto.setProvider(providerDto);
+        TypeSupplyDto typeSupplyDto = new TypeSupplyDto();
+        typeSupplyDto.setCreatedAt(typeSupplyEntity.getCreatedAt());
+        typeSupplyDto.setDescription(typeSupplyEntity.getDescription());
+        typeSupplyDto.setId(typeSupplyEntity.getId());
+        typeSupplyDto.setMetadataRequired(typeSupplyEntity.getIsMetadataRequired());
+        typeSupplyDto.setModelRequired(typeSupplyEntity.getIsModelRequired());
+        typeSupplyDto.setName(typeSupplyEntity.getName());
+        typeSupplyDto.setActive(typeSupplyEntity.getActive());
 
-		ProviderProfileDto providerProfileDto = new ProviderProfileDto();
-		providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
-		providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
-		providerProfileDto.setName(typeSupplyEntity.getProviderProfile().getName());
-		typeSupplyDto.setProviderProfile(providerProfileDto);
+        ProviderEntity providerEntity = typeSupplyEntity.getProvider();
+        ProviderDto providerDto = new ProviderDto();
+        providerDto.setCreatedAt(providerEntity.getCreatedAt());
+        providerDto.setId(providerEntity.getId());
+        providerDto.setName(providerEntity.getName());
+        providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+        ProviderCategoryDto providerCategoryDto = new ProviderCategoryDto();
+        providerCategoryDto.setId(providerEntity.getProviderCategory().getId());
+        providerCategoryDto.setName(providerEntity.getProviderCategory().getName());
+        providerDto.setProviderCategory(providerCategoryDto);
+        typeSupplyDto.setProvider(providerDto);
 
-		List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
-		for (ExtensionEntity extensionEntity : typeSupplyEntity.getExtensions()) {
-			ExtensionDto extensionDto = new ExtensionDto();
-			extensionDto.setId(extensionEntity.getId());
-			extensionDto.setName(extensionEntity.getName());
-			listExtensionsDto.add(extensionDto);
-		}
-		typeSupplyDto.setExtensions(listExtensionsDto);
+        ProviderProfileDto providerProfileDto = new ProviderProfileDto();
+        providerProfileDto.setDescription(typeSupplyEntity.getProviderProfile().getDescription());
+        providerProfileDto.setId(typeSupplyEntity.getProviderProfile().getId());
+        providerProfileDto.setName(typeSupplyEntity.getProviderProfile().getName());
+        typeSupplyDto.setProviderProfile(providerProfileDto);
 
-		return typeSupplyDto;
-	}
+        List<ExtensionDto> listExtensionsDto = new ArrayList<ExtensionDto>();
+        for (ExtensionEntity extensionEntity : typeSupplyEntity.getExtensions()) {
+            ExtensionDto extensionDto = new ExtensionDto();
+            extensionDto.setId(extensionEntity.getId());
+            extensionDto.setName(extensionEntity.getName());
+            listExtensionsDto.add(extensionDto);
+        }
+        typeSupplyDto.setExtensions(listExtensionsDto);
+
+        return typeSupplyDto;
+    }
 
 }

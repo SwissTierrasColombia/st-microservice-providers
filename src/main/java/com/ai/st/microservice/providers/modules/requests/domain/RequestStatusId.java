@@ -14,8 +14,7 @@ public final class RequestStatusId extends LongValueObject {
     }
 
     private static void ensureStatus(Long value) {
-        if (!value.equals(RequestStatusId.REQUESTED)
-                && !value.equals(RequestStatusId.DELIVERED)
+        if (!value.equals(RequestStatusId.REQUESTED) && !value.equals(RequestStatusId.DELIVERED)
                 && !value.equals(RequestStatusId.CANCELLED))
             throw new RequestStatusInvalid();
     }

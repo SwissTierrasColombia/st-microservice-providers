@@ -22,16 +22,15 @@ public interface IRequestService {
     List<RequestEntity> getRequestsByEmmiter(Long emmiterCode, String emmiterType);
 
     List<RequestEntity> getRequestByClosedByAndProviderAndRequestState(Long closedBy, ProviderEntity provider,
-                                                                       RequestStateEntity requestState);
+            RequestStateEntity requestState);
 
     Page<RequestEntity> getRequestsByManagerAndMunicipality(Long emmiterCode, String emmiterType,
-                                                            String municipalityCode, int page, int numberItems);
+            String municipalityCode, int page, int numberItems);
 
-    Page<RequestEntity> getRequestsByManagerAndProvider(Long emmiterCode, String emmiterType, Long providerId,
-                                                        int page, int numberItems);
+    Page<RequestEntity> getRequestsByManagerAndProvider(Long emmiterCode, String emmiterType, Long providerId, int page,
+            int numberItems);
 
-    List<RequestEntity> getRequestsByManagerAndPackage(Long emmiterCode, String emmiterType,
-                                                       String packageLabel);
+    List<RequestEntity> getRequestsByManagerAndPackage(Long emmiterCode, String emmiterType, String packageLabel);
 
     List<RequestEntity> getRequestsByPackage(String packageLabel);
 

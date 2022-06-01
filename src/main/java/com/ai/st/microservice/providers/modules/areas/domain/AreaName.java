@@ -10,7 +10,8 @@ public final class AreaName extends StringValueObject {
     }
 
     private static void ensureAreaName(String value) {
-        if (value == null || value.isEmpty()) throw new AreaNameInvalid(value);
+        if (value == null || value.isEmpty())
+            throw new AreaNameInvalid(value);
     }
 
     public static AreaName fromValue(String value) {

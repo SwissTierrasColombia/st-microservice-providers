@@ -21,123 +21,123 @@ import javax.persistence.TemporalType;
 @Table(name = "types_supplies", schema = "providers")
 public class TypeSupplyEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "name", nullable = false, length = 255)
-	private String name;
+    @Column(name = "name", nullable = false, length = 255)
+    private String name;
 
-	@Column(name = "description", nullable = true, length = 255)
-	private String description;
+    @Column(name = "description", nullable = true, length = 255)
+    private String description;
 
-	@Column(name = "metadata_required", nullable = false)
-	private Boolean isMetadataRequired;
+    @Column(name = "metadata_required", nullable = false)
+    private Boolean isMetadataRequired;
 
-	@Column(name = "model_required", nullable = false)
-	private Boolean isModelRequired;
-	
-	@Column(name = "active", nullable = false)
-	private Boolean active;
+    @Column(name = "model_required", nullable = false)
+    private Boolean isModelRequired;
 
-	@Column(name = "created_at", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    @Column(name = "active", nullable = false)
+    private Boolean active;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
-	private ProviderEntity provider;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "provider_profile_id", referencedColumnName = "id", nullable = false)
-	private ProviderProfileEntity providerProfile;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
+    private ProviderEntity provider;
 
-	@OneToMany(mappedBy = "typeSupply")
-	private List<ExtensionEntity> extensions = new ArrayList<ExtensionEntity>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_profile_id", referencedColumnName = "id", nullable = false)
+    private ProviderProfileEntity providerProfile;
 
-	public TypeSupplyEntity() {
+    @OneToMany(mappedBy = "typeSupply")
+    private List<ExtensionEntity> extensions = new ArrayList<ExtensionEntity>();
 
-	}
+    public TypeSupplyEntity() {
 
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Boolean getIsMetadataRequired() {
-		return isMetadataRequired;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setIsMetadataRequired(Boolean isMetadataRequired) {
-		this.isMetadataRequired = isMetadataRequired;
-	}
+    public Boolean getIsMetadataRequired() {
+        return isMetadataRequired;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public void setIsMetadataRequired(Boolean isMetadataRequired) {
+        this.isMetadataRequired = isMetadataRequired;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public ProviderProfileEntity getProviderProfile() {
-		return providerProfile;
-	}
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
-	public void setProviderProfile(ProviderProfileEntity providerProfile) {
-		this.providerProfile = providerProfile;
-	}
+    public ProviderProfileEntity getProviderProfile() {
+        return providerProfile;
+    }
 
-	public List<ExtensionEntity> getExtensions() {
-		return extensions;
-	}
+    public void setProviderProfile(ProviderProfileEntity providerProfile) {
+        this.providerProfile = providerProfile;
+    }
 
-	public void setExtensions(List<ExtensionEntity> extensions) {
-		this.extensions = extensions;
-	}
+    public List<ExtensionEntity> getExtensions() {
+        return extensions;
+    }
 
-	public Boolean getIsModelRequired() {
-		return isModelRequired;
-	}
+    public void setExtensions(List<ExtensionEntity> extensions) {
+        this.extensions = extensions;
+    }
 
-	public void setIsModelRequired(Boolean isModelRequired) {
-		this.isModelRequired = isModelRequired;
-	}
+    public Boolean getIsModelRequired() {
+        return isModelRequired;
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public void setIsModelRequired(Boolean isModelRequired) {
+        this.isModelRequired = isModelRequired;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
 }

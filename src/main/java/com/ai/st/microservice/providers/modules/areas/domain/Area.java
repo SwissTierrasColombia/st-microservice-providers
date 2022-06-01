@@ -11,10 +11,7 @@ public final class Area {
     }
 
     public static Area fromPrimitives(Long areaId, String name) {
-        return new Area(
-                AreaId.fromValue(areaId),
-                AreaName.fromValue(name)
-        );
+        return new Area(AreaId.fromValue(areaId), AreaName.fromValue(name));
     }
 
     public AreaId areaId() {

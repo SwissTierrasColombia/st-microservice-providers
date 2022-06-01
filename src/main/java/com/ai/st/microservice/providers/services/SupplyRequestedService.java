@@ -14,28 +14,28 @@ import com.ai.st.microservice.providers.repositories.SupplyRequestedRepository;
 @Service
 public class SupplyRequestedService implements ISupplyRequestedService {
 
-	@Autowired
-	private SupplyRequestedRepository supplyRequestedRepository;
+    @Autowired
+    private SupplyRequestedRepository supplyRequestedRepository;
 
-	@Override
-	@Transactional
-	public SupplyRequestedEntity updateSupplyRequested(SupplyRequestedEntity supplyRequestedEntity) {
-		return supplyRequestedRepository.save(supplyRequestedEntity);
-	}
+    @Override
+    @Transactional
+    public SupplyRequestedEntity updateSupplyRequested(SupplyRequestedEntity supplyRequestedEntity) {
+        return supplyRequestedRepository.save(supplyRequestedEntity);
+    }
 
-	@Override
-	public List<SupplyRequestedEntity> getSuppliesRequestedByTypeSupply(TypeSupplyEntity supplyEntity) {
-		return supplyRequestedRepository.findByTypeSupply(supplyEntity);
-	}
+    @Override
+    public List<SupplyRequestedEntity> getSuppliesRequestedByTypeSupply(TypeSupplyEntity supplyEntity) {
+        return supplyRequestedRepository.findByTypeSupply(supplyEntity);
+    }
 
-	@Override
-	public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states) {
-		return supplyRequestedRepository.getSuppliesRequestedByProviderAndStates(providerId, states);
-	}
+    @Override
+    public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states) {
+        return supplyRequestedRepository.getSuppliesRequestedByProviderAndStates(providerId, states);
+    }
 
-	@Override
-	public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId) {
-		return supplyRequestedRepository.findById(supplyRequestedId).orElse(null);
-	}
+    @Override
+    public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId) {
+        return supplyRequestedRepository.findById(supplyRequestedId).orElse(null);
+    }
 
 }

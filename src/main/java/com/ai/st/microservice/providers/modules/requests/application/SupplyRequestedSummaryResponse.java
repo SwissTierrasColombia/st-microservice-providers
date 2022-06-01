@@ -16,9 +16,8 @@ public final class SupplyRequestedSummaryResponse implements Response {
     }
 
     public static SupplyRequestedSummaryResponse fromAggregate(SupplyRequested supplyRequested) {
-        return new SupplyRequestedSummaryResponse(
-                supplyRequested.id().value(), supplyRequested.name().value(), supplyRequested.area().value()
-        );
+        return new SupplyRequestedSummaryResponse(supplyRequested.id().value(), supplyRequested.name().value(),
+                supplyRequested.area().value());
     }
 
     public Long id() {

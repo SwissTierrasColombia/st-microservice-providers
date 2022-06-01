@@ -15,24 +15,24 @@ import com.ai.st.microservice.providers.repositories.ProviderAdministratorReposi
 @Service
 public class ProviderAdministratorService implements IProviderAdministratorService {
 
-	@Autowired
-	private ProviderAdministratorRepository providerAdministratorRepository;
+    @Autowired
+    private ProviderAdministratorRepository providerAdministratorRepository;
 
-	@Override
-	public ProviderAdministratorEntity getProviderAdministratorByUserAndRoleAndProvider(Long userCode,
-			RoleEntity roleEntity, ProviderEntity providerEntity) {
-		return providerAdministratorRepository.findByProviderAndRoleAndUserCode(providerEntity, roleEntity, userCode);
-	}
+    @Override
+    public ProviderAdministratorEntity getProviderAdministratorByUserAndRoleAndProvider(Long userCode,
+            RoleEntity roleEntity, ProviderEntity providerEntity) {
+        return providerAdministratorRepository.findByProviderAndRoleAndUserCode(providerEntity, roleEntity, userCode);
+    }
 
-	@Override
-	@Transactional
-	public ProviderAdministratorEntity createProviderAdministrator(ProviderAdministratorEntity entity) {
-		return providerAdministratorRepository.save(entity);
-	}
+    @Override
+    @Transactional
+    public ProviderAdministratorEntity createProviderAdministrator(ProviderAdministratorEntity entity) {
+        return providerAdministratorRepository.save(entity);
+    }
 
-	@Override
-	public List<ProviderAdministratorEntity> getProviderAdministratorsByUserCode(Long userCode) {
-		return providerAdministratorRepository.findByUserCode(userCode);
-	}
+    @Override
+    public List<ProviderAdministratorEntity> getProviderAdministratorsByUserCode(Long userCode) {
+        return providerAdministratorRepository.findByUserCode(userCode);
+    }
 
 }

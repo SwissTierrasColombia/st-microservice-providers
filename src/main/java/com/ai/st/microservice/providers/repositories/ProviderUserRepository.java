@@ -10,11 +10,11 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ProviderUserRepository extends CrudRepository<ProviderUserEntity, Long> {
 
-	List<ProviderUserEntity> findByUserCode(Long userCode);
+    List<ProviderUserEntity> findByUserCode(Long userCode);
 
-	ProviderUserEntity findByProviderProfileAndUserCodeAndProvider(ProviderProfileEntity providerProfile, Long userCode,
-			ProviderEntity provider);
+    ProviderUserEntity findByProviderProfileAndUserCodeAndProvider(ProviderProfileEntity providerProfile, Long userCode,
+            ProviderEntity provider);
 
-	List<ProviderUserEntity> findByProviderProfile(ProviderProfileEntity providerProfile);
+    List<ProviderUserEntity> findByProviderProfile(ProviderProfileEntity providerProfile);
 
 }

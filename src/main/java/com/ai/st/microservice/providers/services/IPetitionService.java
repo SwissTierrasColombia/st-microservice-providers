@@ -8,15 +8,15 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IPetitionService {
 
-	public PetitionEntity createPetition(PetitionEntity petition);
+    public PetitionEntity createPetition(PetitionEntity petition);
 
-	public PetitionEntity getPetitionById(Long id);
+    public PetitionEntity getPetitionById(Long id);
 
-	public List<PetitionEntity> getPetitionsByProviderAndStates(ProviderEntity provider,
-			List<PetitionStateEntity> states);
+    public List<PetitionEntity> getPetitionsByProviderAndStates(ProviderEntity provider,
+            List<PetitionStateEntity> states);
 
-	public List<PetitionEntity> getPetitionsByProviderAndManagerCode(ProviderEntity provider, Long managerCode);
+    public List<PetitionEntity> getPetitionsByProviderAndManagerCode(ProviderEntity provider, Long managerCode);
 
-	public List<PetitionEntity> getPetitionsByManagerCode(Long managerCode);
+    public List<PetitionEntity> getPetitionsByManagerCode(Long managerCode);
 
 }

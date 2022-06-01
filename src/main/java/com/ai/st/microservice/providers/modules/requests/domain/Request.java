@@ -22,9 +22,9 @@ public final class Request extends AggregateRoot {
     private final List<SupplyRequested> suppliesRequested;
 
     public Request(RequestId id, RequestClosedAt closedAt, RequestClosedBy closedBy, RequestDate createdAt,
-                   RequestDeadline deadline, RequestObservations observations, RequestOrderNumber orderNumber,
-                   RequestSentReviewAt sentReviewAt, RequestStatus status, Manager manager, Federation federation,
-                   List<SupplyRequested> suppliesRequested) {
+            RequestDeadline deadline, RequestObservations observations, RequestOrderNumber orderNumber,
+            RequestSentReviewAt sentReviewAt, RequestStatus status, Manager manager, Federation federation,
+            List<SupplyRequested> suppliesRequested) {
         this.id = id;
         this.closedAt = closedAt;
         this.closedBy = closedBy;

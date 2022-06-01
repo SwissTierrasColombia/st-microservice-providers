@@ -10,7 +10,8 @@ public final class SupplyRequestedArea extends StringValueObject {
     }
 
     private static void ensureArea(String value) {
-        if (value == null || value.isEmpty()) throw new SupplyRequestedAreaInvalid();
+        if (value == null || value.isEmpty())
+            throw new SupplyRequestedAreaInvalid();
     }
 
     public static SupplyRequestedArea fromValue(String value) {

@@ -12,8 +12,10 @@ public final class RequestsFinderQuery implements Query {
     private final String orderNumber;
     private final Long manager;
     private final Long user;
+    private final boolean skipFilterAreas;
 
-    public RequestsFinderQuery(int page, int limit, Long provider, Long status, String municipality, String orderNumber, Long manager, Long user) {
+    public RequestsFinderQuery(int page, int limit, Long provider, Long status, String municipality, String orderNumber,
+            Long manager, Long user, boolean skipFilterAreas) {
         this.page = page;
         this.limit = limit;
         this.provider = provider;
@@ -22,6 +24,7 @@ public final class RequestsFinderQuery implements Query {
         this.orderNumber = orderNumber;
         this.manager = manager;
         this.user = user;
+        this.skipFilterAreas = skipFilterAreas;
     }
 
     public int page() {
@@ -54,5 +57,9 @@ public final class RequestsFinderQuery implements Query {
 
     public Long user() {
         return user;
+    }
+
+    public boolean skipFilterAreas() {
+        return skipFilterAreas;
     }
 }

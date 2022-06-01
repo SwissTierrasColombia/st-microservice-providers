@@ -85,13 +85,13 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setRoleId(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
         addAdminToProviderDto.setUserCode((long) 5);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
         @SuppressWarnings("unchecked")
         List<ProviderAdministratorDto> listProviderAdministratorDto = (List<ProviderAdministratorDto>) data.getBody();
 
-        Assert.notNull(listProviderAdministratorDto, "La respuesta no puede ser nula.");
+        Assert.notNull(listProviderAdministratorDto, "La respuesta no puede ser null.");
         assertEquals(HttpStatus.CREATED, data.getStatusCode());
-        assertTrue((listProviderAdministratorDto.get(0)) instanceof ProviderAdministratorDto);
+        assertTrue((listProviderAdministratorDto.get(0)) != null);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setProviderId(providerEntity.getId());
         addAdminToProviderDto.setRoleId(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería agregar el usuario al proveedor porque no se ha enviado el código de usuario.");
@@ -118,7 +118,7 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setRoleId(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
         addAdminToProviderDto.setUserCode((long) 5);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería agregar el usuario al proveedor porque no se ha enviado el proveedor.");
@@ -133,7 +133,7 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setProviderId(providerEntity.getId());
         addAdminToProviderDto.setUserCode((long) 5);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
 
         assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
                 "No debería agregar el usuario al proveedor porque no se ha enviado el rol.");
@@ -149,7 +149,7 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setRoleId(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
         addAdminToProviderDto.setUserCode((long) 5);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería agregar el usuario al proveedor porque el proveedor no existe.");
@@ -172,7 +172,7 @@ public class StAddAdministratorToProviderTests {
         addAdminToProviderDto.setRoleId(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
         addAdminToProviderDto.setUserCode((long) 7);
 
-        ResponseEntity<Object> data = administratorController.addAdministratorToProvider(addAdminToProviderDto);
+        ResponseEntity<?> data = administratorController.addUserAdministratorToProvider(addAdminToProviderDto);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
                 "No debería agregar el usuario al proveedor porque el usuario ya ha sido agregado al proveedor.");

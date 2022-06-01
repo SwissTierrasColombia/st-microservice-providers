@@ -11,23 +11,23 @@ import com.ai.st.microservice.providers.repositories.RequestStateRepository;
 @Service
 public class RequestStateService implements IRequestStateService {
 
-	@Autowired
-	private RequestStateRepository requestStateRepository;
+    @Autowired
+    private RequestStateRepository requestStateRepository;
 
-	@Override
-	@Transactional
-	public RequestStateEntity createRequestState(RequestStateEntity requestState) {
-		return requestStateRepository.save(requestState);
-	}
+    @Override
+    @Transactional
+    public RequestStateEntity createRequestState(RequestStateEntity requestState) {
+        return requestStateRepository.save(requestState);
+    }
 
-	@Override
-	public Long getCount() {
-		return requestStateRepository.count();
-	}
+    @Override
+    public Long getCount() {
+        return requestStateRepository.count();
+    }
 
-	@Override
-	public RequestStateEntity getRequestStateById(Long id) {
-		return requestStateRepository.findById(id).orElse(null);
-	}
+    @Override
+    public RequestStateEntity getRequestStateById(Long id) {
+        return requestStateRepository.findById(id).orElse(null);
+    }
 
 }

@@ -10,7 +10,8 @@ public final class AreaId extends LongValueObject {
     }
 
     private static void ensureAreaId(Long value) {
-        if (value == null || value <= 0) throw new AreaIdInvalid(value);
+        if (value == null || value <= 0)
+            throw new AreaIdInvalid(value);
     }
 
     public static AreaId fromValue(Long value) {

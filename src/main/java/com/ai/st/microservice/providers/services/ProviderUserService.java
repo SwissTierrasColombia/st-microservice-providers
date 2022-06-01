@@ -15,36 +15,36 @@ import com.ai.st.microservice.providers.repositories.ProviderUserRepository;
 @Service
 public class ProviderUserService implements IProviderUserService {
 
-	@Autowired
-	private ProviderUserRepository providerUserRepository;
+    @Autowired
+    private ProviderUserRepository providerUserRepository;
 
-	@Override
-	@Transactional
-	public ProviderUserEntity createProviderUser(ProviderUserEntity providerUserEntity) {
-		return providerUserRepository.save(providerUserEntity);
-	}
+    @Override
+    @Transactional
+    public ProviderUserEntity createProviderUser(ProviderUserEntity providerUserEntity) {
+        return providerUserRepository.save(providerUserEntity);
+    }
 
-	@Override
-	public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode) {
-		return providerUserRepository.findByUserCode(userCode);
-	}
+    @Override
+    public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode) {
+        return providerUserRepository.findByUserCode(userCode);
+    }
 
-	@Override
-	public ProviderUserEntity getProviderUserByUserCodeAndProfileAndProvider(Long userCode,
-			ProviderProfileEntity providerProfileEntity, ProviderEntity provider) {
-		return providerUserRepository.findByProviderProfileAndUserCodeAndProvider(providerProfileEntity, userCode,
-				provider);
-	}
+    @Override
+    public ProviderUserEntity getProviderUserByUserCodeAndProfileAndProvider(Long userCode,
+            ProviderProfileEntity providerProfileEntity, ProviderEntity provider) {
+        return providerUserRepository.findByProviderProfileAndUserCodeAndProvider(providerProfileEntity, userCode,
+                provider);
+    }
 
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		providerUserRepository.deleteById(id);
-	}
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        providerUserRepository.deleteById(id);
+    }
 
-	@Override
-	public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile) {
-		return providerUserRepository.findByProviderProfile(providerProfile);
-	}
+    @Override
+    public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile) {
+        return providerUserRepository.findByProviderProfile(providerProfile);
+    }
 
 }

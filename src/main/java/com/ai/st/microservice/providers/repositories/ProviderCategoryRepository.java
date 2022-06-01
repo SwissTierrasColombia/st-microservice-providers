@@ -8,7 +8,7 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ProviderCategoryRepository extends CrudRepository<ProviderCategoryEntity, Long> {
 
-	@Override
-	List<ProviderCategoryEntity> findAll();
+    @Override
+    List<ProviderCategoryEntity> findAll();
 
 }

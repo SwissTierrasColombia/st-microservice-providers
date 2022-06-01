@@ -6,12 +6,12 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IProviderCategoryService {
 
-	public ProviderCategoryEntity createProviderCategory(ProviderCategoryEntity providerCategory);
+    public ProviderCategoryEntity createProviderCategory(ProviderCategoryEntity providerCategory);
 
-	public Long getCount();
+    public Long getCount();
 
-	public ProviderCategoryEntity getProviderCategoryById(Long id);
+    public ProviderCategoryEntity getProviderCategoryById(Long id);
 
-	public List<ProviderCategoryEntity> getAllProvidersCategories();
+    public List<ProviderCategoryEntity> getAllProvidersCategories();
 
 }
