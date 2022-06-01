@@ -30,7 +30,7 @@ public final class ReportBusiness {
     private final IRequestService requestService;
 
     public ReportBusiness(ReportFeignClient reportClient, WorkspaceFeignClient workspaceClient,
-                          ManagerFeignClient managerClient, IRequestService requestService) {
+            ManagerFeignClient managerClient, IRequestService requestService) {
         this.reportClient = reportClient;
         this.workspaceClient = workspaceClient;
         this.managerClient = managerClient;
@@ -62,15 +62,16 @@ public final class ReportBusiness {
             String department = "";
             String municipality = "";
 
-            MicroserviceMunicipalityDto municipalityDto = workspaceClient.findMunicipalityByCode(requestEntity.getMunicipalityCode());
+            MicroserviceMunicipalityDto municipalityDto = workspaceClient
+                    .findMunicipalityByCode(requestEntity.getMunicipalityCode());
             if (municipalityDto != null) {
                 municipality = municipalityDto.getName();
                 department = (municipalityDto.getDepartment() != null) ? municipalityDto.getDepartment().getName() : "";
             }
 
             String manager = "";
-            EmitterEntity emitterEntity =
-                    requestEntity.getEmitters().stream().filter(e -> e.getEmitterType().equals(EmitterTypeEnum.ENTITY)).findAny().orElse(null);
+            EmitterEntity emitterEntity = requestEntity.getEmitters().stream()
+                    .filter(e -> e.getEmitterType().equals(EmitterTypeEnum.ENTITY)).findAny().orElse(null);
             if (emitterEntity != null) {
                 MicroserviceManagerDto managerDto = managerClient.findById(emitterEntity.getEmitterCode());
                 if (managerDto != null) {

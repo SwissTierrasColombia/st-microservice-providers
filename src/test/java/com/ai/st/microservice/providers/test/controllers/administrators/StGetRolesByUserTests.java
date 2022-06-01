@@ -39,62 +39,62 @@ import com.ai.st.microservice.providers.services.IRoleService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StGetRolesByUserTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StGetRolesByUserTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StGetRolesByUserTests.class);
 
-	@Autowired
-	private ProviderAdministratorV1Controller administratorController;
+    @Autowired
+    private ProviderAdministratorV1Controller administratorController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IProviderAdministratorService providerAdministratorService;
+    @Autowired
+    private IProviderAdministratorService providerAdministratorService;
 
-	@Autowired
-	private IRoleService roleService;
+    @Autowired
+    private IRoleService roleService;
 
-	private Long userCode;
+    private Long userCode;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		userCode = (long) 11;
+        userCode = (long) 11;
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		ProviderEntity providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        ProviderEntity providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		RoleEntity roleEntity = roleService.getRoleById(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
-		ProviderAdministratorEntity providerAdmin = new ProviderAdministratorEntity();
-		providerAdmin.setCreatedAt(new Date());
-		providerAdmin.setProvider(providerEntity);
-		providerAdmin.setRole(roleEntity);
-		providerAdmin.setUserCode(userCode);
-		providerAdministratorService.createProviderAdministrator(providerAdmin);
+        RoleEntity roleEntity = roleService.getRoleById(RoleBusiness.SUB_ROLE_DIRECTOR_PROVIDER);
+        ProviderAdministratorEntity providerAdmin = new ProviderAdministratorEntity();
+        providerAdmin.setCreatedAt(new Date());
+        providerAdmin.setProvider(providerEntity);
+        providerAdmin.setRole(roleEntity);
+        providerAdmin.setUserCode(userCode);
+        providerAdministratorService.createProviderAdministrator(providerAdmin);
 
-		log.info("configured environment (StGetRolesByUserTests)");
-	}
+        log.info("configured environment (StGetRolesByUserTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateGetRolesByUser() {
+    @Test
+    @Transactional
+    public void validateGetRolesByUser() {
 
-		ResponseEntity<Object> data = administratorController.getRolesByUser(userCode);
-		@SuppressWarnings("unchecked")
-		List<RoleDto> listRoleDto = (List<RoleDto>) data.getBody();
+        ResponseEntity<?> data = administratorController.getRolesByUser(userCode);
+        @SuppressWarnings("unchecked")
+        List<RoleDto> listRoleDto = (List<RoleDto>) data.getBody();
 
-		Assert.notNull(listRoleDto, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		assertTrue((listRoleDto.get(0)) instanceof RoleDto);
-	}
+        Assert.notNull(listRoleDto, "La respuesta no puede ser nula.");
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        assertTrue((listRoleDto.get(0)) instanceof RoleDto);
+    }
 
 }

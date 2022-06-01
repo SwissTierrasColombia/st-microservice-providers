@@ -13,11 +13,7 @@ public final class Manager {
     }
 
     public static Manager fromPrimitives(Long code, String name, String alias) {
-        return new Manager(
-                ManagerCode.fromValue(code),
-                ManagerName.fromValue(name),
-                ManagerAlias.fromValue(alias)
-        );
+        return new Manager(ManagerCode.fromValue(code), ManagerName.fromValue(name), ManagerAlias.fromValue(alias));
     }
 
     public ManagerCode code() {

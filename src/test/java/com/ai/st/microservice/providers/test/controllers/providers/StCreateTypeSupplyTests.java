@@ -38,264 +38,264 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StCreateTypeSupplyTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StCreateTypeSupplyTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StCreateTypeSupplyTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IProviderProfileService providerProfileService;
+    @Autowired
+    private IProviderProfileService providerProfileService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	private ProviderProfileEntity profileEntity;
+    private ProviderProfileEntity profileEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		profileEntity = new ProviderProfileEntity();
-		profileEntity.setName(RandomStringUtils.random(10, true, false));
-		profileEntity.setDescription(RandomStringUtils.random(10, true, false));
-		profileEntity.setProvider(providerEntity);
-		providerProfileService.createProviderProfile(profileEntity);
+        profileEntity = new ProviderProfileEntity();
+        profileEntity.setName(RandomStringUtils.random(10, true, false));
+        profileEntity.setDescription(RandomStringUtils.random(10, true, false));
+        profileEntity.setProvider(providerEntity);
+        providerProfileService.createProviderProfile(profileEntity);
 
-		log.info("configured environment (StCreateTypeSupplyTests)");
-	}
+        log.info("configured environment (StCreateTypeSupplyTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateCreateTypeSupply() {
+    @Test
+    @Transactional
+    public void validateCreateTypeSupply() {
 
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
 
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
-		TypeSupplyDto typeSupply = (TypeSupplyDto) data.getBody();
+        TypeSupplyDto typeSupply = (TypeSupplyDto) data.getBody();
 
-		Assert.notNull(typeSupply, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.CREATED, data.getStatusCode());
-		assertTrue(typeSupply instanceof TypeSupplyDto);
-	}
+        Assert.notNull(typeSupply, "La respuesta no puede ser null.");
+        assertEquals(HttpStatus.CREATED, data.getStatusCode());
+        assertTrue(true);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenNameIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenNameIsEmpty() {
 
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
 
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado el nombre.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado el nombre.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenDescriptionIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenDescriptionIsEmpty() {
 
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
 
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
 
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado la descripción.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenProfileIsEmpty() {
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado el perfil.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenExtensionsIsEmpty() {
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado las extensiones.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenMetadataIsEmpty() {
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado la metadata.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenModelIsEmpty() {
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería crear el insumo porque no se ha enviado el modelo.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesExists() {
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity.getId());
-
-		ResponseEntity<Object> data = providerController.createTypeSupply((long) 150, createTypeSupply);
-
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería crear el insumo porque el proveedor no existe.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenProfileDoesExists() {
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId((long) 150);
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería crear el insumo porque el perfil no existe.");
-	}
-
-	@Test
-	@Transactional
-	public void shouldErrorWhenProfileDoesNotBelongToProvider() {
-
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
-
-		ProviderEntity providerEntity2 = new ProviderEntity();
-		providerEntity2.setName(RandomStringUtils.random(10, true, false));
-		providerEntity2.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity2.setCreatedAt(new Date());
-		providerEntity2.setProviderCategory(providerCategoryCadastral);
-		providerEntity2 = providerService.createProvider(providerEntity2);
-
-		ProviderProfileEntity profileEntity2 = new ProviderProfileEntity();
-		profileEntity2.setName(RandomStringUtils.random(10, true, false));
-		profileEntity2.setDescription(RandomStringUtils.random(10, true, false));
-		profileEntity2.setProvider(providerEntity2);
-		providerProfileService.createProviderProfile(profileEntity2);
-
-		List<String> extensions = new ArrayList<>();
-		extensions.add("png");
-
-		CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
-		createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setExtensions(extensions);
-		createTypeSupply.setMetadataRequired(false);
-		createTypeSupply.setModelRequired(false);
-		createTypeSupply.setName(RandomStringUtils.random(10, true, false));
-		createTypeSupply.setProviderProfileId(profileEntity2.getId());
-
-		ResponseEntity<Object> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
-
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería crear el insumo porque el perfil no pertenece al proveedor.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado la descripción.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenProfileIsEmpty() {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado el perfil.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenExtensionsIsEmpty() {
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado las extensiones.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenMetadataIsEmpty() {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado la metadata.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenModelIsEmpty() {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería crear el insumo porque no se ha enviado el modelo.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesExists() {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity.getId());
+
+        ResponseEntity<?> data = providerController.createTypeSupply((long) 150, createTypeSupply);
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería crear el insumo porque el proveedor no existe.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenProfileDoesExists() {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId((long) 150);
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería crear el insumo porque el perfil no existe.");
+    }
+
+    @Test
+    @Transactional
+    public void shouldErrorWhenProfileDoesNotBelongToProvider() {
+
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+
+        ProviderEntity providerEntity2 = new ProviderEntity();
+        providerEntity2.setName(RandomStringUtils.random(10, true, false));
+        providerEntity2.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity2.setCreatedAt(new Date());
+        providerEntity2.setProviderCategory(providerCategoryCadastral);
+        providerEntity2 = providerService.createProvider(providerEntity2);
+
+        ProviderProfileEntity profileEntity2 = new ProviderProfileEntity();
+        profileEntity2.setName(RandomStringUtils.random(10, true, false));
+        profileEntity2.setDescription(RandomStringUtils.random(10, true, false));
+        profileEntity2.setProvider(providerEntity2);
+        providerProfileService.createProviderProfile(profileEntity2);
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("png");
+
+        CreateTypeSupplyDto createTypeSupply = new CreateTypeSupplyDto();
+        createTypeSupply.setDescription(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setExtensions(extensions);
+        createTypeSupply.setMetadataRequired(false);
+        createTypeSupply.setModelRequired(false);
+        createTypeSupply.setName(RandomStringUtils.random(10, true, false));
+        createTypeSupply.setProviderProfileId(profileEntity2.getId());
+
+        ResponseEntity<?> data = providerController.createTypeSupply(providerEntity.getId(), createTypeSupply);
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería crear el insumo porque el perfil no pertenece al proveedor.");
+    }
 
 }

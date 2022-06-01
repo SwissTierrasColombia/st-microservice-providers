@@ -36,124 +36,124 @@ import com.ai.st.microservice.providers.services.IProviderService;
 @TestInstance(Lifecycle.PER_CLASS)
 public class StUpdateProviderProfileTests {
 
-	private final static Logger log = LoggerFactory.getLogger(StUpdateProviderProfileTests.class);
+    private final static Logger log = LoggerFactory.getLogger(StUpdateProviderProfileTests.class);
 
-	@Autowired
-	private ProviderV1Controller providerController;
+    @Autowired
+    private ProviderV1Controller providerController;
 
-	@Autowired
-	private IProviderService providerService;
+    @Autowired
+    private IProviderService providerService;
 
-	@Autowired
-	private IProviderCategoryService providerCategoryService;
+    @Autowired
+    private IProviderCategoryService providerCategoryService;
 
-	@Autowired
-	private IProviderProfileService providerProfileService;
+    @Autowired
+    private IProviderProfileService providerProfileService;
 
-	private ProviderEntity providerEntity;
+    private ProviderEntity providerEntity;
 
-	private ProviderProfileEntity profileEntity;
+    private ProviderProfileEntity profileEntity;
 
-	@BeforeAll
-	public void init() {
+    @BeforeAll
+    public void init() {
 
-		ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
-				.getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
+        ProviderCategoryEntity providerCategoryCadastral = providerCategoryService
+                .getProviderCategoryById(ProviderCategoryBusiness.PROVIDER_CATEGORY_CADASTRAL);
 
-		providerEntity = new ProviderEntity();
-		providerEntity.setName(RandomStringUtils.random(10, true, false));
-		providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
-		providerEntity.setCreatedAt(new Date());
-		providerEntity.setProviderCategory(providerCategoryCadastral);
-		providerEntity = providerService.createProvider(providerEntity);
+        providerEntity = new ProviderEntity();
+        providerEntity.setName(RandomStringUtils.random(10, true, false));
+        providerEntity.setTaxIdentificationNumber(RandomStringUtils.random(10, false, true));
+        providerEntity.setCreatedAt(new Date());
+        providerEntity.setProviderCategory(providerCategoryCadastral);
+        providerEntity = providerService.createProvider(providerEntity);
 
-		profileEntity = new ProviderProfileEntity();
-		profileEntity.setName(RandomStringUtils.random(10, true, false));
-		profileEntity.setDescription(RandomStringUtils.random(10, true, false));
-		profileEntity.setProvider(providerEntity);
-		providerProfileService.createProviderProfile(profileEntity);
+        profileEntity = new ProviderProfileEntity();
+        profileEntity.setName(RandomStringUtils.random(10, true, false));
+        profileEntity.setDescription(RandomStringUtils.random(10, true, false));
+        profileEntity.setProvider(providerEntity);
+        providerProfileService.createProviderProfile(profileEntity);
 
-		log.info("configured environment (StUpdateProviderProfileTests)");
-	}
+        log.info("configured environment (StUpdateProviderProfileTests)");
+    }
 
-	@Test
-	@Transactional
-	public void validateUpdateProfile() {
+    @Test
+    @Transactional
+    public void validateUpdateProfile() {
 
-		CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
 
-		updateProfileDto.setName(RandomStringUtils.random(10, true, false));
-		updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        updateProfileDto.setName(RandomStringUtils.random(10, true, false));
+        updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.updateProviderProfile(providerEntity.getId(),
-				profileEntity.getId(), updateProfileDto);
-		ProviderProfileDto profileDto = (ProviderProfileDto) data.getBody();
+        ResponseEntity<?> data = providerController.updateProviderArea(providerEntity.getId(), profileEntity.getId(),
+                updateProfileDto);
+        ProviderProfileDto profileDto = (ProviderProfileDto) data.getBody();
 
-		Assert.notNull(profileDto, "La respuesta no puede ser nula.");
-		assertEquals(HttpStatus.OK, data.getStatusCode());
-		assertTrue(profileDto instanceof ProviderProfileDto);
-	}
+        Assert.notNull(profileDto, "La respuesta no puede ser null.");
+        assertEquals(HttpStatus.OK, data.getStatusCode());
+        assertTrue(true);
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenNameIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenNameIsEmpty() {
 
-		CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
 
-		updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.updateProviderProfile(providerEntity.getId(),
-				profileEntity.getId(), updateProfileDto);
+        ResponseEntity<?> data = providerController.updateProviderArea(providerEntity.getId(), profileEntity.getId(),
+                updateProfileDto);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería actualizar el perfil porque no se ha enviado el nombre.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería actualizar el perfil porque no se ha enviado el nombre.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenDescriptionIsEmpty() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenDescriptionIsEmpty() {
 
-		CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
 
-		updateProfileDto.setName(RandomStringUtils.random(10, true, false));
+        updateProfileDto.setName(RandomStringUtils.random(10, true, false));
 
-		ResponseEntity<Object> data = providerController.updateProviderProfile(providerEntity.getId(),
-				profileEntity.getId(), updateProfileDto);
+        ResponseEntity<?> data = providerController.updateProviderArea(providerEntity.getId(), profileEntity.getId(),
+                updateProfileDto);
 
-		assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
-				"No debería actualizar el perfil porque no se ha enviado la descripción.");
-	}
+        assertEquals(HttpStatus.BAD_REQUEST, data.getStatusCode(),
+                "No debería actualizar el perfil porque no se ha enviado la descripción.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProviderDoesExists() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenProviderDoesExists() {
 
-		CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
 
-		updateProfileDto.setName(RandomStringUtils.random(10, true, false));
-		updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        updateProfileDto.setName(RandomStringUtils.random(10, true, false));
+        updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.updateProviderProfile((long) 150, profileEntity.getId(),
-				updateProfileDto);
+        ResponseEntity<?> data = providerController.updateProviderArea((long) 150, profileEntity.getId(),
+                updateProfileDto);
 
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería actualizar el perfil porque el proveedor no existe.");
-	}
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería actualizar el perfil porque el proveedor no existe.");
+    }
 
-	@Test
-	@Transactional
-	public void shouldErrorWhenProfileDoesExists() {
+    @Test
+    @Transactional
+    public void shouldErrorWhenProfileDoesExists() {
 
-		CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
+        CreateProviderProfileDto updateProfileDto = new CreateProviderProfileDto();
 
-		updateProfileDto.setName(RandomStringUtils.random(10, true, false));
-		updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
+        updateProfileDto.setName(RandomStringUtils.random(10, true, false));
+        updateProfileDto.setDescription(RandomStringUtils.random(30, true, false));
 
-		ResponseEntity<Object> data = providerController.updateProviderProfile(providerEntity.getId(), (long) 150,
-				updateProfileDto);
+        ResponseEntity<?> data = providerController.updateProviderArea(providerEntity.getId(), (long) 150,
+                updateProfileDto);
 
-		assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
-				"No debería actualizar el perfil porque el perfil no existe.");
-	}
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, data.getStatusCode(),
+                "No debería actualizar el perfil porque el perfil no existe.");
+    }
 
 }

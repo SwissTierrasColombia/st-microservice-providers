@@ -9,7 +9,8 @@ public final class FederationCode extends StringValueObject {
     }
 
     private static void ensureMunicipalityCode(String value) {
-        if (value == null || value.length() != 5) throw new FederationMunicipalityNameInvalid();
+        if (value == null || value.length() != 5)
+            throw new FederationMunicipalityNameInvalid();
     }
 
     public static FederationCode fromValue(String value) {

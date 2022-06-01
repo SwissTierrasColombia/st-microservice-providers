@@ -11,10 +11,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface SupplyRequestedRepository extends CrudRepository<SupplyRequestedEntity, Long> {
 
-	List<SupplyRequestedEntity> findByTypeSupply(TypeSupplyEntity typeSupply);
+    List<SupplyRequestedEntity> findByTypeSupply(TypeSupplyEntity typeSupply);
 
-	@Query("SELECT sr FROM SupplyRequestedEntity sr JOIN RequestEntity r ON r.id = sr.request.id AND r.provider.id = :providerId WHERE sr.state.id IN :states")
-	List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(@Param("providerId") Long providerId,
-			@Param("states") List<Long> states);
+    @Query("SELECT sr FROM SupplyRequestedEntity sr JOIN RequestEntity r ON r.id = sr.request.id AND r.provider.id = :providerId WHERE sr.state.id IN :states")
+    List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(@Param("providerId") Long providerId,
+            @Param("states") List<Long> states);
 
 }

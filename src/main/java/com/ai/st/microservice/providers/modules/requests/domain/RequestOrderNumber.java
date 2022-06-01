@@ -10,7 +10,8 @@ public final class RequestOrderNumber extends StringValueObject {
     }
 
     private static void ensureOrderNumber(String value) {
-        if (value == null || value.isEmpty()) throw new RequestOrderNumberInvalid();
+        if (value == null || value.isEmpty())
+            throw new RequestOrderNumberInvalid();
     }
 
     public static RequestOrderNumber fromValue(String value) {

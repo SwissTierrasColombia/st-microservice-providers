@@ -7,6 +7,6 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface SupplyRevisionRepository extends PagingAndSortingRepository<SupplyRevisionEntity, Long> {
 
-	SupplyRevisionEntity findBySupplyRequested(SupplyRequestedEntity supplyRequested);
+    SupplyRevisionEntity findBySupplyRequested(SupplyRequestedEntity supplyRequested);
 
 }

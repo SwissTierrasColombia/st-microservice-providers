@@ -4,12 +4,12 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IProviderProfileService {
 
-	public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile);
+    public ProviderProfileEntity createProviderProfile(ProviderProfileEntity providerProfile);
 
-	public ProviderProfileEntity getProviderProfileById(Long id);
+    public ProviderProfileEntity getProviderProfileById(Long id);
 
-	public ProviderProfileEntity getProviderProfileByName(String name);
+    public ProviderProfileEntity getProviderProfileByName(String name);
 
-	public void deleteProviderProfileById(Long id);
+    public void deleteProviderProfileById(Long id);
 
 }

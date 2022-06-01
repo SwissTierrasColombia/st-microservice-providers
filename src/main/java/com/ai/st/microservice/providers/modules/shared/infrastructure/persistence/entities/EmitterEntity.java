@@ -20,68 +20,68 @@ import javax.persistence.TemporalType;
 @Table(name = "emitters", schema = "providers")
 public class EmitterEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "emitter_code", nullable = false)
-	private Long emitterCode;
+    @Column(name = "emitter_code", nullable = false)
+    private Long emitterCode;
 
-	@Column(name = "created_at", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
-	private RequestEntity request;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", referencedColumnName = "id", nullable = false)
+    private RequestEntity request;
 
-	@Column(name = "emitter_type", nullable = false, length = 50)
-	@Enumerated(value = EnumType.STRING)
-	private EmitterTypeEnum emitterType;
+    @Column(name = "emitter_type", nullable = false, length = 50)
+    @Enumerated(value = EnumType.STRING)
+    private EmitterTypeEnum emitterType;
 
-	public EmitterEntity() {
+    public EmitterEntity() {
 
-	}
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getEmitterCode() {
-		return emitterCode;
-	}
+    public Long getEmitterCode() {
+        return emitterCode;
+    }
 
-	public void setEmitterCode(Long emitterCode) {
-		this.emitterCode = emitterCode;
-	}
+    public void setEmitterCode(Long emitterCode) {
+        this.emitterCode = emitterCode;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public RequestEntity getRequest() {
-		return request;
-	}
+    public RequestEntity getRequest() {
+        return request;
+    }
 
-	public void setRequest(RequestEntity request) {
-		this.request = request;
-	}
+    public void setRequest(RequestEntity request) {
+        this.request = request;
+    }
 
-	public EmitterTypeEnum getEmitterType() {
-		return emitterType;
-	}
+    public EmitterTypeEnum getEmitterType() {
+        return emitterType;
+    }
 
-	public void setEmitterType(EmitterTypeEnum emitterType) {
-		this.emitterType = emitterType;
-	}
+    public void setEmitterType(EmitterTypeEnum emitterType) {
+        this.emitterType = emitterType;
+    }
 
 }

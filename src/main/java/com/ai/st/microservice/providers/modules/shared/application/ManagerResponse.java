@@ -15,11 +15,7 @@ public final class ManagerResponse implements Response {
     }
 
     public static ManagerResponse fromAggregate(Manager manager) {
-        return new ManagerResponse(
-                manager.code().value(),
-                manager.name().value(),
-                manager.alias().value()
-        );
+        return new ManagerResponse(manager.code().value(), manager.name().value(), manager.alias().value());
     }
 
     public Long code() {

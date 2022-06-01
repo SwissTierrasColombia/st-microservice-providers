@@ -13,11 +13,8 @@ public final class SupplyRequested {
     }
 
     public static SupplyRequested fromPrimitives(Long id, String name, String area) {
-        return new SupplyRequested(
-                SupplyRequestedId.fromValue(id),
-                SupplyRequestedName.fromValue(name),
-                SupplyRequestedArea.fromValue(area)
-        );
+        return new SupplyRequested(SupplyRequestedId.fromValue(id), SupplyRequestedName.fromValue(name),
+                SupplyRequestedArea.fromValue(area));
     }
 
     public SupplyRequestedId id() {

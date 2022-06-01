@@ -9,7 +9,8 @@ public final class FederationState extends StringValueObject {
     }
 
     private static void ensureName(String value) {
-        if (value == null || value.isEmpty()) throw new FederationStateNameInvalid();
+        if (value == null || value.isEmpty())
+            throw new FederationStateNameInvalid();
     }
 
     public static FederationState fromValue(String value) {

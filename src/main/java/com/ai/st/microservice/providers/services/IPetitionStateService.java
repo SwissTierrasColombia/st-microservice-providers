@@ -4,10 +4,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IPetitionStateService {
 
-	public Long getCount();
+    public Long getCount();
 
-	public PetitionStateEntity createPetitionState(PetitionStateEntity petition);
+    public PetitionStateEntity createPetitionState(PetitionStateEntity petition);
 
-	public PetitionStateEntity getPetitionStateById(Long id);
+    public PetitionStateEntity getPetitionStateById(Long id);
 
 }

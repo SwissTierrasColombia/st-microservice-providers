@@ -17,7 +17,8 @@ public final class RequestDeadline extends DateObjectValue {
     }
 
     private static void ensureDeadline(Date value) {
-        if (value == null) throw new RequestDeadlineInvalid();
+        if (value == null)
+            throw new RequestDeadlineInvalid();
     }
 
 }

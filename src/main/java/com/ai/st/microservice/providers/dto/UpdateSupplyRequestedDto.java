@@ -130,4 +130,12 @@ public class UpdateSupplyRequestedDto implements Serializable {
     public void setExtraFile(String extraFile) {
         this.extraFile = extraFile;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateSupplyRequestedDto{" + "delivered=" + delivered + ", justification='" + justification + '\''
+                + ", supplyRequestedStateId=" + supplyRequestedStateId + ", deliveryBy=" + deliveryBy + ", url='" + url
+                + '\'' + ", observations='" + observations + '\'' + ", errors='" + errors + '\'' + ", ftp='" + ftp
+                + '\'' + ", validated=" + validated + ", log='" + log + '\'' + ", extraFile='" + extraFile + '\'' + '}';
+    }
 }

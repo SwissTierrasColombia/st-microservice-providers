@@ -15,11 +15,8 @@ public final class FederationResponse implements Response {
     }
 
     public static FederationResponse fromAggregate(Federation federation) {
-        return new FederationResponse(
-                federation.code().value(),
-                federation.municipality().value(),
-                federation.state().value()
-        );
+        return new FederationResponse(federation.code().value(), federation.municipality().value(),
+                federation.state().value());
     }
 
     public String code() {

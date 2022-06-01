@@ -23,10 +23,9 @@ public final class RequestResponse implements Response {
     private final FederationResponse federation;
     private final List<SupplyRequestedSummaryResponse> suppliesSummary;
 
-    public RequestResponse(Long id, Date closedAt, Long closedBy, Date createdAt, Date deadline,
-                           String observations, String orderNumber, RequestStatusResponse status,
-                           ManagerResponse manager, FederationResponse federation,
-                           List<SupplyRequestedSummaryResponse> suppliesSummary) {
+    public RequestResponse(Long id, Date closedAt, Long closedBy, Date createdAt, Date deadline, String observations,
+            String orderNumber, RequestStatusResponse status, ManagerResponse manager, FederationResponse federation,
+            List<SupplyRequestedSummaryResponse> suppliesSummary) {
         this.id = id;
         this.closedAt = closedAt;
         this.closedBy = closedBy;
@@ -41,19 +40,12 @@ public final class RequestResponse implements Response {
     }
 
     public static RequestResponse fromAggregate(Request request) {
-        return new RequestResponse(
-                request.id().value(),
-                request.closedAt().value(),
-                request.closedBy().value(),
-                request.createdAt().value(),
-                request.deadline().value(),
-                request.observations().value(),
-                request.orderNumber().value(),
-                RequestStatusResponse.fromAggregate(request.status()),
+        return new RequestResponse(request.id().value(), request.closedAt().value(), request.closedBy().value(),
+                request.createdAt().value(), request.deadline().value(), request.observations().value(),
+                request.orderNumber().value(), RequestStatusResponse.fromAggregate(request.status()),
                 ManagerResponse.fromAggregate(request.manager()),
-                FederationResponse.fromAggregate(request.federation()),
-                request.suppliesRequested().stream().map(SupplyRequestedSummaryResponse::fromAggregate).collect(Collectors.toList())
-        );
+                FederationResponse.fromAggregate(request.federation()), request.suppliesRequested().stream()
+                        .map(SupplyRequestedSummaryResponse::fromAggregate).collect(Collectors.toList()));
     }
 
     public Long id() {

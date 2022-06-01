@@ -7,16 +7,16 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ITypeSupplyService {
 
-	public TypeSupplyEntity createTypeSupply(TypeSupplyEntity typeSupply);
+    public TypeSupplyEntity createTypeSupply(TypeSupplyEntity typeSupply);
 
-	public TypeSupplyEntity getTypeSupplyById(Long id);
+    public TypeSupplyEntity getTypeSupplyById(Long id);
 
-	public TypeSupplyEntity getTypeSupplyByName(String name);
+    public TypeSupplyEntity getTypeSupplyByName(String name);
 
-	public void deleteTypeSupplyById(Long id);
+    public void deleteTypeSupplyById(Long id);
 
-	public List<TypeSupplyEntity> getTypeSupliesByProfile(ProviderProfileEntity providerProfileEntity);
-	
-	public Long setValueSequence(Long value);
+    public List<TypeSupplyEntity> getTypeSupliesByProfile(ProviderProfileEntity providerProfileEntity);
+
+    public Long setValueSequence(Long value);
 
 }

@@ -2,7 +2,7 @@ package com.ai.st.microservice.providers.modules.shared.infrastructure.persisten
 
 public enum EmitterTypeEnum {
 
-	ENTITY,
+    ENTITY,
 
-	USER
+    USER
 }

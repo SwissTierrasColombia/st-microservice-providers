@@ -79,12 +79,12 @@ public class ProviderBusiness {
 
     public List<ProviderDto> getProviders(Boolean onlyActive) throws BusinessException {
 
-        List<ProviderDto> listProvidersDto = new ArrayList<ProviderDto>();
+        List<ProviderDto> listProvidersDto = new ArrayList<>();
 
-        List<ProviderEntity> listProvidersEntity = new ArrayList<ProviderEntity>();
+        List<ProviderEntity> listProvidersEntity;
 
         if (onlyActive) {
-            listProvidersEntity = providerService.getAllProvidersActive(onlyActive);
+            listProvidersEntity = providerService.getAllProvidersActive(true);
         } else {
             listProvidersEntity = providerService.getAllProviders();
         }
@@ -113,7 +113,7 @@ public class ProviderBusiness {
     }
 
     public ProviderDto createProvider(String name, String taxIdentificationNumber, Long providerCategoryId,
-                                      String alias) throws BusinessException {
+            String alias) throws BusinessException {
 
         name = name.toUpperCase();
 
@@ -163,7 +163,7 @@ public class ProviderBusiness {
     public List<TypeSupplyDto> getTypesSuppliesByProviderId(Long providerId, Boolean onlyActive)
             throws BusinessException {
 
-        List<TypeSupplyDto> listTypeSupplyDtos = new ArrayList<TypeSupplyDto>();
+        List<TypeSupplyDto> listTypeSupplyDto = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -176,18 +176,18 @@ public class ProviderBusiness {
 
             if (!onlyActive || typeSupplyEntity.getActive()) {
                 TypeSupplyDto typeSupplyDto = typeSupplyBusiness.entityParseDto(typeSupplyEntity);
-                listTypeSupplyDtos.add(typeSupplyDto);
+                listTypeSupplyDto.add(typeSupplyDto);
             }
 
         }
 
-        return listTypeSupplyDtos;
+        return listTypeSupplyDto;
     }
 
     public List<RequestDto> getRequestsByProviderAndState(Long providerId, Long requestStateId)
             throws BusinessException {
 
-        List<RequestDto> listRequestsDto = new ArrayList<RequestDto>();
+        List<RequestDto> listRequestsDto = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -195,7 +195,7 @@ public class ProviderBusiness {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
-        List<RequestEntity> listRequestEntity = new ArrayList<RequestEntity>();
+        List<RequestEntity> listRequestEntity;
 
         if (requestStateId != null) {
             listRequestEntity = requestService.getRequestsByProviderIdAndStateId(providerId, requestStateId);
@@ -248,7 +248,7 @@ public class ProviderBusiness {
 
     public List<ProviderUserDto> getUsersByProvider(Long providerId, List<Long> profiles) throws BusinessException {
 
-        List<ProviderUserDto> users = new ArrayList<ProviderUserDto>();
+        List<ProviderUserDto> users = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -276,7 +276,7 @@ public class ProviderBusiness {
                     ProviderUserDto providerUserDto = new ProviderUserDto();
                     providerUserDto.setUserCode(userCode);
 
-                    List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+                    List<ProviderProfileDto> profilesDto = new ArrayList<>();
                     for (ProviderUserEntity providerUserEntity2 : providerEntity.getUsers()) {
                         if (providerUserEntity2.getUserCode().equals(userCode)) {
 
@@ -371,7 +371,7 @@ public class ProviderBusiness {
 
     public List<ProviderProfileDto> getProfilesByProvider(Long providerId) throws BusinessException {
 
-        List<ProviderProfileDto> listProvidersDto = new ArrayList<ProviderProfileDto>();
+        List<ProviderProfileDto> listProvidersDto = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
@@ -481,7 +481,7 @@ public class ProviderBusiness {
     }
 
     public TypeSupplyDto createTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-                                          Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
+            Long providerProfileId, boolean modelRequired, List<String> extensions) throws BusinessException {
 
         name = name.toUpperCase();
 
@@ -490,18 +490,18 @@ public class ProviderBusiness {
         ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerProfileId);
 
         // verify if the provider exists
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor no existe.");
         }
 
         // verify if the provider profile exists
-        if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+        if (providerProfileEntity == null) {
             throw new BusinessException("El perfil del proveedor no existe.");
         }
 
         // verify that there is no provider with the same name
         TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
-        if (typeSupplyExistsEntity instanceof TypeSupplyEntity) {
+        if (typeSupplyExistsEntity != null) {
             throw new BusinessException("El nombre del tipo de insumo ya esta registrado.");
         }
 
@@ -529,12 +529,11 @@ public class ProviderBusiness {
             extensionService.createExtension(extensionEntity);
         }
 
-        TypeSupplyDto typeSupplyDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
-        return typeSupplyDto;
+        return typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
     }
 
     public TypeSupplyDto updateTypeSupply(String name, String description, boolean metadataRequired, Long providerId,
-                                          Long providerProfileId, boolean modelRequired, List<String> extensions, Long typeSupplyId)
+            Long providerProfileId, boolean modelRequired, List<String> extensions, Long typeSupplyId)
             throws BusinessException {
 
         name = name.toUpperCase();
@@ -544,24 +543,23 @@ public class ProviderBusiness {
         ProviderProfileEntity providerProfileEntity = profileService.getProviderProfileById(providerProfileId);
 
         // verify if the provider exists
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor no existe.");
         }
 
         // verify if the provider profile exists
-        if (!(providerProfileEntity instanceof ProviderProfileEntity)) {
+        if (providerProfileEntity == null) {
             throw new BusinessException("El perfil del proveedor no existe.");
         }
 
         TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-        if (!(typeSupplyEntity instanceof TypeSupplyEntity)) {
+        if (typeSupplyEntity == null) {
             throw new BusinessException("El tipo de insumo no existe.");
         }
 
         // verify that there is no provider with the same name
         TypeSupplyEntity typeSupplyExistsEntity = typeSupplyService.getTypeSupplyByName(name);
-        if (typeSupplyExistsEntity instanceof TypeSupplyEntity
-                && !typeSupplyExistsEntity.getId().equals(typeSupplyId)) {
+        if (typeSupplyExistsEntity != null && !typeSupplyExistsEntity.getId().equals(typeSupplyId)) {
             throw new BusinessException("El nombre del tipo de insumo ya esta registrado.");
         }
 
@@ -596,20 +594,19 @@ public class ProviderBusiness {
             extensionService.createExtension(extensionEntity);
         }
 
-        TypeSupplyDto typeSupplyDto = typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
-        return typeSupplyDto;
+        return typeSupplyBusiness.getTypeSupplyById(typeSupplyEntity.getId());
     }
 
     public void deleteTypeSupply(Long providerId, Long typeSupplyId) throws BusinessException {
 
         // verify if the provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor no existe.");
         }
 
         TypeSupplyEntity typeSupplyEntity = typeSupplyService.getTypeSupplyById(typeSupplyId);
-        if (!(typeSupplyEntity instanceof TypeSupplyEntity)) {
+        if (typeSupplyEntity == null) {
             throw new BusinessException("El tipo de insumo no existe.");
         }
 
@@ -636,19 +633,19 @@ public class ProviderBusiness {
 
         // verify provider does exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
         // verify provider role does exists
         RoleEntity roleEntity = roleService.getRoleById(roleId);
-        if (!(roleEntity instanceof RoleEntity)) {
+        if (roleEntity == null) {
             throw new BusinessException("El perfil del proveedor no existe.");
         }
 
         ProviderAdministratorEntity existsUser = providerAdministratorService
                 .getProviderAdministratorByUserAndRoleAndProvider(userCode, roleEntity, providerEntity);
-        if (existsUser instanceof ProviderAdministratorEntity) {
+        if (existsUser != null) {
             throw new BusinessException("El usuario ya esta registrado en el proveedor con el rol especificado.");
         }
 
@@ -667,11 +664,11 @@ public class ProviderBusiness {
     public List<ProviderAdministratorDto> getAdministratorsByProvider(Long providerId, List<Long> roles)
             throws BusinessException {
 
-        List<ProviderAdministratorDto> administrators = new ArrayList<ProviderAdministratorDto>();
+        List<ProviderAdministratorDto> administrators = new ArrayList<>();
 
         // verify provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor de insumo no existe.");
         }
 
@@ -696,7 +693,7 @@ public class ProviderBusiness {
                     ProviderAdministratorDto providerAdministratorDto = new ProviderAdministratorDto();
                     providerAdministratorDto.setUserCode(userCode);
 
-                    List<RoleDto> rolesDto = new ArrayList<RoleDto>();
+                    List<RoleDto> rolesDto = new ArrayList<>();
                     for (ProviderAdministratorEntity providerAdministratorEntity2 : providerEntity
                             .getAdministrators()) {
                         if (providerAdministratorEntity2.getUserCode().equals(userCode)) {
@@ -721,20 +718,8 @@ public class ProviderBusiness {
         return administrators;
     }
 
-    public ProviderProfileDto providerProfileEntityParseDto(ProviderProfileEntity providerProfileEntity) {
-        ProviderProfileDto dto = null;
-        if (providerProfileEntity instanceof ProviderProfileEntity) {
-            dto = new ProviderProfileDto();
-            dto.setId(providerProfileEntity.getId());
-            dto.setName(providerProfileEntity.getName());
-            dto.setDescription(providerProfileEntity.getDescription());
-            dto.setProvider(entityParseDto(providerProfileEntity.getProvider()));
-        }
-        return dto;
-    }
-
     public ProviderDto updateProvider(Long id, String name, String taxIdentificationNumber, Long providerCategoryId,
-                                      String alias) throws BusinessException {
+            String alias) throws BusinessException {
 
         name = name.toUpperCase();
 
@@ -747,7 +732,7 @@ public class ProviderBusiness {
                 .getProviderCategoryById(providerCategoryId);
 
         // verify if the category exists
-        if (!(providerCategoryEntity instanceof ProviderCategoryEntity)) {
+        if (providerCategoryEntity == null) {
             throw new BusinessException("La categoría no existe.");
         }
 
@@ -763,9 +748,7 @@ public class ProviderBusiness {
 
         providerEntity = providerService.saveProvider(providerEntity);
 
-        ProviderDto providerDto = entityParseDto(providerEntity);
-
-        return providerDto;
+        return entityParseDto(providerEntity);
     }
 
     public ProviderDto enableProvider(Long providerId) throws BusinessException {
@@ -778,8 +761,7 @@ public class ProviderBusiness {
         providerEntity.setActive(true);
         providerEntity = providerService.saveProvider(providerEntity);
 
-        ProviderDto providerDto = entityParseDto(providerEntity);
-        return providerDto;
+        return entityParseDto(providerEntity);
     }
 
     public ProviderDto disableProvider(Long providerId) throws BusinessException {
@@ -792,15 +774,14 @@ public class ProviderBusiness {
         providerEntity.setActive(false);
         providerEntity = providerService.saveProvider(providerEntity);
 
-        ProviderDto providerDto = entityParseDto(providerEntity);
-        return providerDto;
+        return entityParseDto(providerEntity);
     }
 
     public void deleteProvider(Long providerId) throws BusinessException {
 
         // verify if the provider exists
         ProviderEntity providerEntity = providerService.getProviderById(providerId);
-        if (!(providerEntity instanceof ProviderEntity)) {
+        if (providerEntity == null) {
             throw new BusinessException("El proveedor no existe.");
         }
 
@@ -821,7 +802,7 @@ public class ProviderBusiness {
 
     public List<ProviderDto> getProvidersWhereManagerRequested(Long managerCode) throws BusinessException {
 
-        List<ProviderDto> providersDto = new ArrayList<ProviderDto>();
+        List<ProviderDto> providersDto = new ArrayList<>();
 
         if (managerCode != null) {
 

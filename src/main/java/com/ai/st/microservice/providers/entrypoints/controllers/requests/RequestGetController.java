@@ -15,6 +15,8 @@ import com.ai.st.microservice.providers.modules.requests.application.find_reques
 import com.ai.st.microservice.providers.modules.requests.domain.RequestStatusId;
 import com.ai.st.microservice.providers.modules.shared.domain.DomainError;
 
+import com.ai.st.microservice.providers.services.tracing.SCMTracing;
+import com.ai.st.microservice.providers.services.tracing.TracingKeyword;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,7 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "Manager Requests [GET]", tags = {"Requests"})
+@Api(value = "Manager Requests [GET]", tags = { "Requests" })
 @RestController
 public final class RequestGetController extends ApiController {
 
@@ -35,12 +37,11 @@ public final class RequestGetController extends ApiController {
 
     private final RequestsFinder requestsFinder;
 
-    public RequestGetController(AdministrationBusiness administrationBusiness,
-                                ManagerBusiness managerBusiness, OperatorBusiness operatorBusiness,
-                                ProviderUserBusiness providerUserBusiness,
-                                ProviderAdministratorBusiness providerAdministratorBusiness,
-                                RequestsFinder requestsFinder) {
-        super(administrationBusiness, managerBusiness, operatorBusiness, providerUserBusiness, providerAdministratorBusiness);
+    public RequestGetController(AdministrationBusiness administrationBusiness, ManagerBusiness managerBusiness,
+            OperatorBusiness operatorBusiness, ProviderUserBusiness providerUserBusiness,
+            ProviderAdministratorBusiness providerAdministratorBusiness, RequestsFinder requestsFinder) {
+        super(administrationBusiness, managerBusiness, operatorBusiness, providerUserBusiness,
+                providerAdministratorBusiness);
         this.requestsFinder = requestsFinder;
     }
 
@@ -48,12 +49,10 @@ public final class RequestGetController extends ApiController {
     @ApiOperation(value = "Get pending requests")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Pending requests got", response = RequestResponse.class, responseContainer = "List"),
-            @ApiResponse(code = 500, message = "Error Server", response = BasicResponseDto.class)})
+            @ApiResponse(code = 500, message = "Error Server", response = BasicResponseDto.class) })
     @ResponseBody
-    public ResponseEntity<?> findPendingRequests(
-            @RequestHeader("authorization") String headerAuthorization,
-            @RequestParam(name = "page") int page,
-            @RequestParam(name = "limit") int limit,
+    public ResponseEntity<?> findPendingRequests(@RequestHeader("authorization") String headerAuthorization,
+            @RequestParam(name = "page") int page, @RequestParam(name = "limit") int limit,
             @RequestParam(name = "municipality", required = false) String municipality,
             @RequestParam(name = "orderNumber", required = false) String orderNumber,
             @RequestParam(name = "manager", required = false) Long manager) {
@@ -63,29 +62,32 @@ public final class RequestGetController extends ApiController {
 
         try {
 
+            SCMTracing.setTransactionName("findPendingRequests");
+            SCMTracing.addCustomParameter(TracingKeyword.AUTHORIZATION_HEADER, headerAuthorization);
+
             InformationSession session = this.getInformationSession(headerAuthorization);
 
-            responseDto = requestsFinder.handle(
-                    new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.REQUESTED, municipality, orderNumber, manager, session.userCode(),
-                            session.isProviderAdmin())
-            );
+            responseDto = requestsFinder
+                    .handle(new RequestsFinderQuery(page, limit, session.entityCode(), RequestStatusId.REQUESTED,
+                            municipality, orderNumber, manager, session.userCode(), session.isProviderAdmin()));
 
             httpStatus = HttpStatus.OK;
 
         } catch (BusinessException e) {
             log.error("Error RequestGetController@findPendingRequests#Business ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.getMessage(), 2);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (DomainError e) {
             log.error("Error RequestGetController@findPendingRequests#Domain ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.errorMessage(), 2);
+            responseDto = new BasicResponseDto(e.errorMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (Exception e) {
             log.error("Error RequestGetController@findPendingRequests#General ---> " + e.getMessage());
-            e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseDto = new BasicResponseDto(e.getMessage(), 1);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         }
 
         return new ResponseEntity<>(responseDto, httpStatus);
@@ -95,12 +97,10 @@ public final class RequestGetController extends ApiController {
     @ApiOperation(value = "Get attended requests")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Attended requests got", response = RequestResponse.class, responseContainer = "List"),
-            @ApiResponse(code = 500, message = "Error Server", response = BasicResponseDto.class)})
+            @ApiResponse(code = 500, message = "Error Server", response = BasicResponseDto.class) })
     @ResponseBody
-    public ResponseEntity<?> findAttendedRequests(
-            @RequestHeader("authorization") String headerAuthorization,
-            @RequestParam(name = "page") int page,
-            @RequestParam(name = "limit") int limit,
+    public ResponseEntity<?> findAttendedRequests(@RequestHeader("authorization") String headerAuthorization,
+            @RequestParam(name = "page") int page, @RequestParam(name = "limit") int limit,
             @RequestParam(name = "municipality", required = false) String municipality,
             @RequestParam(name = "orderNumber", required = false) String orderNumber,
             @RequestParam(name = "manager", required = false) Long manager) {
@@ -110,28 +110,32 @@ public final class RequestGetController extends ApiController {
 
         try {
 
+            SCMTracing.setTransactionName("findAttendedRequests");
+            SCMTracing.addCustomParameter(TracingKeyword.AUTHORIZATION_HEADER, headerAuthorization);
+
             InformationSession session = this.getInformationSession(headerAuthorization);
 
-            responseDto = requestsFinder.handle(
-                    new RequestsFinderQuery(
-                            page, limit, session.entityCode(), RequestStatusId.DELIVERED, municipality, orderNumber, manager, session.userCode(),
-                            session.isProviderAdmin())
-            );
+            responseDto = requestsFinder
+                    .handle(new RequestsFinderQuery(page, limit, session.entityCode(), RequestStatusId.DELIVERED,
+                            municipality, orderNumber, manager, session.userCode(), session.isProviderAdmin()));
 
             httpStatus = HttpStatus.OK;
 
         } catch (BusinessException e) {
             log.error("Error RequestGetController@findAttendedRequests#Business ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.getMessage(), 2);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (DomainError e) {
             log.error("Error RequestGetController@findAttendedRequests#Domain ---> " + e.getMessage());
             httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-            responseDto = new BasicResponseDto(e.errorMessage(), 2);
+            responseDto = new BasicResponseDto(e.errorMessage());
+            SCMTracing.sendError(e.getMessage());
         } catch (Exception e) {
             log.error("Error RequestGetController@findAttendedRequests#General ---> " + e.getMessage());
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseDto = new BasicResponseDto(e.getMessage(), 1);
+            responseDto = new BasicResponseDto(e.getMessage());
+            SCMTracing.sendError(e.getMessage());
         }
 
         return new ResponseEntity<>(responseDto, httpStatus);

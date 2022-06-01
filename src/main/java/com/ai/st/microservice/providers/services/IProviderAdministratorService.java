@@ -8,11 +8,11 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IProviderAdministratorService {
 
-	public ProviderAdministratorEntity getProviderAdministratorByUserAndRoleAndProvider(Long userCode,
-			RoleEntity roleEntity, ProviderEntity providerEntity);
+    public ProviderAdministratorEntity getProviderAdministratorByUserAndRoleAndProvider(Long userCode,
+            RoleEntity roleEntity, ProviderEntity providerEntity);
 
-	public ProviderAdministratorEntity createProviderAdministrator(ProviderAdministratorEntity entity);
+    public ProviderAdministratorEntity createProviderAdministrator(ProviderAdministratorEntity entity);
 
-	public List<ProviderAdministratorEntity> getProviderAdministratorsByUserCode(Long userCode);
+    public List<ProviderAdministratorEntity> getProviderAdministratorsByUserCode(Long userCode);
 
 }

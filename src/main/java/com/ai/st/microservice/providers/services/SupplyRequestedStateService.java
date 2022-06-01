@@ -11,23 +11,23 @@ import com.ai.st.microservice.providers.repositories.SupplyRequestedStateReposit
 @Service
 public class SupplyRequestedStateService implements ISupplyRequestedStateService {
 
-	@Autowired
-	private SupplyRequestedStateRepository supplyRequestedStateRepository;
+    @Autowired
+    private SupplyRequestedStateRepository supplyRequestedStateRepository;
 
-	@Override
-	public Long getCount() {
-		return supplyRequestedStateRepository.count();
-	}
+    @Override
+    public Long getCount() {
+        return supplyRequestedStateRepository.count();
+    }
 
-	@Override
-	@Transactional
-	public SupplyRequestedStateEntity createState(SupplyRequestedStateEntity state) {
-		return supplyRequestedStateRepository.save(state);
-	}
+    @Override
+    @Transactional
+    public SupplyRequestedStateEntity createState(SupplyRequestedStateEntity state) {
+        return supplyRequestedStateRepository.save(state);
+    }
 
-	@Override
-	public SupplyRequestedStateEntity getStateById(Long id) {
-		return supplyRequestedStateRepository.findById(id).orElse(null);
-	}
+    @Override
+    public SupplyRequestedStateEntity getStateById(Long id) {
+        return supplyRequestedStateRepository.findById(id).orElse(null);
+    }
 
 }

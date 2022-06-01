@@ -8,15 +8,15 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface IProviderUserService {
 
-	public ProviderUserEntity createProviderUser(ProviderUserEntity providerUserEntity);
+    public ProviderUserEntity createProviderUser(ProviderUserEntity providerUserEntity);
 
-	public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode);
+    public List<ProviderUserEntity> getProvidersUsersByCodeUser(Long userCode);
 
-	public ProviderUserEntity getProviderUserByUserCodeAndProfileAndProvider(Long userCode,
-			ProviderProfileEntity providerProfileEntity, ProviderEntity provider);
+    public ProviderUserEntity getProviderUserByUserCodeAndProfileAndProvider(Long userCode,
+            ProviderProfileEntity providerProfileEntity, ProviderEntity provider);
 
-	public void deleteById(Long id);
+    public void deleteById(Long id);
 
-	public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile);
+    public List<ProviderUserEntity> getProviderUsersByProfile(ProviderProfileEntity providerProfile);
 
 }

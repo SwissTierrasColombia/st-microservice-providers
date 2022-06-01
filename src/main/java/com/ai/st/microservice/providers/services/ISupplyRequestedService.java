@@ -7,12 +7,12 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ISupplyRequestedService {
 
-	public SupplyRequestedEntity updateSupplyRequested(SupplyRequestedEntity supplyRequestedEntity);
+    public SupplyRequestedEntity updateSupplyRequested(SupplyRequestedEntity supplyRequestedEntity);
 
-	public List<SupplyRequestedEntity> getSuppliesRequestedByTypeSupply(TypeSupplyEntity supplyEntity);
+    public List<SupplyRequestedEntity> getSuppliesRequestedByTypeSupply(TypeSupplyEntity supplyEntity);
 
-	public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states);
+    public List<SupplyRequestedEntity> getSuppliesRequestedByProviderAndStates(Long providerId, List<Long> states);
 
-	public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId);
+    public SupplyRequestedEntity getSupplyRequestedById(Long supplyRequestedId);
 
 }

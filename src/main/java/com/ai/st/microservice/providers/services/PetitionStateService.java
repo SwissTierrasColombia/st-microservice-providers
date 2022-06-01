@@ -11,23 +11,23 @@ import com.ai.st.microservice.providers.repositories.PetitionStateRepository;
 @Service
 public class PetitionStateService implements IPetitionStateService {
 
-	@Autowired
-	private PetitionStateRepository petitionStateRepository;
+    @Autowired
+    private PetitionStateRepository petitionStateRepository;
 
-	@Override
-	public Long getCount() {
-		return petitionStateRepository.count();
-	}
+    @Override
+    public Long getCount() {
+        return petitionStateRepository.count();
+    }
 
-	@Override
-	@Transactional
-	public PetitionStateEntity createPetitionState(PetitionStateEntity petition) {
-		return petitionStateRepository.save(petition);
-	}
+    @Override
+    @Transactional
+    public PetitionStateEntity createPetitionState(PetitionStateEntity petition) {
+        return petitionStateRepository.save(petition);
+    }
 
-	@Override
-	public PetitionStateEntity getPetitionStateById(Long id) {
-		return petitionStateRepository.findById(id).orElse(null);
-	}
+    @Override
+    public PetitionStateEntity getPetitionStateById(Long id) {
+        return petitionStateRepository.findById(id).orElse(null);
+    }
 
 }

@@ -4,10 +4,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface ISupplyRequestedStateService {
 
-	public Long getCount();
+    public Long getCount();
 
-	public SupplyRequestedStateEntity createState(SupplyRequestedStateEntity state);
+    public SupplyRequestedStateEntity createState(SupplyRequestedStateEntity state);
 
-	public SupplyRequestedStateEntity getStateById(Long id);
+    public SupplyRequestedStateEntity getStateById(Long id);
 
 }

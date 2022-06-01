@@ -18,51 +18,51 @@ import com.ai.st.microservice.providers.services.IProviderUserService;
 @Component
 public class ProviderUserBusiness {
 
-	@Autowired
-	private IProviderUserService providerUserService;
+    @Autowired
+    private IProviderUserService providerUserService;
 
-	public ProviderDto getProviderByUserCode(Long userCode) {
+    public ProviderDto getProviderByUserCode(Long userCode) {
 
-		ProviderDto providerDto = null;
+        ProviderDto providerDto = null;
 
-		List<ProviderUserEntity> listProvidersUsersEntity = providerUserService.getProvidersUsersByCodeUser(userCode);
+        List<ProviderUserEntity> listProvidersUsersEntity = providerUserService.getProvidersUsersByCodeUser(userCode);
 
-		if (listProvidersUsersEntity.size() > 0) {
-			ProviderUserEntity providerUserEntity = listProvidersUsersEntity.get(0);
-			ProviderEntity providerEntity = providerUserEntity.getProvider();
+        if (listProvidersUsersEntity.size() > 0) {
+            ProviderUserEntity providerUserEntity = listProvidersUsersEntity.get(0);
+            ProviderEntity providerEntity = providerUserEntity.getProvider();
 
-			providerDto = new ProviderDto();
-			providerDto.setId(providerEntity.getId());
-			providerDto.setAlias(providerEntity.getAlias());
-			providerDto.setName(providerEntity.getName());
-			providerDto.setCreatedAt(providerEntity.getCreatedAt());
-			providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
-			providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
-					providerEntity.getProviderCategory().getName()));
-		}
+            providerDto = new ProviderDto();
+            providerDto.setId(providerEntity.getId());
+            providerDto.setAlias(providerEntity.getAlias());
+            providerDto.setName(providerEntity.getName());
+            providerDto.setCreatedAt(providerEntity.getCreatedAt());
+            providerDto.setTaxIdentificationNumber(providerEntity.getTaxIdentificationNumber());
+            providerDto.setProviderCategory(new ProviderCategoryDto(providerEntity.getProviderCategory().getId(),
+                    providerEntity.getProviderCategory().getName()));
+        }
 
-		return providerDto;
-	}
+        return providerDto;
+    }
 
-	public List<ProviderProfileDto> getProfilesByUser(Long userCode) throws BusinessException {
+    public List<ProviderProfileDto> getProfilesByUser(Long userCode) throws BusinessException {
 
-		List<ProviderProfileDto> profilesDto = new ArrayList<ProviderProfileDto>();
+        List<ProviderProfileDto> profilesDto = new ArrayList<>();
 
-		List<ProviderUserEntity> listUsers = providerUserService.getProvidersUsersByCodeUser(userCode);
+        List<ProviderUserEntity> listUsers = providerUserService.getProvidersUsersByCodeUser(userCode);
 
-		for (ProviderUserEntity providerUser : listUsers) {
+        for (ProviderUserEntity providerUser : listUsers) {
 
-			ProviderProfileEntity profileEntity = providerUser.getProviderProfile();
+            ProviderProfileEntity profileEntity = providerUser.getProviderProfile();
 
-			ProviderProfileDto profileDto = new ProviderProfileDto();
-			profileDto.setId(profileEntity.getId());
-			profileDto.setName(profileEntity.getName());
-			profileDto.setDescription(profileEntity.getDescription());
+            ProviderProfileDto profileDto = new ProviderProfileDto();
+            profileDto.setId(profileEntity.getId());
+            profileDto.setName(profileEntity.getName());
+            profileDto.setDescription(profileEntity.getDescription());
 
-			profilesDto.add(profileDto);
-		}
+            profilesDto.add(profileDto);
+        }
 
-		return profilesDto;
-	}
+        return profilesDto;
+    }
 
 }

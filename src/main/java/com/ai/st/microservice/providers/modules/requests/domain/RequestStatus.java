@@ -13,10 +13,7 @@ public final class RequestStatus extends AggregateRoot {
     }
 
     public static RequestStatus fromPrimivites(Long id, String name) {
-        return new RequestStatus(
-                RequestStatusId.fromValue(id),
-                RequestStatusName.fromValue(name)
-        );
+        return new RequestStatus(RequestStatusId.fromValue(id), RequestStatusName.fromValue(name));
     }
 
     public RequestStatusId id() {

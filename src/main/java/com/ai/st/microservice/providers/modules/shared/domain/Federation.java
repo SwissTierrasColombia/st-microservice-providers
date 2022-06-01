@@ -13,11 +13,8 @@ public final class Federation {
     }
 
     public static Federation fromPrimitives(String code, String municipality, String state) {
-        return new Federation(
-                FederationCode.fromValue(code),
-                FederationMunicipality.fromValue(municipality),
-                FederationState.fromValue(state)
-        );
+        return new Federation(FederationCode.fromValue(code), FederationMunicipality.fromValue(municipality),
+                FederationState.fromValue(state));
     }
 
     public FederationCode code() {

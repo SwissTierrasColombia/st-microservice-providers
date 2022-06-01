@@ -10,10 +10,10 @@ import com.ai.st.microservice.providers.modules.shared.infrastructure.persistenc
 
 public interface PetitionRepository extends CrudRepository<PetitionEntity, Long> {
 
-	List<PetitionEntity> findByPetitionStateInAndProvider(List<PetitionStateEntity> states, ProviderEntity provider);
+    List<PetitionEntity> findByPetitionStateInAndProvider(List<PetitionStateEntity> states, ProviderEntity provider);
 
-	List<PetitionEntity> findByManagerCodeAndProvider(Long managerCode, ProviderEntity provider);
+    List<PetitionEntity> findByManagerCodeAndProvider(Long managerCode, ProviderEntity provider);
 
-	List<PetitionEntity> findByManagerCode(Long managerCode);
+    List<PetitionEntity> findByManagerCode(Long managerCode);
 
 }

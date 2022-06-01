@@ -14,55 +14,55 @@ import javax.persistence.Table;
 @Table(name = "providers_profiles", schema = "providers")
 public class ProviderProfileEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "name", nullable = false, length = 255)
-	private String name;
+    @Column(name = "name", nullable = false, length = 255)
+    private String name;
 
-	@Column(name = "description", nullable = true, length = 255)
-	private String description;
+    @Column(name = "description", nullable = true, length = 255)
+    private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
-	private ProviderEntity provider;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
+    private ProviderEntity provider;
 
-	public ProviderProfileEntity() {
+    public ProviderProfileEntity() {
 
-	}
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
 }

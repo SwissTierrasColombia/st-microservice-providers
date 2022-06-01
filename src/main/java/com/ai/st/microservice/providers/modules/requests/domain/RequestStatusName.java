@@ -10,7 +10,8 @@ public final class RequestStatusName extends StringValueObject {
     }
 
     private static void ensureStatusName(String value) {
-        if (value == null || value.isEmpty()) throw new RequestStatusNameInvalid();
+        if (value == null || value.isEmpty())
+            throw new RequestStatusNameInvalid();
     }
 
     public static RequestStatusName fromValue(String value) {
